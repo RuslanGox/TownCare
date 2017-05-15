@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TownCare</string>
+    <string name="because_we_care">Because WE care</string>
+    <string name="login_user_name">UserName</string>
+    <string name="login_passowrd">Password</string>
+    <string name="login_signup_button">SignUp</string>
+    <string name="login_signin_button">SignIn</string>
 </resources>
