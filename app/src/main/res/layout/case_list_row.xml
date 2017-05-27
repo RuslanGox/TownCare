@@ -8,50 +8,105 @@
         android:id="@+id/strow_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/person" />
+        android:src="@android:drawable/sym_def_app_icon"
+        android:layout_weight="1"/>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="9"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/strow_name"
+            android:id="@+id/case_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:text="@string/name"
+
+            android:text="TITLLE TITLE"
             android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/case_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+
+            android:text="11/12/17"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/case_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+
+            android:text="בטיפול"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/case_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="DANGER"
+            android:textSize="15dp"
+            android:layout_weight="1"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_weight="1">
 
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/like"
+                android:layout_weight="1"/>
             <TextView
-                android:id="@+id/strow_id"
+                android:id="@+id/case_like_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/id"
-                android:textSize="30sp" />
+                android:layout_marginStart="10dp"
+                android:layout_gravity="center"
+                android:text="10009"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/unlike"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/case_unlike_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:text="10009"
+                android:textSize="10sp" />
+
         </LinearLayout>
 
     </LinearLayout>
-
-    <CheckBox
-        android:id="@+id/strow_cb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:focusable="false"
-        android:scaleX="1.5"
-        android:scaleY="1.5" />
 
 </LinearLayout>
