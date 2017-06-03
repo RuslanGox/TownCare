@@ -12,22 +12,26 @@ public class Case {
     private int caseUnLikeCount;
     private String caseType;
     private String caseStatus;
-    private String caseMessage;
     private String caseOpenerPhone;
+    private int caseOpener;
+    private String caseAddress;
+    private String caseDesc;
+
     private String caseImageUrl;
 
-    public Case(String caseTitle, String caseDate, int caseLikeCount, int caseUnLikeCount, String caseType, String caseStatus, String caseMessage, String caseOpenerPhone, String caseImageUrl, int caseOpener) {
+    public Case( String caseTitle, String caseDate, int caseLikeCount, int caseUnLikeCount, String caseType, String caseStatus, String caseOpenerPhone, int caseOpener, String caseAddress, String caseDesc, String caseImageUrl) {
+//        this.caseId = caseId;
         this.caseTitle = caseTitle;
         this.caseDate = caseDate;
         this.caseLikeCount = caseLikeCount;
         this.caseUnLikeCount = caseUnLikeCount;
         this.caseType = caseType;
         this.caseStatus = caseStatus;
-        this.caseMessage = caseMessage;
         this.caseOpenerPhone = caseOpenerPhone;
-        this.caseImageUrl = caseImageUrl;
         this.caseOpener = caseOpener;
-//        this.caseId = TODO
+        this.caseAddress = caseAddress;
+        this.caseDesc = caseDesc;
+        this.caseImageUrl = caseImageUrl;
     }
 
     public Case(String caseTitle, String caseDate, int caseLikeCount, int caseUnLikeCount, String caseType, String caseStatus, String caseImageUrl) {
@@ -96,14 +100,6 @@ public class Case {
         this.caseStatus = caseStatus;
     }
 
-    public String getCaseMessage() {
-        return caseMessage;
-    }
-
-    public void setCaseMessage(String caseMessage) {
-        this.caseMessage = caseMessage;
-    }
-
     public String getCaseOpenerPhone() {
         return caseOpenerPhone;
     }
@@ -128,7 +124,19 @@ public class Case {
         this.caseOpener = caseOpener;
     }
 
-    private int caseOpener;
+    public String getCaseAddress() {
+        return caseAddress;
+    }
 
+    public void setCaseAddress(String caseAddress) {
+        this.caseAddress = caseAddress;
+    }
 
+    public String getCaseDesc() {
+        return caseDesc;
+    }
+
+    public void setCaseDesc(String caseDesc) {
+        this.caseDesc = caseDesc;
+    }
 }

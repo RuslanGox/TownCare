@@ -13,9 +13,10 @@ public class Model {
     public final static Model instance = new Model();
     List<Case> caseList = new LinkedList<>();
 
+
     private Model() {
         for (int i = 0 ; i<5 ; i ++){
-            caseList.add(new Case ("case " + i,"11/12/17",500+i*3,200-i*5,"Suggestion","Open","URL"));
+            caseList.add(new Case ("case " + i,"11/12/17",500+i*3,200-i*5,"Suggestion","Open","052476",1234,"GIDON ISRAEL","THIS IS THE DEST","URL"));
         }
     }
 
