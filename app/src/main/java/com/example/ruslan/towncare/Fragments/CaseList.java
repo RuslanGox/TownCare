@@ -1,8 +1,8 @@
 package com.example.ruslan.towncare.Fragments;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,38 +67,38 @@ public class CaseList extends Fragment {
         void onItemClickListener(String id);
     }
 
-    private class CaseListAdapter extends BaseAdapter{
+    private class CaseListAdapter extends BaseAdapter {
 
-                LayoutInflater infalter = getActivity().getLayoutInflater();
+        LayoutInflater infalter = getActivity().getLayoutInflater();
 
-                @Override
-                public int getCount() {
-                    return caseData.size();
-                }
+        @Override
+        public int getCount() {
+            return caseData.size();
+        }
 
-                @Override
-                public Object getItem(int position) {
-                    return null;
-                }
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
 
-                @Override
-                public long getItemId(int position) {
-                    return position;
-                }
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
 
-                @Override
-                public View getView(int position, View convertView, ViewGroup parent) {
-                    if (convertView == null){
-                        convertView = infalter.inflate(R.layout.case_list_row,null);
-                    }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = infalter.inflate(R.layout.case_list_row, null);
+            }
 
             Case c = caseData.get(position);
-            ((TextView)convertView.findViewById(R.id.case_title)).setText(c.getCaseTitle());
-            ((TextView)convertView.findViewById(R.id.case_date)).setText(c.getCaseDate());
-            ((TextView)convertView.findViewById(R.id.case_status)).setText(c.getCaseStatus());
-            ((TextView)convertView.findViewById(R.id.case_like_count)).setText(""+c.getCaseLikeCount());
-            ((TextView)convertView.findViewById(R.id.case_unlike_count)).setText(""+c.getCaseUnLikeCount());
-            ((TextView)convertView.findViewById(R.id.case_type)).setText(c.getCaseType());
+            ((TextView) convertView.findViewById(R.id.case_title)).setText(c.getCaseTitle());
+            ((TextView) convertView.findViewById(R.id.case_date)).setText(c.getCaseDate());
+            ((TextView) convertView.findViewById(R.id.case_status)).setText(c.getCaseStatus());
+            ((TextView) convertView.findViewById(R.id.case_like_count)).setText("" + c.getCaseLikeCount());
+            ((TextView) convertView.findViewById(R.id.case_unlike_count)).setText("" + c.getCaseUnLikeCount());
+            ((TextView) convertView.findViewById(R.id.case_type)).setText(c.getCaseType());
 
             return convertView;
         }

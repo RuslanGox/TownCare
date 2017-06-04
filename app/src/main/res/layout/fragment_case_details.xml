@@ -9,77 +9,84 @@
         android:id="@+id/detailsCaseTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="40dp"
-        android:text="TITLE"
         android:layout_gravity="center"
-        android:textAlignment="center"/>
+        android:text="TITLE"
+        android:textAlignment="center"
+        android:textSize="40sp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <ImageButton
             android:id="@+id/detailsCasePic"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_weight="2"/>
+            android:layout_weight="1"
+            android:src="@android:drawable/sym_def_app_icon" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="8">
+            android:layout_weight="9"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/detailsCaseDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="11/11/2001"
-                android:textSize="30dp"
-                android:textAlignment="center"
                 android:layout_gravity="center"
-                android:layout_weight="1"/>
+                android:text="11/11/2001"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+
             <TextView
                 android:id="@+id/detailsCaseAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="גדעון האוזנר,1"
-                android:textSize="30dp"
-                android:textAlignment="center"
                 android:layout_gravity="center"
-                android:layout_weight="4"/>
+                android:text="גדעון האוזנר,1"
+                android:textAlignment="center"
+                android:textSize="30sp" />
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/detailsCaseStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="סטטוס"
-            android:textSize="30dp"
-            android:textAlignment="center"
             android:layout_gravity="center"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="סטטוס"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+
         <TextView
             android:id="@+id/detailsCaseType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="סוג"
-            android:textSize="30dp"
-            android:textAlignment="center"
             android:layout_gravity="center"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="סוג"
+            android:textAlignment="center"
+            android:textSize="30sp" />
     </LinearLayout>
+
     <TextView
         android:id="@+id/detailsCaseDesc"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="descriptiondescription description description description description descriptiondescriptiondescription "
-        android:textSize="30dp"
-        android:textAlignment="center"
+        android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_weight="1"/>
+        android:layout_weight="8"
+        android:text="descriptiondescription description description description description descriptiondescriptiondescription "
+        android:textAlignment="center"
+        android:textSize="30sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -89,21 +96,27 @@
             android:id="@+id/detailsCaseOpenerPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="052476"
-            android:textSize="30dp"
-            android:textAlignment="center"
             android:layout_gravity="center"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="052476"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+
         <TextView
             android:id="@+id/detailsCaseOpener"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="עומרי חביב"
-            android:textSize="30dp"
-            android:textAlignment="center"
             android:layout_gravity="center"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="עומרי חביב"
+            android:textAlignment="center"
+            android:textSize="30sp" />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -113,26 +126,34 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_weight="1"
             android:gravity="center"
-            android:layout_weight="1">
+            android:orientation="horizontal">
+
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#0000"
-                android:src="@drawable/unlike"/>
+                android:src="@drawable/unlike" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_weight="1"
             android:gravity="center"
-            android:layout_weight="1">
+            android:orientation="horizontal">
+
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#0000"
-                android:src="@drawable/like"/>
+                android:src="@drawable/like" />
         </LinearLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5" />
 </LinearLayout>
