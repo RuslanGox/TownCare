@@ -5,6 +5,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -42,6 +44,7 @@ public class CaseDetails extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
 
         View contentView = inflater.inflate(R.layout.fragment_case_details, container, false);
         showCaseData(contentView);
@@ -87,5 +90,14 @@ public class CaseDetails extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.findItem(R.id.fragmentCreate).setVisible(false);
+        inflater.inflate(R.menu.case_action_bar_details, menu);
+        if (getActivity().getActionBar() != null) {
+            getActivity().getActionBar().setTitle("Case Details");
+        }
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }
