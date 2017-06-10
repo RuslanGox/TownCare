@@ -19,8 +19,8 @@ public class Case {
 
     private String caseImageUrl;
 
-    public Case(String caseTitle, String caseDate, int caseLikeCount, int caseUnLikeCount, String caseType, String caseStatus, String caseOpenerPhone, int caseOpener, String caseAddress, String caseDesc, String caseImageUrl) {
-//        this.caseId = caseId;
+    public Case(int caseId , String caseTitle, String caseDate, int caseLikeCount, int caseUnLikeCount, String caseType, String caseStatus, String caseOpenerPhone, int caseOpener, String caseAddress, String caseDesc, String caseImageUrl) {
+        this.caseId = caseId;
         this.caseTitle = caseTitle;
         this.caseDate = caseDate;
         this.caseLikeCount = caseLikeCount;
