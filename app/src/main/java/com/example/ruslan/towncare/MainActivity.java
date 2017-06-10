@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.ruslan.towncare.Fragments.CaseCreateFragment;
 import com.example.ruslan.towncare.Fragments.CaseDetailsFragment;
@@ -38,10 +39,6 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
         ft.commit();
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 
     @Override
     public void onBackPressed() {
@@ -91,5 +88,23 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
         }
         transaction.replace(R.id.mainFregment, caseListFragment);
         transaction.commit();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.createCaseSaveButton:
+                // do something here when save button is pressed (like reload list)
+            case R.id.createCaseCancelButton:
+                // do something here when cancel button (like error message)
+            default:
+                backToMainActivity();
+        }
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
