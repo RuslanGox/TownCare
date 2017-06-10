@@ -9,4 +9,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name= "casePrompt" >Choose a type</string>
+    <string-array name="caseTypes" >
+        <item>בטיחות</item>
+        <item>סכנה</item>
+        <item>ליכלוך</item>
+    </string-array>
 </resources>

@@ -65,7 +65,7 @@ public class MainActivity extends Activity implements CaseList.OnFragmentInterac
                 if (actionBar != null) {
                     actionBar.setDisplayHomeAsUpEnabled(true);
                 }
-//                transaction.replace(R.id.mainFregment, CaseDetails.newInstance(""+0));
+                transaction.replace(R.id.mainFregment, CaseDetails.newInstance(""+0));
                 break;
             case R.id.fragmentEdit:
                 if (actionBar != null) {
