@@ -11,6 +11,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name= "casePrompt" >Choose a type</string>
+    <string name="create_case">Create Case</string>
+    <string name="button_save">SAVE</string>
+    <string name="button_cancel">CANCEL</string>
     <string-array name="caseTypes" >
         <item>בטיחות</item>
         <item>סכנה</item>

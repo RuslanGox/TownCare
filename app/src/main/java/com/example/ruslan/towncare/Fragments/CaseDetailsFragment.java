@@ -16,17 +16,17 @@ import com.example.ruslan.towncare.Model.Model;
 import com.example.ruslan.towncare.R;
 
 
-public class CaseDetails extends Fragment {
+public class CaseDetailsFragment extends Fragment {
     public static final String ARG_PARAM1 = "CASE_ID_OF_LINKED_LIST";
     private String id;
 
     private OnFragmentInteractionListener mListener;
 
-    public CaseDetails() {
+    public CaseDetailsFragment() {
     }
 
-    public static CaseDetails newInstance(String id) {
-        CaseDetails fragment = new CaseDetails();
+    public static CaseDetailsFragment newInstance(String id) {
+        CaseDetailsFragment fragment = new CaseDetailsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, id);
         fragment.setArguments(args);
@@ -93,7 +93,7 @@ public class CaseDetails extends Fragment {
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.findItem(R.id.fragmentCreate).setVisible(false);
+        menu.findItem(R.id.actionBarCreatePlusButton).setVisible(false);
         inflater.inflate(R.menu.case_action_bar_details, menu);
         if (getActivity().getActionBar() != null) {
             getActivity().getActionBar().setTitle("Case Details");

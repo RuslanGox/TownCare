@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ModelFireBase {
 
-    List<Case> caseList = new LinkedList<>();
+    private List<Case> caseList = new LinkedList<>();
 
     public List<Case> getData() {
         return caseList;

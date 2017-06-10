@@ -19,13 +19,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class CaseList extends Fragment {
+public class CaseListFragment extends Fragment {
 
 
     private OnFragmentInteractionListener mListener;
     private List<Case> caseData = new LinkedList<>();
 
-    public CaseList() {
+    public CaseListFragment() {
 
     }
 
@@ -35,7 +35,7 @@ public class CaseList extends Fragment {
         View contentView = inflater.inflate(R.layout.fragment_case_list, container, false);
         caseData = Model.instance.getData();
         ListView list = (ListView) contentView.findViewById(R.id.caseListFreg);
-        list.setAdapter(new CaseList.CaseListAdapter());
+        list.setAdapter(new CaseListFragment.CaseListAdapter());
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

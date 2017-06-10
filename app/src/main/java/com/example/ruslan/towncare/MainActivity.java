@@ -10,22 +10,23 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.example.ruslan.towncare.Fragments.CaseDetails;
-import com.example.ruslan.towncare.Fragments.CaseList;
+import com.example.ruslan.towncare.Fragments.CaseCreateFragment;
+import com.example.ruslan.towncare.Fragments.CaseDetailsFragment;
+import com.example.ruslan.towncare.Fragments.CaseListFragment;
 
-public class MainActivity extends Activity implements CaseList.OnFragmentInteractionListener, CaseDetails.OnFragmentInteractionListener {
+public class MainActivity extends Activity implements CaseListFragment.OnFragmentInteractionListener, CaseDetailsFragment.OnFragmentInteractionListener, CaseCreateFragment.OnFragmentInteractionListener {
 
-    CaseList caseList;
+    CaseListFragment caseListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        caseList = new CaseList();
+        caseListFragment = new CaseListFragment();
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.mainFregment, caseList);
+        ft.replace(R.id.mainFregment, caseListFragment);
         ft.commit();
     }
 
@@ -33,7 +34,7 @@ public class MainActivity extends Activity implements CaseList.OnFragmentInterac
     public void onItemClickListener(String id) {
         Log.d("TAG", id);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.mainFregment, CaseDetails.newInstance(id));
+        ft.replace(R.id.mainFregment, CaseDetailsFragment.newInstance(id));
         ft.commit();
     }
 
@@ -61,13 +62,13 @@ public class MainActivity extends Activity implements CaseList.OnFragmentInterac
         ActionBar actionBar = getActionBar();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         switch (item.getItemId()) {
-            case R.id.fragmentCreate:
+            case R.id.actionBarCreatePlusButton:
                 if (actionBar != null) {
                     actionBar.setDisplayHomeAsUpEnabled(true);
                 }
-                transaction.replace(R.id.mainFregment, CaseDetails.newInstance(""+0));
+                transaction.replace(R.id.mainFregment, new CaseCreateFragment());
                 break;
-            case R.id.fragmentEdit:
+            case R.id.actionBarDetailsEditButton:
                 if (actionBar != null) {
                     actionBar.setDisplayHomeAsUpEnabled(true);
                 }
@@ -88,7 +89,7 @@ public class MainActivity extends Activity implements CaseList.OnFragmentInterac
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);
         }
-        transaction.replace(R.id.mainFregment, caseList);
+        transaction.replace(R.id.mainFregment, caseListFragment);
         transaction.commit();
     }
 }
