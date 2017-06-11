@@ -14,8 +14,9 @@ import android.view.View;
 import com.example.ruslan.towncare.Fragments.CaseCreateFragment;
 import com.example.ruslan.towncare.Fragments.CaseDetailsFragment;
 import com.example.ruslan.towncare.Fragments.CaseListFragment;
+import com.example.ruslan.towncare.Fragments.CaseUpdateFragment;
 
-public class MainActivity extends Activity implements CaseListFragment.OnFragmentInteractionListener, CaseDetailsFragment.OnFragmentInteractionListener, CaseCreateFragment.OnFragmentInteractionListener {
+public class MainActivity extends Activity implements CaseListFragment.OnFragmentInteractionListener, CaseDetailsFragment.OnFragmentInteractionListener, CaseCreateFragment.OnFragmentInteractionListener,CaseUpdateFragment.OnFragmentInteractionListener {
 
     CaseListFragment caseListFragment;
 
@@ -93,7 +94,7 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
                 if (actionBar != null) {
                     actionBar.setDisplayHomeAsUpEnabled(true);
                 }
-//                transaction.replace(R.id.caseListFreg, StudentEditFragment.newInstance(currentStudentIndex));
+                transaction.replace(R.id.mainFregment, CaseUpdateFragment.newInstance(""+0));
                 break;
             default:
                 backToMainActivity();

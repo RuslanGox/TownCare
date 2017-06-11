@@ -85,6 +85,7 @@ public class CaseCreateFragment extends Fragment {
         }
     }
 
+
     private Case newCase() {
         // what should be the ID ?
 //        String id = ?

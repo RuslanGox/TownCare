@@ -72,7 +72,6 @@
             android:textSize="30sp" />
 
         <Spinner
-            android:spinnerMode="dialog"
             android:id="@+id/createCaseType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,6 +79,7 @@
             android:layout_weight="1"
             android:entries="@array/caseTypes"
             android:prompt="@string/casePrompt"
+            android:spinnerMode="dialog"
             android:textAlignment="center"
             android:textSize="30sp" />
     </LinearLayout>
