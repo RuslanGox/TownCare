@@ -45,6 +45,30 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
         backToMainActivity();
     }
 
+    private void backToMainActivity() {
+        ActionBar actionBar = getActionBar();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(false);
+        }
+        transaction.replace(R.id.mainFregment, caseListFragment);
+        transaction.commit();
+    }
+
+    @Override // onClick MASTER METHOD
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.createCaseSaveButton:
+                // do something here when save button is pressed (like reload list)
+            case R.id.createCaseCancelButton:
+                // do something here when cancel button (like error message)
+            default:
+                backToMainActivity();
+        }
+
+    }
+
+    // ACTION BAR METHOD
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.case_action_bar_create, menu);
@@ -54,8 +78,8 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
         return true;
     }
 
+    // ACTION BAR LISTENER
     public boolean onOptionsItemSelected(MenuItem item) {
-
         ActionBar actionBar = getActionBar();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         switch (item.getItemId()) {
@@ -78,33 +102,5 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
         }
         transaction.commit();
         return true;
-    }
-
-    private void backToMainActivity() {
-        ActionBar actionBar = getActionBar();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(false);
-        }
-        transaction.replace(R.id.mainFregment, caseListFragment);
-        transaction.commit();
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.createCaseSaveButton:
-                // do something here when save button is pressed (like reload list)
-            case R.id.createCaseCancelButton:
-                // do something here when cancel button (like error message)
-            default:
-                backToMainActivity();
-        }
-
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }

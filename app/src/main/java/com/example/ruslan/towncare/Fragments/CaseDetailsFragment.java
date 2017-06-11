@@ -64,11 +64,6 @@ public class CaseDetailsFragment extends Fragment {
         ((TextView) contentView.findViewById(R.id.detailsCaseOpenerPhone)).setText(aCase.getCaseOpenerPhone());
     }
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -88,8 +83,7 @@ public class CaseDetailsFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onClick (View view);
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

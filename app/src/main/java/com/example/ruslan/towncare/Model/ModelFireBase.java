@@ -1,7 +1,5 @@
 package com.example.ruslan.towncare.Model;
 
-import android.util.Log;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -23,7 +21,7 @@ public class ModelFireBase {
     public void addCase(Case c) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Cases");
-        myRef.child(""+c.getCaseId()).setValue(c);
+        myRef.child("" + c.getCaseId()).setValue(c);
     }
 
     public void removeCase(int id) {

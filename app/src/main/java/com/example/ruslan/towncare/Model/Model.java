@@ -1,10 +1,5 @@
 package com.example.ruslan.towncare.Model;
 
-import android.util.Log;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,7 +14,7 @@ public class Model {
 
     private Model() {
         for (int i = 0; i < 5; i++) {
-            caseList.add(new Case(i,"case " + i, "11/12/17", 500 + i * 3, 200 - i * 5, "Suggestion", "Open", "052476", 1234, "GIDON ISRAEL", "THIS IS THE DEST", "URL"));
+            caseList.add(new Case(i, "case " + i, "11/12/17", 500 + i * 3, 200 - i * 5, "Suggestion", "Open", "052476", 1234, "GIDON ISRAEL", "THIS IS THE DEST", "URL"));
 
         }
         Case c = caseList.get(0);

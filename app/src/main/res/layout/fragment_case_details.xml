@@ -34,18 +34,20 @@
 
             <TextView
                 android:id="@+id/detailsCaseDate"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_weight="2"
                 android:text="11/11/2001"
                 android:textAlignment="center"
                 android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/detailsCaseAddress"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_weight="7"
                 android:text="גדעון האוזנר,1"
                 android:textAlignment="center"
                 android:textSize="30sp" />
@@ -59,7 +61,7 @@
 
         <TextView
             android:id="@+id/detailsCaseStatus"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
@@ -69,7 +71,7 @@
 
         <TextView
             android:id="@+id/detailsCaseType"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
@@ -84,7 +86,8 @@
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_weight="8"
-        android:text="descriptiondescription description description description description descriptiondescriptiondescription "
+        android:gravity="center_vertical"
+        android:text="Enter Your description"
         android:textAlignment="center"
         android:textSize="30sp" />
 
@@ -94,7 +97,7 @@
 
         <TextView
             android:id="@+id/detailsCaseOpenerPhone"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
@@ -104,7 +107,7 @@
 
         <TextView
             android:id="@+id/detailsCaseOpener"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
@@ -113,47 +116,35 @@
             android:textSize="30sp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5" />
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="0.5" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp">
 
-        <LinearLayout
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:background="#0000"
+            android:src="@drawable/unlike" />
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#0000"
-                android:src="@drawable/unlike" />
-        </LinearLayout>
-
-        <LinearLayout
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#0000"
-                android:src="@drawable/like" />
-        </LinearLayout>
+            android:background="#0000"
+            android:src="@drawable/like" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5" />
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="0.5" />-->
 </LinearLayout>
