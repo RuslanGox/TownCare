@@ -19,6 +19,7 @@ import com.example.ruslan.towncare.Fragments.CaseUpdateFragment;
 public class MainActivity extends Activity implements CaseListFragment.OnFragmentInteractionListener, CaseDetailsFragment.OnFragmentInteractionListener, CaseCreateFragment.OnFragmentInteractionListener,CaseUpdateFragment.OnFragmentInteractionListener {
 
     CaseListFragment caseListFragment;
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +35,9 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
 
     @Override
     public void onItemClickListener(String id) {
-        Log.d("TAG", id);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.mainFregment, CaseDetailsFragment.newInstance(id));
+        this.id = id;
         ft.commit();
     }
 
@@ -94,7 +95,7 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
                 if (actionBar != null) {
                     actionBar.setDisplayHomeAsUpEnabled(true);
                 }
-                transaction.replace(R.id.mainFregment, CaseUpdateFragment.newInstance(""+0));
+                transaction.replace(R.id.mainFregment, CaseUpdateFragment.newInstance(""+id));
                 break;
             default:
                 backToMainActivity();
