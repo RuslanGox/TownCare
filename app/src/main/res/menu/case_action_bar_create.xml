@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/actionBarCreateLogOutButton"
+        android:icon="@android:drawable/ic_delete"
+        android:showAsAction="collapseActionView"
+        android:title="Log Out" />
+    <item
         android:id="@+id/actionBarCreatePlusButton"
         android:icon="@android:drawable/ic_input_add"
         android:showAsAction="always"
