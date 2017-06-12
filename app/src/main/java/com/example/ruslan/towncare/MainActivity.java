@@ -3,7 +3,6 @@ package com.example.ruslan.towncare;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,12 +10,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.ruslan.towncare.Fragments.CaseCreateFragment;
+import com.example.ruslan.towncare.Fragments.CaseCreateEditFragment;
 import com.example.ruslan.towncare.Fragments.CaseDetailsFragment;
 import com.example.ruslan.towncare.Fragments.CaseListFragment;
-import com.example.ruslan.towncare.Fragments.CaseUpdateFragment;
 
-public class MainActivity extends Activity implements CaseListFragment.OnFragmentInteractionListener, CaseDetailsFragment.OnFragmentInteractionListener, CaseCreateFragment.OnFragmentInteractionListener,CaseUpdateFragment.OnFragmentInteractionListener {
+public class MainActivity extends Activity implements CaseListFragment.OnFragmentInteractionListener, CaseDetailsFragment.OnFragmentInteractionListener, CaseCreateEditFragment.OnFragmentInteractionListener {
 
     CaseListFragment caseListFragment;
     String id;
@@ -89,13 +87,14 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
                 if (actionBar != null) {
                     actionBar.setDisplayHomeAsUpEnabled(true);
                 }
-                transaction.replace(R.id.mainFregment, new CaseCreateFragment());
+                transaction.replace(R.id.mainFregment, CaseCreateEditFragment.newInstance(""));
                 break;
             case R.id.actionBarDetailsEditButton:
                 if (actionBar != null) {
                     actionBar.setDisplayHomeAsUpEnabled(true);
                 }
-                transaction.replace(R.id.mainFregment, CaseUpdateFragment.newInstance(""+id));
+                Log.d("TAG",id);
+                transaction.replace(R.id.mainFregment, CaseCreateEditFragment.newInstance(""+id));
                 break;
             default:
                 backToMainActivity();

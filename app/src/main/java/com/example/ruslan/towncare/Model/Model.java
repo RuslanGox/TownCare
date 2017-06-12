@@ -36,4 +36,9 @@ public class Model {
     public Case getCase(int id) {
         return caseList.get(id);
     }
+
+    public void updateCase (Case c){
+        caseList.remove(c.getCaseId()-1);
+        caseList.add(c);
+    }
 }
