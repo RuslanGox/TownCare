@@ -62,7 +62,7 @@ public class CaseDetailsFragment extends Fragment {
         ((TextView) contentView.findViewById(R.id.detailsCaseDate)).setText(aCase.getCaseDate());
         ((TextView) contentView.findViewById(R.id.detailsCaseAddress)).setText(aCase.getCaseAddress());
         ((TextView) contentView.findViewById(R.id.detailsCaseStatus)).setText(aCase.getCaseStatus());
-        ((TextView) contentView.findViewById(R.id.detailsCaseType)).setText(aCase.getCaseType());
+        ((TextView) contentView.findViewById(R.id.detailsCaseType)).setText((getResources().getStringArray(R.array.caseTypes))[Integer.parseInt(aCase.getCaseType())]);
         ((TextView) contentView.findViewById(R.id.detailsCaseDesc)).setText(aCase.getCaseDesc());
         ((TextView) contentView.findViewById(R.id.detailsCaseOpener)).setText("" + aCase.getCaseOpener());
         ((TextView) contentView.findViewById(R.id.detailsCaseOpenerPhone)).setText(aCase.getCaseOpenerPhone());

@@ -126,7 +126,7 @@ public class CaseCreateEditFragment extends Fragment {
         String caseDate = ((EditText) contentView.findViewById(R.id.createCaseDate)).getText().toString();
         int caseLikeCount = 1;
         int caseUnLikeCount = 0;
-        String caseType = "its a spinner";
+        String caseType = Long.toString(((Spinner)contentView.findViewById(R.id.createCaseType)).getSelectedItemId());
         String caseStatus = "Open"; //alwasys
         String caseOpenerPhone = "phone from data base";
         String caseOpener = "id from data base";
@@ -143,7 +143,7 @@ public class CaseCreateEditFragment extends Fragment {
         ((EditText) contentView.findViewById(R.id.createCaseDate)).setText(aCase.getCaseDate());
         ((EditText) contentView.findViewById(R.id.createCaseAddress)).setText(aCase.getCaseAddress());
         ((TextView) contentView.findViewById(R.id.createCaseStatus)).setText(aCase.getCaseStatus());
-        ((Spinner) contentView.findViewById(R.id.createCaseType)).setSelection(1);
+        ((Spinner) contentView.findViewById(R.id.createCaseType)).setSelection(Integer.parseInt(aCase.getCaseType()));
         ((EditText) contentView.findViewById(R.id.createCaseDesc)).setText(aCase.getCaseDesc());
         ((EditText) contentView.findViewById(R.id.createCaseOpener)).setText("" + aCase.getCaseOpener());
         ((EditText) contentView.findViewById(R.id.createCaseOpenerPhone)).setText(aCase.getCaseOpenerPhone());

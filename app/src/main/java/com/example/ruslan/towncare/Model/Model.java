@@ -14,7 +14,7 @@ public class Model {
 
     private Model() {
         for (int i = 0; i < 5; i++) {
-            caseList.add(new Case(i, "case " + i, "11/12/17", 500 + i * 3, 200 - i * 5, "Suggestion", "Open", "052476", 1234, "GIDON ISRAEL", "THIS IS THE DEST", "URL"));
+            caseList.add(new Case(i, "case " + i, "11/12/17", 500 + i * 3, 200 - i * 5, "1", "Open", "052476", 1234, "GIDON ISRAEL", "THIS IS THE DEST", "URL"));
 
         }
         Case c = caseList.get(0);
