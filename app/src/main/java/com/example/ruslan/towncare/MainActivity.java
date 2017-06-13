@@ -10,11 +10,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.ruslan.towncare.Fragments.CaseCreateEditFragment;
+import com.example.ruslan.towncare.Fragments.CaseUpsertFragment;
 import com.example.ruslan.towncare.Fragments.CaseDetailsFragment;
 import com.example.ruslan.towncare.Fragments.CaseListFragment;
 
-public class MainActivity extends Activity implements CaseListFragment.OnFragmentInteractionListener, CaseDetailsFragment.OnFragmentInteractionListener, CaseCreateEditFragment.OnFragmentInteractionListener {
+public class MainActivity extends Activity implements CaseListFragment.OnFragmentInteractionListener, CaseDetailsFragment.OnFragmentInteractionListener, CaseUpsertFragment.OnFragmentInteractionListener {
 
     CaseListFragment caseListFragment;
     String id;
@@ -58,9 +58,9 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
     @Override // onClick MASTER METHOD
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.createCaseSaveButton:
+            case R.id.upsertCaseSaveButton:
                 // do something here when save button is pressed (like reload list)
-            case R.id.createCaseCancelButton:
+            case R.id.upsertCaseCancelButton:
                 // do something here when cancel button (like error message)
             default:
                 backToMainActivity();
@@ -83,18 +83,18 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
         ActionBar actionBar = getActionBar();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         switch (item.getItemId()) {
-            case R.id.actionBarCreatePlusButton:
+            case R.id.actionBarPlusButton:
                 if (actionBar != null) {
                     actionBar.setDisplayHomeAsUpEnabled(true);
                 }
-                transaction.replace(R.id.mainFregment, CaseCreateEditFragment.newInstance(""));
+                transaction.replace(R.id.mainFregment, CaseUpsertFragment.newInstance(""));
                 break;
-            case R.id.actionBarDetailsEditButton:
+            case R.id.actionBarEditButton:
                 if (actionBar != null) {
                     actionBar.setDisplayHomeAsUpEnabled(true);
                 }
                 Log.d("TAG",id);
-                transaction.replace(R.id.mainFregment, CaseCreateEditFragment.newInstance(""+id));
+                transaction.replace(R.id.mainFregment, CaseUpsertFragment.newInstance(""+id));
                 break;
             default:
                 backToMainActivity();

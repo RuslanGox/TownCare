@@ -2,14 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/actionBarCreateLogOutButton"
+        android:id="@+id/actionBarLogOutButton"
         android:icon="@android:drawable/ic_delete"
         android:showAsAction="collapseActionView"
         android:title="Log Out" />
     <item
-        android:id="@+id/actionBarCreatePlusButton"
+        android:id="@+id/actionBarPlusButton"
         android:icon="@android:drawable/ic_input_add"
         android:showAsAction="always"
         android:title="Create CareCard" />
+    <item
+        android:id="@+id/actionBarEditButton"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:showAsAction="always"
+        android:visible="false"
+        android:title="Edit CareCard" />
 
 </menu>
