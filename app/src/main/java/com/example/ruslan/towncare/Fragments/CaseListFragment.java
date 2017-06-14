@@ -3,6 +3,7 @@ package com.example.ruslan.towncare.Fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ public class CaseListFragment extends Fragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mListener.onItemClickListener("" + position);
+                mListener.onItemClickListener("" + id);
             }
         });
         return contentView;
@@ -83,7 +84,9 @@ public class CaseListFragment extends Fragment {
 
         @Override
         public long getItemId(int position) {
-            return position;
+            Log.d("Tag", "clicked on item " + position);
+            Log.d("Tag", "clicked on id " + caseData.get(position).getCaseId());
+            return Long.parseLong(caseData.get(position).getCaseId());
         }
 
         @Override

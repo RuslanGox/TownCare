@@ -17,5 +17,11 @@
         android:showAsAction="always"
         android:visible="false"
         android:title="Edit CareCard" />
+    <item
+        android:id="@+id/actionBarRemoveButton"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:showAsAction="always"
+        android:visible="false"
+        android:title="Log Out" />
 
 </menu>

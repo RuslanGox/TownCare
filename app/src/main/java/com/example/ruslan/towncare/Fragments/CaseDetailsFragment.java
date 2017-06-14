@@ -19,7 +19,7 @@ public class CaseDetailsFragment extends Fragment {
     public static final String ARG_PARAM1 = "CASE_ID_OF_LINKED_LIST";
     private String id;
 
-    private OnFragmentInteractionListener mListener;
+//    private OnFragmentInteractionListener mListener;
 
     public CaseDetailsFragment() {
     }
@@ -51,10 +51,10 @@ public class CaseDetailsFragment extends Fragment {
     }
 
     private void showCaseData(View contentView) {
-        Case aCase = Model.instance.getCase(Integer.parseInt(id));
+        Case aCase = Model.instance.getCase(id);
         ((TextView) contentView.findViewById(R.id.detailsCaseTitle)).setText(aCase.getCaseTitle());
 //        ((ImageButton)contentView.findViewById(R.id.detailsCasePic)).set(aCase.getCaseImageUrl());
-        ((TextView) contentView.findViewById(R.id.detailsCaseDate)).setText(aCase.getCaseDate());
+        ((TextView) contentView.findViewById(R.id.detailsCaseDate)).setText(aCase.getCaseDate().toString());
         ((TextView) contentView.findViewById(R.id.detailsCaseAddress)).setText(aCase.getCaseAddress());
         ((TextView) contentView.findViewById(R.id.detailsCaseStatus)).setText(aCase.getCaseStatus());
         ((TextView) contentView.findViewById(R.id.detailsCaseType)).setText((getResources().getStringArray(R.array.caseTypes))[Integer.parseInt(aCase.getCaseType())]);
@@ -64,30 +64,31 @@ public class CaseDetailsFragment extends Fragment {
     }
 
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        if (context instanceof OnFragmentInteractionListener) {
+//            mListener = (OnFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
+//    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//        mListener = null;
+//    }
 
-    public interface OnFragmentInteractionListener {
-        void onClick (View view);
-    }
+//    public interface OnFragmentInteractionListener {
+//        void onClick(View view);
+//    }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.findItem(R.id.actionBarPlusButton).setVisible(false);
         menu.findItem(R.id.actionBarEditButton).setVisible(true);
+        menu.findItem(R.id.actionBarRemoveButton).setVisible(false);
 //        inflater.inflate(R.menu.case_action_bar_details, menu);
         if (getActivity().getActionBar() != null) {
             getActivity().getActionBar().setTitle("Case Details");

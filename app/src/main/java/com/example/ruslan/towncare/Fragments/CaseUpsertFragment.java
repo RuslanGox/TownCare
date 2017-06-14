@@ -64,17 +64,19 @@ public class CaseUpsertFragment extends Fragment {
             public void onClick(View v) {
                 if (!caseId.isEmpty()) {
                     Model.instance.updateCase(newCase());
+                    mListener.onClick(v,true);
                 } else {
                     Model.instance.addCase(newCase());
+                    mListener.onClick(v,false);
                 }
-                mListener.onClick(v);
+
             }
         });
         Button cancelButton = (Button) contentView.findViewById(R.id.upsertCaseCancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onClick(v);
+                mListener.onClick(v,false);
             }
         });
         return contentView;
@@ -98,7 +100,7 @@ public class CaseUpsertFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        void onClick(View view);
+        void onClick(View view, boolean dataChanged);
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -106,19 +108,19 @@ public class CaseUpsertFragment extends Fragment {
         if (caseId.isEmpty()) {
             if (getActivity().getActionBar() != null) {
                 getActivity().getActionBar().setTitle(R.string.create_case);
+                menu.findItem(R.id.actionBarRemoveButton).setVisible(false);
             }
         } else {
             if (getActivity().getActionBar() != null) {
                 getActivity().getActionBar().setTitle(R.string.edit_case);
+                menu.findItem(R.id.actionBarRemoveButton).setVisible(true);
             }
         }
-
-
     }
 
     private Case newCase() {
         // what should be the ID ?
-//        String id = ?
+        String id = ((EditText) contentView.findViewById(R.id.upsertCaseOpenerId)).getText().toString() + System.currentTimeMillis();
         String caseTitle = ((EditText) contentView.findViewById(R.id.upsertCaseTitle)).getText().toString();
         String caseDate = ((EditText) contentView.findViewById(R.id.upsertCaseDate)).getText().toString();
         int caseLikeCount = 1;
@@ -130,19 +132,19 @@ public class CaseUpsertFragment extends Fragment {
         String caseAddress = ((EditText) contentView.findViewById(R.id.upsertCaseAddress)).getText().toString();
         String caseDesc = ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).getText().toString();
 
-        return new Case(6, caseTitle, caseDate, caseLikeCount, caseUnLikeCount, caseType, caseStatus, caseOpenerPhone, 312721970, caseAddress, caseDesc, "img url");
+        return new Case(id, caseTitle, caseDate, caseLikeCount, caseUnLikeCount, caseType, caseStatus, caseOpenerPhone, 312721970, caseAddress, caseDesc, "img url");
     }
 
     private void showCaseData(View contentView) {
-        Case aCase = Model.instance.getCase(Integer.parseInt(caseId));
+        Case aCase = Model.instance.getCase(caseId);
         ((EditText) contentView.findViewById(R.id.upsertCaseTitle)).setText(aCase.getCaseTitle());
 //        ((ImageButton)contentView.findViewById(R.id.createCasePic)).set(aCase.getCaseImageUrl());
-        ((EditText) contentView.findViewById(R.id.upsertCaseDate)).setText(aCase.getCaseDate());
+        ((EditText) contentView.findViewById(R.id.upsertCaseDate)).setText(aCase.getCaseDate().toString());
         ((EditText) contentView.findViewById(R.id.upsertCaseAddress)).setText(aCase.getCaseAddress());
         ((TextView) contentView.findViewById(R.id.upsertCaseStatus)).setText(aCase.getCaseStatus());
         ((Spinner) contentView.findViewById(R.id.upsertCaseType)).setSelection(Integer.parseInt(aCase.getCaseType()));
         ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).setText(aCase.getCaseDesc());
-        ((EditText) contentView.findViewById(R.id.upsertCaseOpener)).setText("" + aCase.getCaseOpener());
+        ((EditText) contentView.findViewById(R.id.upsertCaseOpenerId)).setText("" + aCase.getCaseOpener());
         ((EditText) contentView.findViewById(R.id.upsertCaseOpenerPhone)).setText(aCase.getCaseOpenerPhone());
     }
 }

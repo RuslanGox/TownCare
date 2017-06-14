@@ -10,11 +10,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.ruslan.towncare.Fragments.CaseUpsertFragment;
 import com.example.ruslan.towncare.Fragments.CaseDetailsFragment;
 import com.example.ruslan.towncare.Fragments.CaseListFragment;
+import com.example.ruslan.towncare.Fragments.CaseUpsertFragment;
+import com.example.ruslan.towncare.Model.AlertDialogButtons;
+import com.example.ruslan.towncare.Model.Model;
+import com.example.ruslan.towncare.PickersAndDialogs.AlertCaseDialog;
 
-public class MainActivity extends Activity implements CaseListFragment.OnFragmentInteractionListener, CaseDetailsFragment.OnFragmentInteractionListener, CaseUpsertFragment.OnFragmentInteractionListener {
+import static com.example.ruslan.towncare.Model.AlertDialogButtons.OK_BUTTON;
+import static com.example.ruslan.towncare.Model.AlertDialogButtons.OK_CANCEL_BUTTONS;
+
+public class MainActivity extends Activity implements CaseListFragment.OnFragmentInteractionListener, CaseUpsertFragment.OnFragmentInteractionListener, AlertCaseDialog.AlertCaseDialogListener {
 
     CaseListFragment caseListFragment;
     String id;
@@ -27,14 +33,14 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
         caseListFragment = new CaseListFragment();
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.mainFregment, caseListFragment);
+        ft.replace(R.id.mainFregment, caseListFragment, "ListFragment");
         ft.commit();
     }
 
     @Override
     public void onItemClickListener(String id) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.mainFregment, CaseDetailsFragment.newInstance(id));
+        ft.replace(R.id.mainFregment, CaseDetailsFragment.newInstance(id), "DetailsFragment");
         this.id = id;
         ft.commit();
     }
@@ -51,15 +57,22 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);
         }
-        transaction.replace(R.id.mainFregment, caseListFragment);
+        transaction.replace(R.id.mainFregment, caseListFragment, "ListFragment");
         transaction.commit();
     }
 
     @Override // onClick MASTER METHOD
-    public void onClick(View view) {
+    public void onClick(View view, boolean dataChanged) {
         switch (view.getId()) {
             case R.id.upsertCaseSaveButton:
+                if(dataChanged){
+                    AlertCaseDialog.newInstance("Edit GOOD", OK_BUTTON).show(getFragmentManager(), "SAVE");
+                }
+                else{
+                    AlertCaseDialog.newInstance("Create GOOD", OK_BUTTON).show(getFragmentManager(), "SAVE");
+                }
                 // do something here when save button is pressed (like reload list)
+
             case R.id.upsertCaseCancelButton:
                 // do something here when cancel button (like error message)
             default:
@@ -82,19 +95,19 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
     public boolean onOptionsItemSelected(MenuItem item) {
         ActionBar actionBar = getActionBar();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         switch (item.getItemId()) {
             case R.id.actionBarPlusButton:
-                if (actionBar != null) {
-                    actionBar.setDisplayHomeAsUpEnabled(true);
-                }
-                transaction.replace(R.id.mainFregment, CaseUpsertFragment.newInstance(""));
+                transaction.replace(R.id.mainFregment, CaseUpsertFragment.newInstance(""), "CreateFragemnt");
                 break;
             case R.id.actionBarEditButton:
-                if (actionBar != null) {
-                    actionBar.setDisplayHomeAsUpEnabled(true);
-                }
-                Log.d("TAG",id);
-                transaction.replace(R.id.mainFregment, CaseUpsertFragment.newInstance(""+id));
+                Log.d("TAG", id);
+                transaction.replace(R.id.mainFregment, CaseUpsertFragment.newInstance("" + id), "EditFragment");
+                break;
+            case R.id.actionBarRemoveButton:
+                AlertCaseDialog.newInstance("Are you sure you want to delete " + id, OK_CANCEL_BUTTONS).show(getFragmentManager(), "AlertDialog");
                 break;
             default:
                 backToMainActivity();
@@ -104,4 +117,19 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
         transaction.commit();
         return true;
     }
+
+    @Override
+    public void onClick(AlertDialogButtons which, boolean dataChanged) {
+        switch (which) {
+            case OK_BUTTON:
+                if(dataChanged) {
+                    Model.instance.removeCase(id);
+                }
+                backToMainActivity();
+                break;
+        }
+
+        Log.d("TAG", "ALERT WORKS " + which);
+    }
+
 }

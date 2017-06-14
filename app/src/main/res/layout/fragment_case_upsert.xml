@@ -32,7 +32,7 @@
             android:layout_weight="9"
             android:orientation="vertical">
 
-            <EditText
+            <com.example.ruslan.towncare.PickersAndDialogs.CaseDatePicker
                 android:id="@+id/upsertCaseDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
             android:textSize="30sp" />
 
         <EditText
-            android:id="@+id/upsertCaseOpener"
+            android:id="@+id/upsertCaseOpenerId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

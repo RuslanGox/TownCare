@@ -5,7 +5,7 @@ package com.example.ruslan.towncare.Model;
  */
 
 public class Case {
-    private int caseId;
+    private String caseId;
     private String caseTitle;
     private String caseDate;
     private int caseLikeCount;
@@ -19,7 +19,22 @@ public class Case {
 
     private String caseImageUrl;
 
-    public Case(int caseId, String caseTitle, String caseDate, int caseLikeCount, int caseUnLikeCount, String caseType, String caseStatus, String caseOpenerPhone, int caseOpener, String caseAddress, String caseDesc, String caseImageUrl) {
+//    public Case(int caseId, String caseTitle, String caseDate, int caseLikeCount, int caseUnLikeCount, String caseType, String caseStatus, String caseOpenerPhone, int caseOpener, String caseAddress, String caseDesc, String caseImageUrl) {
+//        this.caseId = caseId;
+//        this.caseTitle = caseTitle;
+//        this.caseDate = caseDate;
+//        this.caseLikeCount = caseLikeCount;
+//        this.caseUnLikeCount = caseUnLikeCount;
+//        this.caseType = caseType;
+//        this.caseStatus = caseStatus;
+//        this.caseOpenerPhone = caseOpenerPhone;
+//        this.caseOpener = caseOpener;
+//        this.caseAddress = caseAddress;
+//        this.caseDesc = caseDesc;
+//        this.caseImageUrl = caseImageUrl;
+//    }
+
+    public Case(String caseId, String caseTitle, String caseDate, int caseLikeCount, int caseUnLikeCount, String caseType, String caseStatus, String caseOpenerPhone, int caseOpener, String caseAddress, String caseDesc, String caseImageUrl) {
         this.caseId = caseId;
         this.caseTitle = caseTitle;
         this.caseDate = caseDate;
@@ -34,21 +49,12 @@ public class Case {
         this.caseImageUrl = caseImageUrl;
     }
 
-    public Case(String caseTitle, String caseDate, int caseLikeCount, int caseUnLikeCount, String caseType, String caseStatus, String caseImageUrl) {
-        this.caseTitle = caseTitle;
-        this.caseDate = caseDate;
-        this.caseLikeCount = caseLikeCount;
-        this.caseUnLikeCount = caseUnLikeCount;
-        this.caseType = caseType;
-        this.caseStatus = caseStatus;
-        this.caseImageUrl = caseImageUrl;
-    }
 
-    public int getCaseId() {
+    public String getCaseId() {
         return caseId;
     }
 
-    public void setCaseId(int caseId) {
+    public void setCaseId(String caseId) {
         this.caseId = caseId;
     }
 
