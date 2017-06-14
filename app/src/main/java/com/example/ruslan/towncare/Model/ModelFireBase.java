@@ -20,20 +20,52 @@ public class ModelFireBase {
     private DatabaseReference myRef = database.getReference("Cases");
 
 
-    public List<Case> getData() {
-        return caseList;
+    interface GetAllCasesCallback{
+        void onComplete(List<Case> list);
+        void onCancel();
+    }
+
+    public void getData(final GetAllCasesCallback callback) {
+        ValueEventListener listener = myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Case> list = new LinkedList<Case>();
+                for (DataSnapshot snap : dataSnapshot.getChildren()){
+                    Case aCase = snap.getValue(Case.class);
+                    list.add(aCase);
+                }
+                callback.onComplete(list);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.onCancel();
+            }
+        });
     }
 
     public void addCase(Case c) {
         myRef.child("" + c.getCaseId()).setValue(c);
     }
 
-    public void removeCase(int id) {
-        caseList.remove(id);
+    public void removeCase(String id, final GetCaseCallback callback) {
+        myRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                dataSnapshot.getRef().removeValue();
+                callback.onComplete();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.onCancel();
+            }
+        });
     }
 
     interface GetCaseCallback {
         void onComplete (Case aCase);
+        void onComplete ();
         void onCancel ();
     }
 
@@ -50,5 +82,9 @@ public class ModelFireBase {
                 callback.onCancel();
             }
         });
+    }
+
+    public void updateCase(Case aCase){
+        addCase(aCase);
     }
 }

@@ -19,7 +19,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" />
+            android:label="@string/title_activity_main"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register"></activity>

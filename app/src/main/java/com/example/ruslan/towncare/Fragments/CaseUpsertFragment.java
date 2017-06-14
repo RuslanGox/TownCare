@@ -63,6 +63,11 @@ public class CaseUpsertFragment extends Fragment {
                 }
 
                 @Override
+                public void onComplete() {
+
+                }
+
+                @Override
                 public void onCancel() {
 
                 }
@@ -138,11 +143,11 @@ public class CaseUpsertFragment extends Fragment {
         String caseType = Long.toString(((Spinner) contentView.findViewById(R.id.upsertCaseType)).getSelectedItemId());
         String caseStatus = "Open"; //alwasys
         String caseOpenerPhone = "phone from data base";
-        String caseOpener = "id from data base";
+        String caseOpener = ((EditText) contentView.findViewById(R.id.upsertCaseOpenerId)).getText().toString();
         String caseAddress = ((EditText) contentView.findViewById(R.id.upsertCaseAddress)).getText().toString();
         String caseDesc = ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).getText().toString();
 
-        return new Case(id, caseTitle, caseDate, caseLikeCount, caseUnLikeCount, caseType, caseStatus, caseOpenerPhone, 312721970, caseAddress, caseDesc, "img url");
+        return new Case(id, caseTitle, caseDate, caseLikeCount, caseUnLikeCount, caseType, caseStatus, caseOpenerPhone, caseOpener, caseAddress, caseDesc, "img url");
     }
 
     private void showCaseData(View contentView, Case aCase) {

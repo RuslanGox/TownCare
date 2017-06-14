@@ -34,13 +34,25 @@ public class CaseListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View contentView = inflater.inflate(R.layout.fragment_case_list, container, false);
-        caseData = Model.instance.getData();
         ListView list = (ListView) contentView.findViewById(R.id.caseListFreg);
-        list.setAdapter(new CaseListFragment.CaseListAdapter());
+        final CaseListAdapter adapter = new CaseListAdapter();
+        list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mListener.onItemClickListener("" + id);
+            }
+        });
+        Model.instance.getData(new Model.GetAllCasesCallback() {
+            @Override
+            public void onComplete(List<Case> list) {
+                caseData = list;
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancel() {
+
             }
         });
         return contentView;

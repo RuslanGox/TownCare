@@ -17,35 +17,57 @@ public class Model {
 
     private Model() {
         for (int i = 0; i < 5; i++) {
-            caseList.add(new Case("" + 1234 + System.currentTimeMillis() + i, "case " + i, "11/12/17", 500 + i * 3, 200 - i * 5, "1", "Open", "052476", 1234, "GIDON ISRAEL", "THIS IS THE DEST", "URL"));
-
+            caseList.add(new Case("" + 1234 + System.currentTimeMillis() + i, "case " + i, "11/12/17", 500 + i * 3, 200 - i * 5, "1", "Open", "052476", "1234", "GIDON ISRAEL", "THIS IS THE DEST", "URL"));
+            modelFireBase.addCase(caseList.get(i));
         }
-        Case c = caseList.get(0);
-        modelFireBase.addCase(c);
     }
 
-    public List<Case> getData() {
-        return caseList;
+    public interface GetAllCasesCallback{
+        void onComplete(List<Case> list);
+        void onCancel();
+    }
+
+    public void getData(final GetAllCasesCallback callback) {
+        modelFireBase.getData(new ModelFireBase.GetAllCasesCallback() {
+            @Override
+            public void onComplete(List<Case> list) {
+                callback.onComplete(list);
+            }
+
+            @Override
+            public void onCancel() {
+                callback.onCancel();
+            }
+        });
     }
 
     public void addCase(Case c) {
-        caseList.add(c);
+        modelFireBase.addCase(c);
     }
 
-    public void removeCase(String id) {
-        int location = -1;
-        for (Case case2 : caseList) {
-            location++;
-            if (case2.getCaseId().equals(id)) {
-                break;
+    public void removeCase(String id , final GetCaseCallback callback) {
+        modelFireBase.removeCase(id, new ModelFireBase.GetCaseCallback() {
+            @Override
+            public void onComplete(Case aCase) {
+
             }
-        }
-        caseList.remove(location);
+
+            @Override
+            public void onComplete() {
+                callback.onComplete();
+            }
+
+            @Override
+            public void onCancel() {
+                callback.onCancel();
+            }
+        });
     }
 
 
     public interface GetCaseCallback{
         void onComplete(Case aCase);
+        void onComplete();
         void onCancel ();
     }
 
@@ -57,6 +79,11 @@ public class Model {
             }
 
             @Override
+            public void onComplete() {
+
+            }
+
+            @Override
             public void onCancel() {
                 callback.onCancel();
             }
@@ -64,8 +91,6 @@ public class Model {
     }
 
     public void updateCase(Case c) {
-        Log.d("TAG", "" + (c.getCaseId()));
-        removeCase(c.getCaseId());
-        caseList.add(c);
+        modelFireBase.updateCase(c);
     }
 }

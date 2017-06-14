@@ -13,7 +13,7 @@ public class Case {
     private String caseType;
     private String caseStatus;
     private String caseOpenerPhone;
-    private int caseOpener;
+    private String caseOpener;
     private String caseAddress;
     private String caseDesc;
 
@@ -21,7 +21,7 @@ public class Case {
 
     public Case() {}
 
-    public Case(String caseId, String caseTitle, String caseDate, int caseLikeCount, int caseUnLikeCount, String caseType, String caseStatus, String caseOpenerPhone, int caseOpener, String caseAddress, String caseDesc, String caseImageUrl) {
+    public Case(String caseId, String caseTitle, String caseDate, int caseLikeCount, int caseUnLikeCount, String caseType, String caseStatus, String caseOpenerPhone, String caseOpener, String caseAddress, String caseDesc, String caseImageUrl) {
         this.caseId = caseId;
         this.caseTitle = caseTitle;
         this.caseDate = caseDate;
@@ -109,11 +109,11 @@ public class Case {
         this.caseImageUrl = caseImageUrl;
     }
 
-    public int getCaseOpener() {
+    public String getCaseOpener() {
         return caseOpener;
     }
 
-    public void setCaseOpener(int caseOpener) {
+    public void setCaseOpener(String caseOpener) {
         this.caseOpener = caseOpener;
     }
 

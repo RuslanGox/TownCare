@@ -14,6 +14,7 @@ import com.example.ruslan.towncare.Fragments.CaseDetailsFragment;
 import com.example.ruslan.towncare.Fragments.CaseListFragment;
 import com.example.ruslan.towncare.Fragments.CaseUpsertFragment;
 import com.example.ruslan.towncare.Model.AlertDialogButtons;
+import com.example.ruslan.towncare.Model.Case;
 import com.example.ruslan.towncare.Model.Model;
 import com.example.ruslan.towncare.PickersAndDialogs.AlertCaseDialog;
 
@@ -123,7 +124,22 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
         switch (which) {
             case OK_BUTTON:
                 if(dataChanged) {
-                    Model.instance.removeCase(id);
+                    Model.instance.removeCase(id, new Model.GetCaseCallback() {
+                        @Override
+                        public void onComplete(Case aCase) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            AlertCaseDialog.newInstance("DELETE OK",OK_BUTTON);
+                        }
+
+                        @Override
+                        public void onCancel() {
+
+                        }
+                    });
                 }
                 backToMainActivity();
                 break;

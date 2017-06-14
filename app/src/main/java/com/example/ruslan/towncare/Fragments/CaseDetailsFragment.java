@@ -53,6 +53,11 @@ public class CaseDetailsFragment extends Fragment {
             }
 
             @Override
+            public void onComplete() {
+
+            }
+
+            @Override
             public void onCancel() {
 
             }
