@@ -45,13 +45,23 @@ public class CaseDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-        View contentView = inflater.inflate(R.layout.fragment_case_details, container, false);
-        showCaseData(contentView);
+        final View contentView = inflater.inflate(R.layout.fragment_case_details, container, false);
+        Model.instance.getCase(id, new Model.GetCaseCallback() {
+            @Override
+            public void onComplete(Case aCase) {
+                showCaseData(contentView,aCase);
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
+
         return contentView;
     }
 
-    private void showCaseData(View contentView) {
-        Case aCase = Model.instance.getCase(id);
+    private void showCaseData(View contentView,Case aCase) {
         ((TextView) contentView.findViewById(R.id.detailsCaseTitle)).setText(aCase.getCaseTitle());
 //        ((ImageButton)contentView.findViewById(R.id.detailsCasePic)).set(aCase.getCaseImageUrl());
         ((TextView) contentView.findViewById(R.id.detailsCaseDate)).setText(aCase.getCaseDate().toString());

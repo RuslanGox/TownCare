@@ -1,7 +1,10 @@
 package com.example.ruslan.towncare.Model;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -13,14 +16,15 @@ import java.util.List;
 public class ModelFireBase {
 
     private List<Case> caseList = new LinkedList<>();
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference myRef = database.getReference("Cases");
+
 
     public List<Case> getData() {
         return caseList;
     }
 
     public void addCase(Case c) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Cases");
         myRef.child("" + c.getCaseId()).setValue(c);
     }
 
@@ -28,7 +32,23 @@ public class ModelFireBase {
         caseList.remove(id);
     }
 
-    public Case getCase(int id) {
-        return caseList.get(id);
+    interface GetCaseCallback {
+        void onComplete (Case aCase);
+        void onCancel ();
+    }
+
+    public void getCase(String id , final GetCaseCallback callback) {
+        myRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Case aCase = dataSnapshot.getValue(Case.class);
+                callback.onComplete(aCase);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.onCancel();
+            }
+        });
     }
 }

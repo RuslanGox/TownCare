@@ -43,19 +43,24 @@ public class Model {
         caseList.remove(location);
     }
 
-    public Case getCase(String id) {
-        Log.d("TAG", "looking for id " + id);
-        Log.d("TAG", "case size " + caseList.size());
-        for (Case case2 : caseList) {
-            Log.d("TAG", "id:" + case2.getCaseId());
-            Log.d("TAG", "" + case2.getCaseId().length());
-            Log.d("TAG", "" + id.length());
-            if (Objects.equals(case2.getCaseId(), id)) {
-                Log.d("TAG", "found it");
-                return case2;
+
+    public interface GetCaseCallback{
+        void onComplete(Case aCase);
+        void onCancel ();
+    }
+
+    public void getCase(String id , final GetCaseCallback callback) {
+        modelFireBase.getCase(id, new ModelFireBase.GetCaseCallback() {
+            @Override
+            public void onComplete(Case aCase) {
+                callback.onComplete(aCase);
             }
-        }
-        return null;
+
+            @Override
+            public void onCancel() {
+                callback.onCancel();
+            }
+        });
     }
 
     public void updateCase(Case c) {

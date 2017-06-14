@@ -56,7 +56,17 @@ public class CaseUpsertFragment extends Fragment {
         contentView = inflater.inflate(R.layout.fragment_case_upsert, container, false);
         if (!caseId.isEmpty()) {
             Log.d("TAG", caseId);
-            showCaseData(contentView);
+            Model.instance.getCase(caseId, new Model.GetCaseCallback() {
+                @Override
+                public void onComplete(Case aCase) {
+                    showCaseData(contentView,aCase);
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
         }
         Button saveButton = (Button) contentView.findViewById(R.id.upsertCaseSaveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -135,8 +145,7 @@ public class CaseUpsertFragment extends Fragment {
         return new Case(id, caseTitle, caseDate, caseLikeCount, caseUnLikeCount, caseType, caseStatus, caseOpenerPhone, 312721970, caseAddress, caseDesc, "img url");
     }
 
-    private void showCaseData(View contentView) {
-        Case aCase = Model.instance.getCase(caseId);
+    private void showCaseData(View contentView, Case aCase) {
         ((EditText) contentView.findViewById(R.id.upsertCaseTitle)).setText(aCase.getCaseTitle());
 //        ((ImageButton)contentView.findViewById(R.id.createCasePic)).set(aCase.getCaseImageUrl());
         ((EditText) contentView.findViewById(R.id.upsertCaseDate)).setText(aCase.getCaseDate().toString());
