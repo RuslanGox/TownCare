@@ -19,23 +19,7 @@ public class Case {
 
     private String caseImageUrl;
 
-    public Case() {
-
-    }
-//    public Case(int caseId, String caseTitle, String caseDate, int caseLikeCount, int caseUnLikeCount, String caseType, String caseStatus, String caseOpenerPhone, int caseOpener, String caseAddress, String caseDesc, String caseImageUrl) {
-//        this.caseId = caseId;
-//        this.caseTitle = caseTitle;
-//        this.caseDate = caseDate;
-//        this.caseLikeCount = caseLikeCount;
-//        this.caseUnLikeCount = caseUnLikeCount;
-//        this.caseType = caseType;
-//        this.caseStatus = caseStatus;
-//        this.caseOpenerPhone = caseOpenerPhone;
-//        this.caseOpener = caseOpener;
-//        this.caseAddress = caseAddress;
-//        this.caseDesc = caseDesc;
-//        this.caseImageUrl = caseImageUrl;
-//    }
+    public Case() {}
 
     public Case(String caseId, String caseTitle, String caseDate, int caseLikeCount, int caseUnLikeCount, String caseType, String caseStatus, String caseOpenerPhone, int caseOpener, String caseAddress, String caseDesc, String caseImageUrl) {
         this.caseId = caseId;
