@@ -129,7 +129,6 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
                     Model.instance.removeCase(id, new Model.GetCaseCallback() {
                         @Override
                         public void onComplete(Case aCase) {
-                            Model.instance.removeCaseSql(id);
                         }
 
                         @Override

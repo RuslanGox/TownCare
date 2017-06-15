@@ -40,7 +40,6 @@ public class CaseSql {
                 CASE_ADDRESS + " TEXT, " +
                 CASE_DESCRIPTION + " TEXT, " +
                 CASE_IMAGE_URL + " TEXT);");
-//db.execSQL("create table CASEs (stid TEXT PRIMARY KEY, name TEXT, phone NUMBER, address TEXT, checked NUMBER, imageUrl TEXT, birthDate DATE, birthTime DATE");
     }
 
     public static void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -48,9 +47,6 @@ public class CaseSql {
         onCreate(db);
     }
 
-    public static void addCase() {
-
-    }
 
     public static List<Case> getData(SQLiteDatabase db) {
         Cursor c = db.query(CASE_TABLE, null, null, null, null, null, null);
@@ -65,7 +61,7 @@ public class CaseSql {
             int caseStatusIndex = c.getColumnIndex(CASE_STATUS);
             int caseOpenerPhoneIndex = c.getColumnIndex(CASE_OPENER_PHONE);
             int caseOpenerIdIndex = c.getColumnIndex(CASE_OPENER_ID);
-            int caseAddressindex = c.getColumnIndex(CASE_ADDRESS);
+            int caseAddressIndex = c.getColumnIndex(CASE_ADDRESS);
             int caseDescriptionIndex = c.getColumnIndex(CASE_DESCRIPTION);
             int caseImageUrlIndex = c.getColumnIndex(CASE_IMAGE_URL);
             do {
@@ -78,7 +74,7 @@ public class CaseSql {
                         c.getString(caseStatusIndex),
                         c.getString(caseOpenerPhoneIndex),
                         c.getString(caseOpenerIdIndex),
-                        c.getString(caseAddressindex),
+                        c.getString(caseAddressIndex),
                         c.getString(caseDescriptionIndex),
                         c.getString(caseImageUrlIndex)
                 ));
@@ -120,7 +116,7 @@ public class CaseSql {
         if (cursor.moveToFirst()) {
             ContentValues values = new ContentValues();
             // todo: check if we realy need to send Id
-            values.put(CASE_ID, aCase.getCaseId());
+//            values.put(CASE_ID, aCase.getCaseId());
             values.put(CASE_TITLE, aCase.getCaseTitle());
             values.put(CASE_DATE, aCase.getCaseDate());
             values.put(CASE_LIKE_COUNT, aCase.getCaseLikeCount());

@@ -56,7 +56,7 @@ public class CaseUpsertFragment extends Fragment {
         contentView = inflater.inflate(R.layout.fragment_case_upsert, container, false);
         if (!caseId.isEmpty()) {
             Log.d("TAG", caseId);
-            showCaseData(contentView,Model.instance.getCase(caseId));
+            showCaseData(contentView, Model.instance.getCase(caseId));
         }
         Button saveButton = (Button) contentView.findViewById(R.id.upsertCaseSaveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -64,10 +64,10 @@ public class CaseUpsertFragment extends Fragment {
             public void onClick(View v) {
                 if (!caseId.isEmpty()) {
                     Model.instance.updateCase(updateCase());
-                    mListener.onClick(v,true);
+                    mListener.onClick(v, true);
                 } else {
                     Model.instance.addCase(newCase());
-                    mListener.onClick(v,false);
+                    mListener.onClick(v, false);
                 }
 
             }
@@ -76,7 +76,7 @@ public class CaseUpsertFragment extends Fragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onClick(v,false);
+                mListener.onClick(v, false);
             }
         });
         return contentView;
@@ -119,7 +119,7 @@ public class CaseUpsertFragment extends Fragment {
     }
 
 
-    private Case updateCase(){
+    private Case updateCase() {
         String id = this.caseId;
         String caseTitle = ((EditText) contentView.findViewById(R.id.upsertCaseTitle)).getText().toString();
         String caseDate = ((EditText) contentView.findViewById(R.id.upsertCaseDate)).getText().toString();

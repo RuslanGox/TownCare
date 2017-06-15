@@ -1,7 +1,6 @@
 package com.example.ruslan.towncare.Fragments;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,8 +17,6 @@ import com.example.ruslan.towncare.R;
 public class CaseDetailsFragment extends Fragment {
     public static final String ARG_PARAM1 = "CASE_ID_OF_LINKED_LIST";
     private String id;
-
-//    private OnFragmentInteractionListener mListener;
 
     public CaseDetailsFragment() {
     }
@@ -46,12 +43,12 @@ public class CaseDetailsFragment extends Fragment {
         setHasOptionsMenu(true);
 
         final View contentView = inflater.inflate(R.layout.fragment_case_details, container, false);
-        showCaseData(contentView,Model.instance.getCase(id));
+        showCaseData(contentView, Model.instance.getCase(id));
 
         return contentView;
     }
 
-    private void showCaseData(View contentView,Case aCase) {
+    private void showCaseData(View contentView, Case aCase) {
         ((TextView) contentView.findViewById(R.id.detailsCaseTitle)).setText(aCase.getCaseTitle());
 //        ((ImageButton)contentView.findViewById(R.id.detailsCasePic)).set(aCase.getCaseImageUrl());
         ((TextView) contentView.findViewById(R.id.detailsCaseDate)).setText(aCase.getCaseDate().toString());
@@ -64,32 +61,10 @@ public class CaseDetailsFragment extends Fragment {
     }
 
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
-
-//    public interface OnFragmentInteractionListener {
-//        void onClick(View view);
-//    }
-
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.findItem(R.id.actionBarPlusButton).setVisible(false);
         menu.findItem(R.id.actionBarEditButton).setVisible(true);
         menu.findItem(R.id.actionBarRemoveButton).setVisible(false);
-//        inflater.inflate(R.menu.case_action_bar_details, menu);
         if (getActivity().getActionBar() != null) {
             getActivity().getActionBar().setTitle("Case Details");
         }
