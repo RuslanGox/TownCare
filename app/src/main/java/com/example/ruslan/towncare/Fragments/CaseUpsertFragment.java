@@ -56,29 +56,14 @@ public class CaseUpsertFragment extends Fragment {
         contentView = inflater.inflate(R.layout.fragment_case_upsert, container, false);
         if (!caseId.isEmpty()) {
             Log.d("TAG", caseId);
-            Model.instance.getCase(caseId, new Model.GetCaseCallback() {
-                @Override
-                public void onComplete(Case aCase) {
-                    showCaseData(contentView,aCase);
-                }
-
-                @Override
-                public void onComplete() {
-
-                }
-
-                @Override
-                public void onCancel() {
-
-                }
-            });
+            showCaseData(contentView,Model.instance.getCase(caseId));
         }
         Button saveButton = (Button) contentView.findViewById(R.id.upsertCaseSaveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!caseId.isEmpty()) {
-                    Model.instance.updateCase(newCase());
+                    Model.instance.updateCase(updateCase());
                     mListener.onClick(v,true);
                 } else {
                     Model.instance.addCase(newCase());
@@ -133,8 +118,24 @@ public class CaseUpsertFragment extends Fragment {
         }
     }
 
+
+    private Case updateCase(){
+        String id = this.caseId;
+        String caseTitle = ((EditText) contentView.findViewById(R.id.upsertCaseTitle)).getText().toString();
+        String caseDate = ((EditText) contentView.findViewById(R.id.upsertCaseDate)).getText().toString();
+        int caseLikeCount = 1;
+        int caseUnLikeCount = 0;
+        String caseType = Long.toString(((Spinner) contentView.findViewById(R.id.upsertCaseType)).getSelectedItemId());
+        String caseStatus = "Open"; //alwasys
+        String caseOpenerPhone = "phone from data base";
+        String caseOpener = ((EditText) contentView.findViewById(R.id.upsertCaseOpenerId)).getText().toString();
+        String caseAddress = ((EditText) contentView.findViewById(R.id.upsertCaseAddress)).getText().toString();
+        String caseDesc = ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).getText().toString();
+
+        return new Case(id, caseTitle, caseDate, caseLikeCount, caseUnLikeCount, caseType, caseStatus, caseOpenerPhone, caseOpener, caseAddress, caseDesc, "img url");
+    }
+
     private Case newCase() {
-        // what should be the ID ?
         String id = ((EditText) contentView.findViewById(R.id.upsertCaseOpenerId)).getText().toString() + System.currentTimeMillis();
         String caseTitle = ((EditText) contentView.findViewById(R.id.upsertCaseTitle)).getText().toString();
         String caseDate = ((EditText) contentView.findViewById(R.id.upsertCaseDate)).getText().toString();

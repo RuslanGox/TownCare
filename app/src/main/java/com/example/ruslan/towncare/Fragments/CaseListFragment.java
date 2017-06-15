@@ -43,6 +43,8 @@ public class CaseListFragment extends Fragment {
                 mListener.onItemClickListener("" + id);
             }
         });
+        adapter.notifyDataSetChanged();
+//        caseData = Model.instance.getDataSql();
         Model.instance.getData(new Model.GetAllCasesCallback() {
             @Override
             public void onComplete(List<Case> list) {

@@ -46,22 +46,7 @@ public class CaseDetailsFragment extends Fragment {
         setHasOptionsMenu(true);
 
         final View contentView = inflater.inflate(R.layout.fragment_case_details, container, false);
-        Model.instance.getCase(id, new Model.GetCaseCallback() {
-            @Override
-            public void onComplete(Case aCase) {
-                showCaseData(contentView,aCase);
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-        });
+        showCaseData(contentView,Model.instance.getCase(id));
 
         return contentView;
     }
