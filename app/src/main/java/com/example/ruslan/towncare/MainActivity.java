@@ -13,14 +13,14 @@ import android.view.View;
 import com.example.ruslan.towncare.Fragments.CaseDetailsFragment;
 import com.example.ruslan.towncare.Fragments.CaseListFragment;
 import com.example.ruslan.towncare.Fragments.CaseUpsertFragment;
-import com.example.ruslan.towncare.Model.AlertDialogButtons;
-import com.example.ruslan.towncare.Model.Case;
-import com.example.ruslan.towncare.Model.CaseSql;
-import com.example.ruslan.towncare.Model.Model;
+import com.example.ruslan.towncare.Models.AlertDialogButtons;
+import com.example.ruslan.towncare.Models.Case.Case;
+import com.example.ruslan.towncare.Models.MasterInterface;
+import com.example.ruslan.towncare.Models.Model.Model;
 import com.example.ruslan.towncare.PickersAndDialogs.AlertCaseDialog;
 
-import static com.example.ruslan.towncare.Model.AlertDialogButtons.OK_BUTTON;
-import static com.example.ruslan.towncare.Model.AlertDialogButtons.OK_CANCEL_BUTTONS;
+import static com.example.ruslan.towncare.Models.AlertDialogButtons.OK_BUTTON;
+import static com.example.ruslan.towncare.Models.AlertDialogButtons.OK_CANCEL_BUTTONS;
 
 public class MainActivity extends Activity implements CaseListFragment.OnFragmentInteractionListener, CaseUpsertFragment.OnFragmentInteractionListener, AlertCaseDialog.AlertCaseDialogListener {
 
@@ -67,10 +67,9 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
     public void onClick(View view, boolean dataChanged) {
         switch (view.getId()) {
             case R.id.upsertCaseSaveButton:
-                if(dataChanged){
+                if (dataChanged) {
                     AlertCaseDialog.newInstance("Edit GOOD", OK_BUTTON).show(getFragmentManager(), "SAVE");
-                }
-                else{
+                } else {
                     AlertCaseDialog.newInstance("Create GOOD", OK_BUTTON).show(getFragmentManager(), "SAVE");
                 }
                 // do something here when save button is pressed (like reload list)
@@ -124,16 +123,16 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
     public void onClick(AlertDialogButtons which, boolean dataChanged) {
         switch (which) {
             case OK_BUTTON:
-                if(dataChanged) {
+                if (dataChanged) {
 //                    Model.instance.removeCaseSql(id);
-                    Model.instance.removeCase(id, new Model.GetCaseCallback() {
+                    Model.instance.removeCase(id, new MasterInterface.GetCaseCallback() {
                         @Override
                         public void onComplete(Case aCase) {
                         }
 
                         @Override
                         public void onComplete() {
-                            AlertCaseDialog.newInstance("DELETE OK",OK_BUTTON);
+                            AlertCaseDialog.newInstance("DELETE OK", OK_BUTTON);
                         }
 
                         @Override

@@ -8,10 +8,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.example.ruslan.towncare.Fragments.CaseListFragment;
-import com.example.ruslan.towncare.Model.AlertDialogButtons;
+import com.example.ruslan.towncare.Models.AlertDialogButtons;
 
-import static com.example.ruslan.towncare.Model.AlertDialogButtons.CANCEL_BUTTON;
-import static com.example.ruslan.towncare.Model.AlertDialogButtons.OK_BUTTON;
+import static com.example.ruslan.towncare.Models.AlertDialogButtons.CANCEL_BUTTON;
+import static com.example.ruslan.towncare.Models.AlertDialogButtons.OK_BUTTON;
 
 
 /**
@@ -62,7 +62,7 @@ public class AlertCaseDialog extends DialogFragment {
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mListener.onClick(OK_BUTTON,false);
+                        mListener.onClick(OK_BUTTON, false);
                     }
                 });
                 break;
@@ -70,7 +70,7 @@ public class AlertCaseDialog extends DialogFragment {
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mListener.onClick(CANCEL_BUTTON,false);
+                        mListener.onClick(CANCEL_BUTTON, false);
                     }
                 });
                 break;
@@ -78,13 +78,13 @@ public class AlertCaseDialog extends DialogFragment {
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mListener.onClick(OK_BUTTON,true);
+                        mListener.onClick(OK_BUTTON, true);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mListener.onClick(CANCEL_BUTTON,false);
+                        mListener.onClick(CANCEL_BUTTON, false);
                     }
                 });
                 break;
@@ -100,7 +100,7 @@ public class AlertCaseDialog extends DialogFragment {
             mListener = (AlertCaseDialog.AlertCaseDialogListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement AlertCaseDialogListener");
         }
     }
 

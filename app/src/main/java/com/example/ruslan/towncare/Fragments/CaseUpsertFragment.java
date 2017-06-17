@@ -14,8 +14,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.ruslan.towncare.Model.Case;
-import com.example.ruslan.towncare.Model.Model;
+import com.example.ruslan.towncare.Models.Case.Case;
+import com.example.ruslan.towncare.Models.Model.Model;
 import com.example.ruslan.towncare.R;
 
 

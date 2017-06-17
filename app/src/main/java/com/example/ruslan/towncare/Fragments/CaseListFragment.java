@@ -3,7 +3,6 @@ package com.example.ruslan.towncare.Fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,9 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.ruslan.towncare.Model.Case;
-import com.example.ruslan.towncare.Model.Model;
+import com.example.ruslan.towncare.Models.Case.Case;
+import com.example.ruslan.towncare.Models.MasterInterface;
+import com.example.ruslan.towncare.Models.Model.Model;
 import com.example.ruslan.towncare.R;
 
 import java.util.LinkedList;
@@ -43,7 +43,7 @@ public class CaseListFragment extends Fragment {
                 mListener.onItemClickListener("" + id);
             }
         });
-        Model.instance.getData(new Model.GetAllCasesCallback() {
+        Model.instance.getData(new MasterInterface.GetAllCasesCallback() {
             @Override
             public void onComplete(List<Case> list) {
                 caseData = list;
@@ -96,8 +96,6 @@ public class CaseListFragment extends Fragment {
 
         @Override
         public long getItemId(int position) {
-            Log.d("Tag", "clicked on item " + position);
-            Log.d("Tag", "clicked on id " + caseData.get(position).getCaseId());
             return Long.parseLong(caseData.get(position).getCaseId());
         }
 
