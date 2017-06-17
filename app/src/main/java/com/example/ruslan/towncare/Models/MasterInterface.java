@@ -32,5 +32,10 @@ public interface MasterInterface {
         void onFail();
     }
 
+    interface loadImageFromFileAsyncListener{
+        void onComplete(Bitmap bitmap);
+
+    }
+
 }
 
