@@ -1,8 +1,10 @@
-package com.example.ruslan.towncare.Model;
+package com.example.ruslan.towncare.Models.Model;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.example.ruslan.towncare.Models.Case.CaseSql;
 
 /**
  * Created by omrih on 15-Jun-17.

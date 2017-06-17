@@ -31,9 +31,7 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         caseListFragment = new CaseListFragment();
-
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.mainFregment, caseListFragment, "ListFragment");
         ft.commit();
@@ -144,8 +142,6 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
                 backToMainActivity();
                 break;
         }
-
         Log.d("TAG", "ALERT WORKS " + which);
     }
-
 }

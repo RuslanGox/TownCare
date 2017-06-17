@@ -1,8 +1,15 @@
 package com.example.ruslan.towncare.Fragments;
 
+import android.Manifest;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,12 +18,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.ruslan.towncare.Models.Case.Case;
+import com.example.ruslan.towncare.Models.MasterInterface;
 import com.example.ruslan.towncare.Models.Model.Model;
 import com.example.ruslan.towncare.R;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class CaseUpsertFragment extends Fragment {
@@ -26,6 +37,8 @@ public class CaseUpsertFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private View contentView;
     private String caseId = null;
+    private ImageView imageView;
+    private Bitmap bitmap;
 
     public CaseUpsertFragment() {
     }
@@ -53,21 +66,50 @@ public class CaseUpsertFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         setHasOptionsMenu(true);
+        checkSDPermission();
         contentView = inflater.inflate(R.layout.fragment_case_upsert, container, false);
         if (!caseId.isEmpty()) {
             Log.d("TAG", caseId);
             showCaseData(contentView, Model.instance.getCase(caseId));
         }
+        imageView = (ImageView) contentView.findViewById(R.id.upsertCasePic);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        });
         Button saveButton = (Button) contentView.findViewById(R.id.upsertCaseSaveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (!caseId.isEmpty()) {
+            public void onClick(final View v) {
+                (contentView.findViewById(R.id.upsertProgressBar)).setVisibility(View.VISIBLE);
+                if (!caseId.isEmpty()) { // Edit old Case
                     Model.instance.updateCase(updateCase());
                     mListener.onClick(v, true);
-                } else {
-                    Model.instance.addCase(newCase());
-                    mListener.onClick(v, false);
+                } else { // Save new Case
+                    final Case c = newCase();
+                    if (bitmap != null) {
+                        Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis() + ".jpeg"), new MasterInterface.SaveImageListener() {
+                            @Override
+                            public void complete(String url) {
+                                c.setCaseImageUrl(url);
+                                Model.instance.addCase(c);
+                                mListener.onClick(v, false);
+                                (contentView.findViewById(R.id.upsertProgressBar)).setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void fail() {
+                                c.setCaseImageUrl("Error Upload Foto");
+                                Model.instance.addCase(c);
+                                mListener.onClick(v, false);
+                            }
+                        });
+                    } else {
+                        Model.instance.addCase(c);
+                        mListener.onClick(v, false);
+                    }
                 }
 
             }
@@ -100,6 +142,7 @@ public class CaseUpsertFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
+
         void onClick(View view, boolean dataChanged);
     }
 
@@ -118,7 +161,6 @@ public class CaseUpsertFragment extends Fragment {
         }
     }
 
-
     private Case updateCase() {
         String id = this.caseId;
         String caseTitle = ((EditText) contentView.findViewById(R.id.upsertCaseTitle)).getText().toString();
@@ -135,6 +177,7 @@ public class CaseUpsertFragment extends Fragment {
         return new Case(id, caseTitle, caseDate, caseLikeCount, caseUnLikeCount, caseType, caseStatus, caseOpenerPhone, caseOpener, caseAddress, caseDesc, "img url");
     }
 
+
     private Case newCase() {
         String id = ((EditText) contentView.findViewById(R.id.upsertCaseOpenerId)).getText().toString() + System.currentTimeMillis();
         String caseTitle = ((EditText) contentView.findViewById(R.id.upsertCaseTitle)).getText().toString();
@@ -148,7 +191,7 @@ public class CaseUpsertFragment extends Fragment {
         String caseAddress = ((EditText) contentView.findViewById(R.id.upsertCaseAddress)).getText().toString();
         String caseDesc = ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).getText().toString();
 
-        return new Case(id, caseTitle, caseDate, caseLikeCount, caseUnLikeCount, caseType, caseStatus, caseOpenerPhone, caseOpener, caseAddress, caseDesc, "img url");
+        return new Case(id, caseTitle, caseDate, caseLikeCount, caseUnLikeCount, caseType, caseStatus, caseOpenerPhone, caseOpener, caseAddress, caseDesc, "url");
     }
 
     private void showCaseData(View contentView, Case aCase) {
@@ -161,5 +204,35 @@ public class CaseUpsertFragment extends Fragment {
         ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).setText(aCase.getCaseDesc());
         ((EditText) contentView.findViewById(R.id.upsertCaseOpenerId)).setText("" + aCase.getCaseOpener());
         ((EditText) contentView.findViewById(R.id.upsertCaseOpenerPhone)).setText(aCase.getCaseOpenerPhone());
+    }
+
+    public static final int REQUEST_IMAGE_CAPTURE = 1;
+
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            bitmap = (Bitmap) extras.get("data");
+            imageView.setImageBitmap(bitmap);
+        }
+    }
+
+
+    private void checkSDPermission() {
+        boolean hasPermission2 = (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CAMERA) ==
+                PackageManager.PERMISSION_GRANTED);
+        if (!hasPermission2) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{
+                    Manifest.permission.CAMERA}, 1);
+        }
     }
 }

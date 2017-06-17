@@ -1,4 +1,4 @@
-package com.example.ruslan.towncare.Model;
+package com.example.ruslan.towncare.Models.Case;
 
 /**
  * Created by omrih on 27-May-17.
@@ -16,10 +16,10 @@ public class Case {
     private String caseOpener;
     private String caseAddress;
     private String caseDesc;
-
     private String caseImageUrl;
 
-    public Case() {}
+    public Case() {
+    }
 
     public Case(String caseId, String caseTitle, String caseDate, int caseLikeCount, int caseUnLikeCount, String caseType, String caseStatus, String caseOpenerPhone, String caseOpener, String caseAddress, String caseDesc, String caseImageUrl) {
         this.caseId = caseId;

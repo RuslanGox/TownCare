@@ -1,4 +1,4 @@
-package com.example.ruslan.towncare.Model;
+package com.example.ruslan.towncare.Models.Case;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 public class CaseSql {
-    private static final String CASE_TABLE = "Cases";
+    public static final String CASE_TABLE = "Cases";
     private static final String CASE_ID = "caseid";
     private static final String CASE_TITLE = "casetitle";
     private static final String CASE_DATE = "casedate";

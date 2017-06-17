@@ -12,6 +12,12 @@
     android:orientation="vertical"
     tools:context="com.example.ruslan.towncare.Fragments.CaseDetailsFragment">
 
+    <ProgressBar
+        android:id="@+id/upsertProgressBar"
+        style="@android:style/Widget.DeviceDefault.ProgressBar.Large"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
     <EditText
         android:id="@+id/upsertCaseTitle"
         android:layout_width="match_parent"
@@ -26,7 +32,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/upsertCasePic"
             android:layout_width="150dp"
             android:layout_height="150dp"

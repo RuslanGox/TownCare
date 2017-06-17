@@ -15,12 +15,9 @@ import java.util.List;
  */
 
 public class CaseFireBase {
-
-    //    private List<Case> caseList = new LinkedList<>();
-    private static  FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static DatabaseReference myRef = database.getReference(CaseSql.CASE_TABLE);
 
-//    @Override
     public static void getData(final MasterInterface.GetAllCasesCallback callback) {
 //        ValueEventListener listener =
         myRef.addValueEventListener(new ValueEventListener() {
@@ -41,12 +38,10 @@ public class CaseFireBase {
         });
     }
 
-//    @Override
     public static void addCase(Case c) {
         myRef.child("" + c.getCaseId()).setValue(c);
     }
 
-//    @Override
     public static void removeCase(String id, final MasterInterface.GetCaseCallback callback) {
         myRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -62,7 +57,6 @@ public class CaseFireBase {
         });
     }
 
-//    @Override
     public static void getCase(String id, final MasterInterface.GetCaseCallback callback) {
         myRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -78,7 +72,6 @@ public class CaseFireBase {
         });
     }
 
-//    @Override
     public static void updateCase(Case aCase) {
         addCase(aCase);
     }

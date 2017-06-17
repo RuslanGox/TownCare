@@ -2,13 +2,19 @@ package com.example.ruslan.towncare.Fragments;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.ruslan.towncare.Models.Case.Case;
@@ -33,6 +39,7 @@ public class CaseListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        checkCameraPermission();
         View contentView = inflater.inflate(R.layout.fragment_case_list, container, false);
         ListView list = (ListView) contentView.findViewById(R.id.caseListFreg);
         final CaseListAdapter adapter = new CaseListAdapter();
@@ -75,8 +82,9 @@ public class CaseListFragment extends Fragment {
         mListener = null;
     }
 
-
     public interface OnFragmentInteractionListener {
+
+
         void onItemClickListener(String id);
     }
 
@@ -105,15 +113,50 @@ public class CaseListFragment extends Fragment {
                 convertView = infalter.inflate(R.layout.case_list_row, null);
             }
 
-            Case c = caseData.get(position);
+            final Case c = caseData.get(position);
             ((TextView) convertView.findViewById(R.id.case_title)).setText(c.getCaseTitle());
             ((TextView) convertView.findViewById(R.id.case_date)).setText(c.getCaseDate());
             ((TextView) convertView.findViewById(R.id.case_status)).setText(c.getCaseStatus());
             ((TextView) convertView.findViewById(R.id.case_like_count)).setText("" + c.getCaseLikeCount());
             ((TextView) convertView.findViewById(R.id.case_unlike_count)).setText("" + c.getCaseUnLikeCount());
             ((TextView) convertView.findViewById(R.id.case_type)).setText(c.getCaseType());
+            final ImageView imageView = ((ImageView) convertView.findViewById(R.id.case_image));
+            imageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.sym_def_app_icon));
+            imageView.setTag(c.getCaseImageUrl());
+            final ProgressBar progressBar = ((ProgressBar) convertView.findViewById(R.id.case_progress_bar));
+            progressBar.setVisibility(View.GONE);
+            if (c.getCaseImageUrl() != null && !c.getCaseImageUrl().equalsIgnoreCase("url")) {
+                progressBar.setVisibility(View.VISIBLE);
+                Model.instance.getImage(c.getCaseImageUrl(), new MasterInterface.LoadImageListener() {
+
+                    @Override
+                    public void onSuccess(Bitmap image) {
+                        String imgUrl = imageView.getTag().toString();
+                        if (imgUrl.equalsIgnoreCase(c.getCaseImageUrl())) {
+                            imageView.setImageBitmap(image);
+                        }
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onFail() {
+
+                    }
+                });
+            }
 
             return convertView;
+        }
+
+    }
+
+    private void checkCameraPermission() {
+        boolean hasPermission = (ContextCompat.checkSelfPermission(getActivity(),
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                PackageManager.PERMISSION_GRANTED);
+        if (!hasPermission) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
     }
 }
