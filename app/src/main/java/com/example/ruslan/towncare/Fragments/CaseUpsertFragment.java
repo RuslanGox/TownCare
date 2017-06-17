@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import com.example.ruslan.towncare.Models.Case.Case;
 import com.example.ruslan.towncare.Models.MasterInterface;
 import com.example.ruslan.towncare.Models.Model.Model;
+import com.example.ruslan.towncare.Models.Model.ModelFiles;
 import com.example.ruslan.towncare.R;
 
 import static android.app.Activity.RESULT_OK;
@@ -85,8 +87,30 @@ public class CaseUpsertFragment extends Fragment {
             public void onClick(final View v) {
                 (contentView.findViewById(R.id.upsertProgressBar)).setVisibility(View.VISIBLE);
                 if (!caseId.isEmpty()) { // Edit old Case
-                    Model.instance.updateCase(updateCase());
-                    mListener.onClick(v, true);
+//                    Model.instance.updateCase(updateCase());
+//                    mListener.onClick(v, true);
+                    final Case c = updateCase();
+                    if (bitmap != null) {
+                        Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis() + ".jpeg"), new MasterInterface.SaveImageListener() {
+                            @Override
+                            public void complete(String url) {
+                                c.setCaseImageUrl(url);
+                                Model.instance.updateCase(c);
+                                mListener.onClick(v, true);
+                                (contentView.findViewById(R.id.upsertProgressBar)).setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void fail() {
+                                c.setCaseImageUrl("Error Upload Foto");
+                                Model.instance.updateCase(c);
+                                mListener.onClick(v, true);
+                            }
+                        });
+                    } else {
+                        Model.instance.updateCase(c);
+                        mListener.onClick(v, true);
+                    }
                 } else { // Save new Case
                     final Case c = newCase();
                     if (bitmap != null) {
@@ -174,7 +198,7 @@ public class CaseUpsertFragment extends Fragment {
         String caseAddress = ((EditText) contentView.findViewById(R.id.upsertCaseAddress)).getText().toString();
         String caseDesc = ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).getText().toString();
 
-        return new Case(id, caseTitle, caseDate, caseLikeCount, caseUnLikeCount, caseType, caseStatus, caseOpenerPhone, caseOpener, caseAddress, caseDesc, "img url");
+        return new Case(id, caseTitle, caseDate, caseLikeCount, caseUnLikeCount, caseType, caseStatus, caseOpenerPhone, caseOpener, caseAddress, caseDesc, "url");
     }
 
 
@@ -197,7 +221,13 @@ public class CaseUpsertFragment extends Fragment {
     private void showCaseData(View contentView, Case aCase) {
         ((EditText) contentView.findViewById(R.id.upsertCaseTitle)).setText(aCase.getCaseTitle());
 //        ((ImageButton)contentView.findViewById(R.id.createCasePic)).set(aCase.getCaseImageUrl());
-        ((EditText) contentView.findViewById(R.id.upsertCaseDate)).setText(aCase.getCaseDate().toString());
+        if (aCase.getCaseImageUrl() != null && !aCase.getCaseImageUrl().equalsIgnoreCase("url")) {
+
+            ((ImageView) contentView.findViewById(R.id.upsertCasePic)).setImageBitmap(ModelFiles.loadImageFromFile(URLUtil.guessFileName(aCase.getCaseImageUrl(), null, null)));
+        } else {
+            ((ImageView) contentView.findViewById(R.id.upsertCasePic)).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.sym_def_app_icon));
+        }
+        ((EditText) contentView.findViewById(R.id.upsertCaseDate)).setText(aCase.getCaseDate());
         ((EditText) contentView.findViewById(R.id.upsertCaseAddress)).setText(aCase.getCaseAddress());
         ((TextView) contentView.findViewById(R.id.upsertCaseStatus)).setText(aCase.getCaseStatus());
         ((Spinner) contentView.findViewById(R.id.upsertCaseType)).setSelection(Integer.parseInt(aCase.getCaseType()));

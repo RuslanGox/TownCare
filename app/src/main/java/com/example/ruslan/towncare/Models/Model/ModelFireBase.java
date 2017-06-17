@@ -3,6 +3,7 @@ package com.example.ruslan.towncare.Models.Model;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.ruslan.towncare.Models.Case.Case;
@@ -50,14 +51,18 @@ public class ModelFireBase {
         UploadTask uploadTask = imagesRef.putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onFailure(Exception exception) {
+            public void onFailure(@NonNull Exception exception) {
                 listener.fail();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                listener.complete(downloadUrl.toString());
+                if (downloadUrl != null) {
+                    listener.complete(downloadUrl.toString());
+                }else {
+                    listener.fail();
+                }
             }
         });
     }
@@ -75,7 +80,7 @@ public class ModelFireBase {
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onFailure(Exception exception) {
+            public void onFailure(@NonNull Exception exception) {
                 Log.d("TAG", exception.getMessage());
                 listener.onFail();
             }

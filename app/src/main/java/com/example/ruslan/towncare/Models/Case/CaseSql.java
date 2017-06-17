@@ -115,8 +115,6 @@ public class CaseSql {
         Cursor cursor = db.query(CASE_TABLE, null, "caseid=?", new String[]{aCase.getCaseId()}, null, null, null);
         if (cursor.moveToFirst()) {
             ContentValues values = new ContentValues();
-            // todo: check if we realy need to send Id
-//            values.put(CASE_ID, aCase.getCaseId());
             values.put(CASE_TITLE, aCase.getCaseTitle());
             values.put(CASE_DATE, aCase.getCaseDate());
             values.put(CASE_LIKE_COUNT, aCase.getCaseLikeCount());

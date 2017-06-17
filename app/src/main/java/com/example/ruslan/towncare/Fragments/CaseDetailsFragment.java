@@ -2,15 +2,19 @@ package com.example.ruslan.towncare.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ruslan.towncare.Models.Case.Case;
 import com.example.ruslan.towncare.Models.Model.Model;
+import com.example.ruslan.towncare.Models.Model.ModelFiles;
 import com.example.ruslan.towncare.R;
 
 
@@ -38,8 +42,7 @@ public class CaseDetailsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
         final View contentView = inflater.inflate(R.layout.fragment_case_details, container, false);
@@ -51,7 +54,13 @@ public class CaseDetailsFragment extends Fragment {
     private void showCaseData(View contentView, Case aCase) {
         ((TextView) contentView.findViewById(R.id.detailsCaseTitle)).setText(aCase.getCaseTitle());
 //        ((ImageButton)contentView.findViewById(R.id.detailsCasePic)).set(aCase.getCaseImageUrl());
-        ((TextView) contentView.findViewById(R.id.detailsCaseDate)).setText(aCase.getCaseDate().toString());
+        if (aCase.getCaseImageUrl() != null && !aCase.getCaseImageUrl().equalsIgnoreCase("url")) {
+
+            ((ImageView) contentView.findViewById(R.id.detailsCasePic)).setImageBitmap(ModelFiles.loadImageFromFile(URLUtil.guessFileName(aCase.getCaseImageUrl(), null, null)));
+        } else {
+            ((ImageView) contentView.findViewById(R.id.detailsCasePic)).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.sym_def_app_icon));
+        }
+        ((TextView) contentView.findViewById(R.id.detailsCaseDate)).setText(aCase.getCaseDate());
         ((TextView) contentView.findViewById(R.id.detailsCaseAddress)).setText(aCase.getCaseAddress());
         ((TextView) contentView.findViewById(R.id.detailsCaseStatus)).setText(aCase.getCaseStatus());
         ((TextView) contentView.findViewById(R.id.detailsCaseType)).setText((getResources().getStringArray(R.array.caseTypes))[Integer.parseInt(aCase.getCaseType())]);

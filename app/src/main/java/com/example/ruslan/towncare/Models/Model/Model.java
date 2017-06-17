@@ -113,7 +113,7 @@ public class Model {
 
         final String fileName = URLUtil.guessFileName(url, null, null);
         Log.d("Tag", "the urls is " + url);
-        final Bitmap[] realBitmap = new Bitmap[1];
+//        final Bitmap[] realBitmap = new Bitmap[1];
         ModelFiles.loadImageFromFileAsync(fileName, new MasterInterface.loadImageFromFileAsyncListener() {
             @Override
             public void onComplete(final Bitmap bitmap) {
