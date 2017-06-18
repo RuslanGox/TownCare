@@ -102,7 +102,7 @@ public class CaseUpsertFragment extends Fragment {
 
                             @Override
                             public void fail() {
-                                c.setCaseImageUrl("Error Upload Foto");
+                                c.setCaseImageUrl("url");
                                 Model.instance.updateCase(c);
                                 mListener.onClick(v, true);
                             }
@@ -125,7 +125,7 @@ public class CaseUpsertFragment extends Fragment {
 
                             @Override
                             public void fail() {
-                                c.setCaseImageUrl("Error Upload Foto");
+                                c.setCaseImageUrl("url");
                                 Model.instance.addCase(c);
                                 mListener.onClick(v, false);
                             }

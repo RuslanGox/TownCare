@@ -21,28 +21,28 @@ import java.io.ByteArrayOutputStream;
  * Created by omrih on 10-Jun-17.
  */
 
-public class ModelFireBase {
+class ModelFireBase {
 
-    public void getData(final MasterInterface.GetAllCasesCallback callback) {
+    void getData(final MasterInterface.GetAllCasesCallback callback) {
         CaseFireBase.getData(callback);
     }
 
 
-    public boolean addCase(Case aCase) {
+    boolean addCase(Case aCase) {
         CaseFireBase.addCase(aCase);
         return false;
     }
 
-    public boolean updateCase(Case student) {
+    boolean updateCase(Case student) {
         CaseFireBase.updateCase(student);
         return false;
     }
 
-    public void removeCase(String studentIndex, final MasterInterface.GetCaseCallback callback) {
+    void removeCase(String studentIndex, final MasterInterface.GetCaseCallback callback) {
         CaseFireBase.removeCase(studentIndex, callback);
     }
 
-    public void saveImage(Bitmap imageBmp, String name, final MasterInterface.SaveImageListener listener) {
+    void saveImage(Bitmap imageBmp, String name, final MasterInterface.SaveImageListener listener) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference imagesRef = storage.getReference().child("images").child(name);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -67,7 +67,7 @@ public class ModelFireBase {
         });
     }
 
-    public void getImage(String url, final MasterInterface.LoadImageListener listener) {
+    void getImage(String url, final MasterInterface.LoadImageListener listener) {
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference httpsReference = storage.getReferenceFromUrl(url);
@@ -86,5 +86,4 @@ public class ModelFireBase {
             }
         });
     }
-
 }
