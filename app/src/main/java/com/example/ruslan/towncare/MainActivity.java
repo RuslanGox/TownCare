@@ -22,7 +22,7 @@ import com.example.ruslan.towncare.PickersAndDialogs.AlertCaseDialog;
 import static com.example.ruslan.towncare.Models.AlertDialogButtons.OK_BUTTON;
 import static com.example.ruslan.towncare.Models.AlertDialogButtons.OK_CANCEL_BUTTONS;
 
-public class MainActivity extends Activity implements CaseListFragment.OnFragmentInteractionListener, CaseUpsertFragment.OnFragmentInteractionListener, AlertCaseDialog.AlertCaseDialogListener {
+public class MainActivity extends Activity implements MasterInterface.OnCaseListListener, CaseUpsertFragment.OnFragmentInteractionListener, MasterInterface.AlertCaseDialogListener {
 
     CaseListFragment caseListFragment;
     String id;
@@ -38,7 +38,7 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
     }
 
     @Override
-    public void onItemClickListener(String id) {
+    public void onItemListClickListener(String id) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.mainFregment, CaseDetailsFragment.newInstance(id), "DetailsFragment");
         this.id = id;
@@ -118,7 +118,7 @@ public class MainActivity extends Activity implements CaseListFragment.OnFragmen
     }
 
     @Override
-    public void onClick(AlertDialogButtons which, boolean dataChanged) {
+    public void onAlertButtonClick(AlertDialogButtons which, boolean dataChanged) {
         switch (which) {
             case OK_BUTTON:
                 if (dataChanged) {

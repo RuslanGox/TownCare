@@ -102,6 +102,7 @@ public class CaseUpsertFragment extends Fragment {
 
                             @Override
                             public void fail() {
+                                // add also when fail ("error upload foto")
                                 c.setCaseImageUrl("url");
                                 Model.instance.updateCase(c);
                                 mListener.onClick(v, true);
@@ -125,6 +126,7 @@ public class CaseUpsertFragment extends Fragment {
 
                             @Override
                             public void fail() {
+                                // add also when fail ("error upload foto")
                                 c.setCaseImageUrl("url");
                                 Model.instance.addCase(c);
                                 mListener.onClick(v, false);
@@ -155,7 +157,7 @@ public class CaseUpsertFragment extends Fragment {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnCaseListListener");
         }
     }
 

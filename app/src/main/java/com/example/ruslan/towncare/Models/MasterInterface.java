@@ -37,5 +37,13 @@ public interface MasterInterface {
 
     }
 
+    interface AlertCaseDialogListener {
+        void onAlertButtonClick(AlertDialogButtons which, boolean dataChanged);
+    }
+
+    interface OnCaseListListener {
+        void onItemListClickListener(String id);
+    }
+
 }
 

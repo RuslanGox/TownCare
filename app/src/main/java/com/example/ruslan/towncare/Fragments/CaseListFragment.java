@@ -29,7 +29,7 @@ import java.util.List;
 public class CaseListFragment extends Fragment {
 
 
-    private OnFragmentInteractionListener mListener;
+    private MasterInterface.OnCaseListListener mListener;
     private List<Case> caseData = new LinkedList<>();
 
     public CaseListFragment() {
@@ -47,7 +47,7 @@ public class CaseListFragment extends Fragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mListener.onItemClickListener("" + id);
+                mListener.onItemListClickListener("" + id);
             }
         });
         Model.instance.getData(new MasterInterface.GetAllCasesCallback() {
@@ -68,11 +68,11 @@ public class CaseListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof MasterInterface.OnCaseListListener) {
+            mListener = (MasterInterface.OnCaseListListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnCaseListListener");
         }
     }
 
@@ -82,11 +82,9 @@ public class CaseListFragment extends Fragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-
-
-        void onItemClickListener(String id);
-    }
+//    public interface OnCaseListListener {
+//        void onItemListClickListener(String id);
+//    }
 
     private class CaseListAdapter extends BaseAdapter {
 
@@ -125,6 +123,7 @@ public class CaseListFragment extends Fragment {
             imageView.setTag(c.getCaseImageUrl());
             final ProgressBar progressBar = ((ProgressBar) convertView.findViewById(R.id.case_progress_bar));
             progressBar.setVisibility(View.GONE);
+            // add also when fail ("error upload foto")
             if (c.getCaseImageUrl() != null && !c.getCaseImageUrl().equalsIgnoreCase("url")) {
                 progressBar.setVisibility(View.VISIBLE);
                 Model.instance.getImage(c.getCaseImageUrl(), new MasterInterface.LoadImageListener() {
