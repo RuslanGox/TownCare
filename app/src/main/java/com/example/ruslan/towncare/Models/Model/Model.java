@@ -28,7 +28,7 @@ public class Model {
         modelFireBase = new ModelFireBase();
         caseList = new LinkedList<>();
         for (int i = 0; i < 5; i++) {
-            caseList.add(new Case("" + 1234 + System.currentTimeMillis() + i, "case " + i, "11/12/17", 500 + i * 3, 200 - i * 5, "1", "Open", "052476", "1234", "GIDON ISRAEL", "THIS IS THE DEST", "url"));
+            caseList.add(new Case("" + 1234 + System.currentTimeMillis() + i, "case " + i, "11/12/17", 500 + i * 3, "1", "Open", "052476", "1234","TOWN" ,"GIDON ISRAEL", "THIS IS THE DEST", "url"));
 //            CaseSql.addCase(modelSql.getWritableDatabase(),caseList.get(i));
             modelFireBase.addCase(caseList.get(i));
         }

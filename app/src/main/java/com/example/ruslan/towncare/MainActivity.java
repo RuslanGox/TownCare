@@ -13,16 +13,16 @@ import android.view.View;
 import com.example.ruslan.towncare.Fragments.CaseDetailsFragment;
 import com.example.ruslan.towncare.Fragments.CaseListFragment;
 import com.example.ruslan.towncare.Fragments.CaseUpsertFragment;
-import com.example.ruslan.towncare.Models.AlertDialogButtons;
 import com.example.ruslan.towncare.Models.Case.Case;
+import com.example.ruslan.towncare.Models.Enums.AlertDialogButtons;
 import com.example.ruslan.towncare.Models.MasterInterface;
 import com.example.ruslan.towncare.Models.Model.Model;
 import com.example.ruslan.towncare.PickersAndDialogs.AlertCaseDialog;
 
-import static com.example.ruslan.towncare.Models.AlertDialogButtons.OK_BUTTON;
-import static com.example.ruslan.towncare.Models.AlertDialogButtons.OK_CANCEL_BUTTONS;
+import static com.example.ruslan.towncare.Models.Enums.AlertDialogButtons.OK_BUTTON;
+import static com.example.ruslan.towncare.Models.Enums.AlertDialogButtons.OK_CANCEL_BUTTONS;
 
-public class MainActivity extends Activity implements MasterInterface.OnCaseListListener, CaseUpsertFragment.OnFragmentInteractionListener, MasterInterface.AlertCaseDialogListener {
+public class MainActivity extends Activity implements MasterInterface.CaseListInteractionListener, MasterInterface.UpsertInteractionListener, MasterInterface.AlertCaseDialogListener {
 
     CaseListFragment caseListFragment;
     String id;
@@ -38,7 +38,7 @@ public class MainActivity extends Activity implements MasterInterface.OnCaseList
     }
 
     @Override
-    public void onItemListClickListener(String id) {
+    public void onItemListClick(String id) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.mainFregment, CaseDetailsFragment.newInstance(id), "DetailsFragment");
         this.id = id;
@@ -62,7 +62,7 @@ public class MainActivity extends Activity implements MasterInterface.OnCaseList
     }
 
     @Override // onClick MASTER METHOD
-    public void onClick(View view, boolean dataChanged) {
+    public void onUpsertButtonClick(View view, boolean dataChanged) {
         switch (view.getId()) {
             case R.id.upsertCaseSaveButton:
                 if (dataChanged) {

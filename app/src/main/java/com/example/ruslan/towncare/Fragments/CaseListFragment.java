@@ -29,7 +29,7 @@ import java.util.List;
 public class CaseListFragment extends Fragment {
 
 
-    private MasterInterface.OnCaseListListener mListener;
+    private MasterInterface.CaseListInteractionListener mListener;
     private List<Case> caseData = new LinkedList<>();
 
     public CaseListFragment() {
@@ -47,7 +47,7 @@ public class CaseListFragment extends Fragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mListener.onItemListClickListener("" + id);
+                mListener.onItemListClick("" + id);
             }
         });
         Model.instance.getData(new MasterInterface.GetAllCasesCallback() {
@@ -68,11 +68,11 @@ public class CaseListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof MasterInterface.OnCaseListListener) {
-            mListener = (MasterInterface.OnCaseListListener) context;
+        if (context instanceof MasterInterface.CaseListInteractionListener) {
+            mListener = (MasterInterface.CaseListInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnCaseListListener");
+                    + " must implement CaseListInteractionListener");
         }
     }
 
@@ -82,13 +82,9 @@ public class CaseListFragment extends Fragment {
         mListener = null;
     }
 
-//    public interface OnCaseListListener {
-//        void onItemListClickListener(String id);
-//    }
-
     private class CaseListAdapter extends BaseAdapter {
 
-        LayoutInflater infalter = getActivity().getLayoutInflater();
+        LayoutInflater inflater = getActivity().getLayoutInflater();
 
         @Override
         public int getCount() {
@@ -108,15 +104,14 @@ public class CaseListFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = infalter.inflate(R.layout.case_list_row, null);
+                convertView = inflater.inflate(R.layout.case_list_row, null);
             }
 
             final Case c = caseData.get(position);
             ((TextView) convertView.findViewById(R.id.case_title)).setText(c.getCaseTitle());
             ((TextView) convertView.findViewById(R.id.case_date)).setText(c.getCaseDate());
             ((TextView) convertView.findViewById(R.id.case_status)).setText(c.getCaseStatus());
-            ((TextView) convertView.findViewById(R.id.case_like_count)).setText("" + c.getCaseLikeCount());
-            ((TextView) convertView.findViewById(R.id.case_unlike_count)).setText("" + c.getCaseUnLikeCount());
+            ((TextView) convertView.findViewById(R.id.case_like_count)).setText(c.getCaseLikeCount());
             ((TextView) convertView.findViewById(R.id.case_type)).setText(c.getCaseType());
             final ImageView imageView = ((ImageView) convertView.findViewById(R.id.case_image));
             imageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.sym_def_app_icon));
@@ -143,10 +138,8 @@ public class CaseListFragment extends Fragment {
                     }
                 });
             }
-
             return convertView;
         }
-
     }
 
     private void checkCameraPermission() {

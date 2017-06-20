@@ -9,11 +9,11 @@ public class Case {
     private String caseTitle;
     private String caseDate;
     private int caseLikeCount;
-    private int caseUnLikeCount;
     private String caseType;
     private String caseStatus;
     private String caseOpenerPhone;
-    private String caseOpener;
+    private String caseOpenerId;
+    private String caseTown;
     private String caseAddress;
     private String caseDesc;
     private String caseImageUrl;
@@ -21,16 +21,16 @@ public class Case {
     public Case() {
     }
 
-    public Case(String caseId, String caseTitle, String caseDate, int caseLikeCount, int caseUnLikeCount, String caseType, String caseStatus, String caseOpenerPhone, String caseOpener, String caseAddress, String caseDesc, String caseImageUrl) {
+    public Case(String caseId, String caseTitle, String caseDate, int caseLikeCount, String caseType, String caseStatus, String caseOpenerPhone, String caseOpenerId, String caseTown, String caseAddress, String caseDesc, String caseImageUrl) {
         this.caseId = caseId;
         this.caseTitle = caseTitle;
         this.caseDate = caseDate;
         this.caseLikeCount = caseLikeCount;
-        this.caseUnLikeCount = caseUnLikeCount;
         this.caseType = caseType;
         this.caseStatus = caseStatus;
         this.caseOpenerPhone = caseOpenerPhone;
-        this.caseOpener = caseOpener;
+        this.caseOpenerId = caseOpenerId;
+        this.caseTown = caseTown;
         this.caseAddress = caseAddress;
         this.caseDesc = caseDesc;
         this.caseImageUrl = caseImageUrl;
@@ -69,14 +69,6 @@ public class Case {
         this.caseLikeCount = caseLikeCount;
     }
 
-    public int getCaseUnLikeCount() {
-        return caseUnLikeCount;
-    }
-
-    public void setCaseUnLikeCount(int caseUnLikeCount) {
-        this.caseUnLikeCount = caseUnLikeCount;
-    }
-
     public String getCaseType() {
         return caseType;
     }
@@ -109,12 +101,20 @@ public class Case {
         this.caseImageUrl = caseImageUrl;
     }
 
-    public String getCaseOpener() {
-        return caseOpener;
+    public String getCaseOpenerId() {
+        return caseOpenerId;
     }
 
-    public void setCaseOpener(String caseOpener) {
-        this.caseOpener = caseOpener;
+    public void setCaseOpenerId(String caseOpenerId) {
+        this.caseOpenerId = caseOpenerId;
+    }
+
+    public String getCaseTown() {
+        return caseTown;
+    }
+
+    public void setCaseTown(String caseTown) {
+        this.caseTown = caseTown;
     }
 
     public String getCaseAddress() {

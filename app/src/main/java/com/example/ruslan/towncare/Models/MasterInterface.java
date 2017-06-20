@@ -1,8 +1,11 @@
 package com.example.ruslan.towncare.Models;
 
 import android.graphics.Bitmap;
+import android.view.View;
 
 import com.example.ruslan.towncare.Models.Case.Case;
+import com.example.ruslan.towncare.Models.Enums.AlertDialogButtons;
+
 import java.util.List;
 
 /**
@@ -41,8 +44,12 @@ public interface MasterInterface {
         void onAlertButtonClick(AlertDialogButtons which, boolean dataChanged);
     }
 
-    interface OnCaseListListener {
-        void onItemListClickListener(String id);
+    interface CaseListInteractionListener {
+        void onItemListClick(String id);
+    }
+
+    interface UpsertInteractionListener {
+        void onUpsertButtonClick(View view, boolean dataChanged);
     }
 
 }

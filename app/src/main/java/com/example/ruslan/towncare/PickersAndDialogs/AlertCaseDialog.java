@@ -7,12 +7,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-import com.example.ruslan.towncare.Fragments.CaseListFragment;
-import com.example.ruslan.towncare.Models.AlertDialogButtons;
+import com.example.ruslan.towncare.Models.Enums.AlertDialogButtons;
 import com.example.ruslan.towncare.Models.MasterInterface;
 
-import static com.example.ruslan.towncare.Models.AlertDialogButtons.CANCEL_BUTTON;
-import static com.example.ruslan.towncare.Models.AlertDialogButtons.OK_BUTTON;
+import static com.example.ruslan.towncare.Models.Enums.AlertDialogButtons.CANCEL_BUTTON;
+import static com.example.ruslan.towncare.Models.Enums.AlertDialogButtons.OK_BUTTON;
 
 
 /**

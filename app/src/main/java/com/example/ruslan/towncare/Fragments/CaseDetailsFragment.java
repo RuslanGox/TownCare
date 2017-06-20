@@ -53,7 +53,6 @@ public class CaseDetailsFragment extends Fragment {
 
     private void showCaseData(View contentView, Case aCase) {
         ((TextView) contentView.findViewById(R.id.detailsCaseTitle)).setText(aCase.getCaseTitle());
-//        ((ImageButton)contentView.findViewById(R.id.detailsCasePic)).set(aCase.getCaseImageUrl());
         if (aCase.getCaseImageUrl() != null && !aCase.getCaseImageUrl().equalsIgnoreCase("url")) {
 
             ((ImageView) contentView.findViewById(R.id.detailsCasePic)).setImageBitmap(ModelFiles.loadImageFromFile(URLUtil.guessFileName(aCase.getCaseImageUrl(), null, null)));
@@ -61,11 +60,12 @@ public class CaseDetailsFragment extends Fragment {
             ((ImageView) contentView.findViewById(R.id.detailsCasePic)).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.sym_def_app_icon));
         }
         ((TextView) contentView.findViewById(R.id.detailsCaseDate)).setText(aCase.getCaseDate());
+        ((TextView) contentView.findViewById(R.id.detailsCaseTown)).setText(aCase.getCaseTown());
         ((TextView) contentView.findViewById(R.id.detailsCaseAddress)).setText(aCase.getCaseAddress());
         ((TextView) contentView.findViewById(R.id.detailsCaseStatus)).setText(aCase.getCaseStatus());
         ((TextView) contentView.findViewById(R.id.detailsCaseType)).setText((getResources().getStringArray(R.array.caseTypes))[Integer.parseInt(aCase.getCaseType())]);
         ((TextView) contentView.findViewById(R.id.detailsCaseDesc)).setText(aCase.getCaseDesc());
-        ((TextView) contentView.findViewById(R.id.detailsCaseOpener)).setText("" + aCase.getCaseOpener());
+        ((TextView) contentView.findViewById(R.id.detailsCaseOpener)).setText(aCase.getCaseOpenerId());
         ((TextView) contentView.findViewById(R.id.detailsCaseOpenerPhone)).setText(aCase.getCaseOpenerPhone());
     }
 

@@ -1,4 +1,4 @@
-package com.example.ruslan.towncare.Models;
+package com.example.ruslan.towncare.Models.Enums;
 
 /**
  * Created by omrih on 14-Jun-17.
