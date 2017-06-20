@@ -111,7 +111,7 @@ public class CaseListFragment extends Fragment {
             ((TextView) convertView.findViewById(R.id.case_title)).setText(c.getCaseTitle());
             ((TextView) convertView.findViewById(R.id.case_date)).setText(c.getCaseDate());
             ((TextView) convertView.findViewById(R.id.case_status)).setText(c.getCaseStatus());
-            ((TextView) convertView.findViewById(R.id.case_like_count)).setText(c.getCaseLikeCount());
+            ((TextView) convertView.findViewById(R.id.case_like_count)).setText(String.valueOf(c.getCaseLikeCount()));
             ((TextView) convertView.findViewById(R.id.case_type)).setText(c.getCaseType());
             final ImageView imageView = ((ImageView) convertView.findViewById(R.id.case_image));
             imageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.sym_def_app_icon));
