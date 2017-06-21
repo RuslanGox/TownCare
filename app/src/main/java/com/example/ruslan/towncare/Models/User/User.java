@@ -9,8 +9,9 @@ public class User {
     private String userId;
     private String userTown;
     private String userPhone;
-    private String userRole; // really need ?
+    private String userRole;
 
+    // for FireBase
     public User() {
     }
 
