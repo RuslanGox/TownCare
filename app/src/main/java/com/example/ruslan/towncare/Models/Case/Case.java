@@ -1,5 +1,10 @@
 package com.example.ruslan.towncare.Models.Case;
 
+import android.widget.TextView;
+
+import com.example.ruslan.towncare.Models.Model.Model;
+import com.example.ruslan.towncare.R;
+
 /**
  * Created by omrih on 27-May-17.
  */
@@ -21,6 +26,22 @@ public class Case {
     public Case() {
     }
 
+    public Case(String caseId, String caseTitle, String caseDate, int caseLikeCount, String caseType, String caseStatus, String caseAddress, String caseDesc, String caseImageUrl) {
+        this.caseId = caseId;
+        this.caseTitle = caseTitle;
+        this.caseDate = caseDate;
+        this.caseLikeCount = caseLikeCount;
+        this.caseType = caseType;
+        this.caseStatus = caseStatus;
+        this.caseOpenerPhone = Model.instance.CurrentUser.getUserPhone();
+        this.caseOpenerId = Model.instance.CurrentUser.getUserId();
+        this.caseTown = Model.instance.CurrentUser.getUserTown();
+        this.caseAddress = caseAddress;
+        this.caseDesc = caseDesc;
+        this.caseImageUrl = caseImageUrl;
+    }
+
+    // for SQL only
     public Case(String caseId, String caseTitle, String caseDate, int caseLikeCount, String caseType, String caseStatus, String caseOpenerPhone, String caseOpenerId, String caseTown, String caseAddress, String caseDesc, String caseImageUrl) {
         this.caseId = caseId;
         this.caseTitle = caseTitle;
@@ -35,7 +56,6 @@ public class Case {
         this.caseDesc = caseDesc;
         this.caseImageUrl = caseImageUrl;
     }
-
 
     public String getCaseId() {
         return caseId;
@@ -89,9 +109,9 @@ public class Case {
         return caseOpenerPhone;
     }
 
-    public void setCaseOpenerPhone(String caseOpenerPhone) {
-        this.caseOpenerPhone = caseOpenerPhone;
-    }
+//    public void setCaseOpenerPhone(String caseOpenerPhone) {
+//        this.caseOpenerPhone = caseOpenerPhone;
+//    }
 
     public String getCaseImageUrl() {
         return caseImageUrl;
@@ -105,17 +125,17 @@ public class Case {
         return caseOpenerId;
     }
 
-    public void setCaseOpenerId(String caseOpenerId) {
-        this.caseOpenerId = caseOpenerId;
-    }
+//    public void setCaseOpenerId(String caseOpenerId) {
+//        this.caseOpenerId = caseOpenerId;
+//    }
 
     public String getCaseTown() {
         return caseTown;
     }
 
-    public void setCaseTown(String caseTown) {
-        this.caseTown = caseTown;
-    }
+//    public void setCaseTown(String caseTown) {
+//        this.caseTown = caseTown;
+//    }
 
     public String getCaseAddress() {
         return caseAddress;

@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -39,7 +41,7 @@ public class CaseListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        checkCameraPermission();
+//        checkSDPermission();
         View contentView = inflater.inflate(R.layout.fragment_case_list, container, false);
         ListView list = (ListView) contentView.findViewById(R.id.caseListFreg);
         final CaseListAdapter adapter = new CaseListAdapter();
@@ -55,6 +57,7 @@ public class CaseListFragment extends Fragment {
             public void onComplete(List<Case> list) {
                 caseData = list;
                 adapter.notifyDataSetChanged();
+                setHasOptionsMenu(true);
             }
 
             @Override
@@ -142,7 +145,11 @@ public class CaseListFragment extends Fragment {
         }
     }
 
-    private void checkCameraPermission() {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.findItem(R.id.actionBarPlusButton).setVisible(true);
+    }
+
+    private void checkSDPermission() {
         boolean hasPermission = (ContextCompat.checkSelfPermission(getActivity(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
                 PackageManager.PERMISSION_GRANTED);

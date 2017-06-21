@@ -48,8 +48,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:text="הרצליה"
-                android:textAlignment="center"
+                android:text=""
+                android:gravity="center"
                 android:textSize="30sp" />
 
             <TextView
@@ -59,7 +59,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="7"
                 android:text="גדעון האוזנר,1"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>
@@ -116,7 +116,7 @@
             android:textSize="30sp" />
 
         <TextView
-            android:id="@+id/detailsCaseOpener"
+            android:id="@+id/detailsCaseOpenerId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

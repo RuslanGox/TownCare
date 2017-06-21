@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.example.ruslan.towncare.Models.Case.Case;
 import com.example.ruslan.towncare.Models.Enums.AlertDialogButtons;
+import com.example.ruslan.towncare.Models.User.User;
 
 import java.util.List;
 
@@ -22,6 +23,11 @@ public interface MasterInterface {
     interface GetCaseCallback {
         void onComplete(Case aCase);
         void onComplete();
+        void onCancel();
+    }
+
+    interface GetUserCallback {
+        void onComplete(User User);
         void onCancel();
     }
 
@@ -50,6 +56,10 @@ public interface MasterInterface {
 
     interface UpsertInteractionListener {
         void onUpsertButtonClick(View view, boolean dataChanged);
+    }
+
+    interface UserAuthListener{
+        boolean Complete();
     }
 
 }

@@ -56,13 +56,12 @@
                 android:layout_weight="1"
                 android:textSize="30sp" />
 
-            <EditText
+            <TextView
                 android:id="@+id/upsertCaseTown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:inputType="textPostalAddress"
-                android:text="TEL-AVIV"
+                android:text=""
                 android:textAlignment="center"
                 android:layout_weight="1"
                 android:textSize="30sp" />
@@ -74,7 +73,7 @@
                 android:layout_gravity="center"
                 android:inputType="textPostalAddress"
                 android:text="Enter Address"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:layout_weight="7"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -123,25 +122,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
+        <TextView
             android:id="@+id/upsertCaseOpenerPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:text="Phone"
-            android:textAlignment="center"
+            android:gravity="center"
             android:textSize="30sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/upsertCaseOpenerId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:text="123"
-            android:inputType="number"
-            android:textAlignment="center"
+            android:gravity="center"
             android:textSize="30sp" />
     </LinearLayout>
 

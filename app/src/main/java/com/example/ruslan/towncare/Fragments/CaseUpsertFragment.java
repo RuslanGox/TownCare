@@ -65,13 +65,14 @@ public class CaseUpsertFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        checkSDPermission();
+        checkCameraPermission();
         contentView = inflater.inflate(R.layout.fragment_case_upsert, container, false);
         if (!caseId.isEmpty()) {
             Log.d("TAG", caseId);
             showCaseData(contentView, Model.instance.getCase(caseId));
         }
         imageView = (ImageView) contentView.findViewById(R.id.upsertCasePic);
+        ((TextView) contentView.findViewById(R.id.upsertCaseTown)).setText(Model.instance.CurrentUser.getUserTown());
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -182,13 +183,10 @@ public class CaseUpsertFragment extends Fragment {
         int caseLikeCount = 1;
         String caseType = Long.toString(((Spinner) contentView.findViewById(R.id.upsertCaseType)).getSelectedItemId());
         String caseStatus = "Open"; //alwasys
-        String caseOpenerPhone = "phone from data base";
-        String caseOpener = ((EditText) contentView.findViewById(R.id.upsertCaseOpenerId)).getText().toString();
-        String caseTown = ((EditText) contentView.findViewById(R.id.upsertCaseTown)).getText().toString();
         String caseAddress = ((EditText) contentView.findViewById(R.id.upsertCaseAddress)).getText().toString();
         String caseDesc = ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).getText().toString();
 
-        return new Case(id, caseTitle, caseDate, caseLikeCount, caseType, caseStatus, caseOpenerPhone, caseOpener, caseTown, caseAddress, caseDesc, "url");
+        return new Case(id, caseTitle, caseDate, caseLikeCount, caseType, caseStatus, caseAddress, caseDesc, "url");
     }
 
     private Case newCase() {
@@ -198,12 +196,10 @@ public class CaseUpsertFragment extends Fragment {
         int caseLikeCount = 1;
         String caseType = Long.toString(((Spinner) contentView.findViewById(R.id.upsertCaseType)).getSelectedItemId());
         String caseStatus = "Open"; //alwasys
-        String caseOpenerPhone = "phone from data base";
-        String caseOpener = ((EditText) contentView.findViewById(R.id.upsertCaseOpenerId)).getText().toString();
         String caseAddress = ((EditText) contentView.findViewById(R.id.upsertCaseAddress)).getText().toString();
         String caseDesc = ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).getText().toString();
 
-        return new Case(id, caseTitle, caseDate, caseLikeCount, caseType, caseStatus, caseOpenerPhone, caseOpener, "TOWN", caseAddress, caseDesc, "url");
+        return new Case(id, caseTitle, caseDate, caseLikeCount, caseType, caseStatus, caseAddress, caseDesc, "url");
     }
 
     private void showCaseData(View contentView, Case aCase) {
@@ -215,13 +211,19 @@ public class CaseUpsertFragment extends Fragment {
             ((ImageView) contentView.findViewById(R.id.upsertCasePic)).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.sym_def_app_icon));
         }
         ((EditText) contentView.findViewById(R.id.upsertCaseDate)).setText(aCase.getCaseDate());
-        ((EditText) contentView.findViewById(R.id.upsertCaseTown)).setText(aCase.getCaseTown());
+        ((TextView) contentView.findViewById(R.id.upsertCaseTown)).setText(aCase.getCaseTown());
         ((EditText) contentView.findViewById(R.id.upsertCaseAddress)).setText(aCase.getCaseAddress());
         ((TextView) contentView.findViewById(R.id.upsertCaseStatus)).setText(aCase.getCaseStatus());
         ((Spinner) contentView.findViewById(R.id.upsertCaseType)).setSelection(Integer.parseInt(aCase.getCaseType()));
         ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).setText(aCase.getCaseDesc());
-        ((EditText) contentView.findViewById(R.id.upsertCaseOpenerId)).setText(aCase.getCaseOpenerId());
-        ((EditText) contentView.findViewById(R.id.upsertCaseOpenerPhone)).setText(aCase.getCaseOpenerPhone());
+        if(Model.instance.CurrentUser.getUserRole().equals("Admin") || Model.instance.CurrentUser.getUserId().equals(aCase.getCaseOpenerId())){
+            ((TextView) contentView.findViewById(R.id.upsertCaseOpenerId)).setText(aCase.getCaseOpenerId());
+            ((TextView) contentView.findViewById(R.id.upsertCaseOpenerPhone)).setText(aCase.getCaseOpenerPhone());
+        }
+        else{
+            contentView.findViewById(R.id.upsertCaseOpenerId).setVisibility(View.INVISIBLE);
+            contentView.findViewById(R.id.upsertCaseOpenerPhone).setVisibility(View.INVISIBLE);
+        }
     }
 
     public static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -242,7 +244,7 @@ public class CaseUpsertFragment extends Fragment {
         }
     }
 
-    private void checkSDPermission() {
+    private void checkCameraPermission() {
         boolean hasPermission2 = (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.CAMERA) ==
                 PackageManager.PERMISSION_GRANTED);
