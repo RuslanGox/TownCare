@@ -54,7 +54,6 @@ public class CaseDetailsFragment extends Fragment {
     private void showCaseData(View contentView, Case aCase) {
         ((TextView) contentView.findViewById(R.id.detailsCaseTitle)).setText(aCase.getCaseTitle());
         if (aCase.getCaseImageUrl() != null && !aCase.getCaseImageUrl().equalsIgnoreCase("url")) {
-
             ((ImageView) contentView.findViewById(R.id.detailsCasePic)).setImageBitmap(ModelFiles.loadImageFromFile(URLUtil.guessFileName(aCase.getCaseImageUrl(), null, null)));
         } else {
             ((ImageView) contentView.findViewById(R.id.detailsCasePic)).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.sym_def_app_icon));
@@ -65,17 +64,14 @@ public class CaseDetailsFragment extends Fragment {
         ((TextView) contentView.findViewById(R.id.detailsCaseStatus)).setText(aCase.getCaseStatus());
         ((TextView) contentView.findViewById(R.id.detailsCaseType)).setText((getResources().getStringArray(R.array.caseTypes))[Integer.parseInt(aCase.getCaseType())]);
         ((TextView) contentView.findViewById(R.id.detailsCaseDesc)).setText(aCase.getCaseDesc());
-        if(Model.instance.CurrentUser.getUserRole().equals("Admin") || Model.instance.CurrentUser.getUserId().equals(aCase.getCaseOpenerId())){
+        if (Model.instance.CurrentUser.getUserRole().equals("Admin") || Model.instance.CurrentUser.getUserId().equals(aCase.getCaseOpenerId())) {
             ((TextView) contentView.findViewById(R.id.detailsCaseOpenerId)).setText(aCase.getCaseOpenerId());
             ((TextView) contentView.findViewById(R.id.detailsCaseOpenerPhone)).setText(aCase.getCaseOpenerPhone());
-        }
-        else{
+        } else {
             contentView.findViewById(R.id.detailsCaseOpenerId).setVisibility(View.INVISIBLE);
             contentView.findViewById(R.id.detailsCaseOpenerPhone).setVisibility(View.INVISIBLE);
         }
-
     }
-
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.findItem(R.id.actionBarPlusButton).setVisible(false);

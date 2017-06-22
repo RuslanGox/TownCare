@@ -29,7 +29,7 @@ public class Model {
     private Model() {
         modelSql = new ModelSql(MyApplication.getMyContext());
         modelFireBase = new ModelFireBase();
-        UserFireBase.getUser(UserFireBase.getCurrentUserId(), new MasterInterface.GetUserCallback() {
+        UserFireBase.getUser(UserFireBase.getCurrentLoggedUserId(), new MasterInterface.GetUserCallback() {
             @Override
             public void onComplete(User user) {
                 CurrentUser = user;
@@ -40,12 +40,6 @@ public class Model {
 
             }
         });
-
-//        for (int i = 0; i < 5; i++) {
-//            caseList.add(new Case("" + 1234 + System.currentTimeMillis() + i, "case " + i, "11/12/17", 500 + i * 3, "1", "Open", "052476", "1234","TOWN" ,"GIDON ISRAEL", "THIS IS THE DEST", "url"));
-////            CaseSql.addCase(modelSql.getWritableDatabase(),caseList.get(i));
-//            modelFireBase.addCase(caseList.get(i));
-//        }
     }
 
     public List<Case> getDataSql() {
