@@ -7,9 +7,10 @@ import android.webkit.URLUtil;
 import com.example.ruslan.towncare.Models.Case.Case;
 import com.example.ruslan.towncare.Models.Case.CaseSql;
 import com.example.ruslan.towncare.Models.MasterInterface;
+import com.example.ruslan.towncare.Models.User.User;
+import com.example.ruslan.towncare.Models.User.UserFireBase;
 import com.example.ruslan.towncare.MyApplication;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -19,19 +20,32 @@ import java.util.List;
 public class Model {
     public final static Model instance = new Model();
 
-    private List<Case> caseList;
+//    private List<Case> caseList;
     private ModelFireBase modelFireBase;
     private ModelSql modelSql;
+
+    public User CurrentUser;
 
     private Model() {
         modelSql = new ModelSql(MyApplication.getMyContext());
         modelFireBase = new ModelFireBase();
-        caseList = new LinkedList<>();
-        for (int i = 0; i < 5; i++) {
-            caseList.add(new Case("" + 1234 + System.currentTimeMillis() + i, "case " + i, "11/12/17", 500 + i * 3, "1", "Open", "052476", "1234","TOWN" ,"GIDON ISRAEL", "THIS IS THE DEST", "url"));
-//            CaseSql.addCase(modelSql.getWritableDatabase(),caseList.get(i));
-            modelFireBase.addCase(caseList.get(i));
-        }
+        UserFireBase.getUser(UserFireBase.getCurrentUserId(), new MasterInterface.GetUserCallback() {
+            @Override
+            public void onComplete(User user) {
+                CurrentUser = user;
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
+
+//        for (int i = 0; i < 5; i++) {
+//            caseList.add(new Case("" + 1234 + System.currentTimeMillis() + i, "case " + i, "11/12/17", 500 + i * 3, "1", "Open", "052476", "1234","TOWN" ,"GIDON ISRAEL", "THIS IS THE DEST", "url"));
+////            CaseSql.addCase(modelSql.getWritableDatabase(),caseList.get(i));
+//            modelFireBase.addCase(caseList.get(i));
+//        }
     }
 
     public List<Case> getDataSql() {
@@ -43,7 +57,9 @@ public class Model {
             @Override
             public void onComplete(List<Case> list) {
                 for (Case aCase : list) {
-                    CaseSql.addCase(modelSql.getWritableDatabase(), aCase);
+                    if(aCase.getCaseTown().equals(CurrentUser.getUserTown())){
+                        CaseSql.addCase(modelSql.getWritableDatabase(), aCase);
+                    }
                 }
                 callback.onComplete(CaseSql.getData(modelSql.getReadableDatabase()));
             }

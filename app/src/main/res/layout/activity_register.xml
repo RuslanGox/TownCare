@@ -37,16 +37,16 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="center"
-            android:labelFor="@+id/createAccountUserName"
-            android:text="@string/login_user_name"
+            android:labelFor="@+id/createAccountUserEmail"
+            android:text="@string/login_user_email"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/createAccountUserName"
+            android:id="@+id/createAccountUserEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:inputType="number" />
+            android:inputType="textEmailAddress" />
     </LinearLayout>
 
     <LinearLayout
@@ -81,16 +81,16 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="center"
-            android:labelFor="@+id/createAccountEmail"
-            android:text="@string/email"
+            android:labelFor="@+id/createAccountId"
+            android:text="@string/Id"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/createAccountEmail"
+            android:id="@+id/createAccountId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:inputType="textWebEmailAddress" />
+            android:inputType="number" />
     </LinearLayout>
 
     <LinearLayout
@@ -112,7 +112,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:inputType="textPassword" />
+            android:inputType="text" />
     </LinearLayout>
 
     <LinearLayout

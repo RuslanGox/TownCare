@@ -10,6 +10,7 @@
         android:id="@+id/actionBarPlusButton"
         android:icon="@android:drawable/ic_input_add"
         android:showAsAction="always"
+        android:visible="false"
         android:title="Create CareCard" />
     <item
         android:id="@+id/actionBarEditButton"

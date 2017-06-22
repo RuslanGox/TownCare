@@ -107,6 +107,8 @@ public class CaseSql {
         }
     }
 
+    /* --- Private Methods --- */
+
     private static ContentValues getCaseValues(Case aCase) {
         ContentValues values = new ContentValues();
         values.put(CASE_ID, aCase.getCaseId());
