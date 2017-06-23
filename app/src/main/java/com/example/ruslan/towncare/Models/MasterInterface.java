@@ -58,9 +58,5 @@ public interface MasterInterface {
         void onUpsertButtonClick(View view, boolean dataChanged);
     }
 
-    interface UserAuthListener{
-        boolean Complete();
-    }
-
 }
 
