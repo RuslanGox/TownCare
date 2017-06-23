@@ -14,9 +14,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+<<<<<<< HEAD
 import com.google.firebase.auth.FirebaseUser;
 
 import static android.content.ContentValues.TAG;
+=======
+>>>>>>> origin/master
 
 public class LoginActivity extends Activity {
 
@@ -26,7 +29,6 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         Button btn_signIn = (Button) findViewById(R.id.btn_signIn);
-
         btn_signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,13 +42,22 @@ public class LoginActivity extends Activity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
+<<<<<<< HEAD
                                         Log.d(TAG, "signInWithEmail:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
+=======
+                                        Log.d("TAG", "signInWithEmail:success");
+//                                        FirebaseUser user = mAuth.getCurrentUser();
+>>>>>>> origin/master
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(intent);
                                     } else {
                                         // If sign in fails, display a message to the user.
+<<<<<<< HEAD
                                         Log.w(TAG, "signInWithEmail:failure", task.getException());
+=======
+                                        Log.w("TAG", "signInWithEmail:failure", task.getException());
+>>>>>>> origin/master
                                         Toast.makeText(LoginActivity.this, "Authentication failed.",
                                                 Toast.LENGTH_SHORT).show();
                                     }
@@ -54,14 +65,17 @@ public class LoginActivity extends Activity {
                                 }
                             });
                 } else {
+<<<<<<< HEAD
                     Toast.makeText(LoginActivity.this, "Please Enter Credentials.",
                             Toast.LENGTH_SHORT).show();
+=======
+                    Toast.makeText(LoginActivity.this, "Please Enter Credentials.", Toast.LENGTH_SHORT).show();
+>>>>>>> origin/master
                 }
             }
         });
 
         Button btn_signUp = (Button) findViewById(R.id.btn_signUp);
-
         btn_signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +83,5 @@ public class LoginActivity extends Activity {
                 startActivity(intent);
             }
         });
-
     }
 }

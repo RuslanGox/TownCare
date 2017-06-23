@@ -85,7 +85,7 @@ public class CaseUpsertFragment extends Fragment {
             public void onClick(final View v) {
                 (contentView.findViewById(R.id.upsertProgressBar)).setVisibility(View.VISIBLE);
                 if (!caseId.isEmpty()) { // Edit old Case
-                    final Case c = updateCase();
+                    final Case c = upsertCase();
                     if (bitmap != null) {
                         Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis() + ".jpeg"), new MasterInterface.SaveImageListener() {
                             @Override
@@ -108,7 +108,7 @@ public class CaseUpsertFragment extends Fragment {
                         mListener.onUpsertButtonClick(v, true);
                     }
                 } else { // Save new Case
-                    final Case c = newCase();
+                    final Case c = upsertCase();
                     if (bitmap != null) {
                         Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis() + ".jpeg"), new MasterInterface.SaveImageListener() {
                             @Override
@@ -176,12 +176,23 @@ public class CaseUpsertFragment extends Fragment {
         }
     }
 
-    private Case updateCase() {
-        String id = this.caseId;
+    private Case upsertCase() {
+        String caseId;
+        int caseLikeCount;
+        String caseStatus;
+        if (this.caseId == null) { // Insert Mode
+            caseId = Model.instance.CurrentUser.getUserId() + System.currentTimeMillis();
+            caseLikeCount = 1;
+            caseStatus = "Open";
+        } else {
+            caseId = this.caseId;
+            caseLikeCount = Integer.parseInt(((TextView) contentView.findViewById(R.id.case_like_count)).getText().toString());
+            caseStatus = ((TextView) contentView.findViewById(R.id.upsertCaseStatus)).getText().toString();
+        }
         String caseTitle = ((EditText) contentView.findViewById(R.id.upsertCaseTitle)).getText().toString();
         String caseDate = ((EditText) contentView.findViewById(R.id.upsertCaseDate)).getText().toString();
-        int caseLikeCount = 1;
         String caseType = Long.toString(((Spinner) contentView.findViewById(R.id.upsertCaseType)).getSelectedItemId());
+<<<<<<< HEAD
         String caseStatus = "Open"; //alwasys
         String caseAddress = ((EditText) contentView.findViewById(R.id.upsertCaseAddress)).getText().toString();
         String caseDesc = ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).getText().toString();
@@ -201,11 +212,17 @@ public class CaseUpsertFragment extends Fragment {
 
         return new Case(id, caseTitle, caseDate, caseLikeCount, caseType, caseStatus, caseAddress, caseDesc, "url");
     }
+=======
+        String caseAddress = ((EditText) contentView.findViewById(R.id.upsertCaseAddress)).getText().toString();
+        String caseDesc = ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).getText().toString();
+        return new Case(caseId, caseTitle, caseDate, caseLikeCount, caseType, caseStatus, caseAddress, caseDesc, "url");
+    }
+
+>>>>>>> origin/master
 
     private void showCaseData(View contentView, Case aCase) {
         ((EditText) contentView.findViewById(R.id.upsertCaseTitle)).setText(aCase.getCaseTitle());
         if (aCase.getCaseImageUrl() != null && !aCase.getCaseImageUrl().equalsIgnoreCase("url")) {
-
             ((ImageView) contentView.findViewById(R.id.upsertCasePic)).setImageBitmap(ModelFiles.loadImageFromFile(URLUtil.guessFileName(aCase.getCaseImageUrl(), null, null)));
         } else {
             ((ImageView) contentView.findViewById(R.id.upsertCasePic)).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.sym_def_app_icon));
@@ -216,11 +233,18 @@ public class CaseUpsertFragment extends Fragment {
         ((TextView) contentView.findViewById(R.id.upsertCaseStatus)).setText(aCase.getCaseStatus());
         ((Spinner) contentView.findViewById(R.id.upsertCaseType)).setSelection(Integer.parseInt(aCase.getCaseType()));
         ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).setText(aCase.getCaseDesc());
+<<<<<<< HEAD
         if(Model.instance.CurrentUser.getUserRole().equals("Admin") || Model.instance.CurrentUser.getUserId().equals(aCase.getCaseOpenerId())){
             ((TextView) contentView.findViewById(R.id.upsertCaseOpenerId)).setText(aCase.getCaseOpenerId());
             ((TextView) contentView.findViewById(R.id.upsertCaseOpenerPhone)).setText(aCase.getCaseOpenerPhone());
         }
         else{
+=======
+        if (Model.instance.CurrentUser.getUserRole().equals("Admin") || Model.instance.CurrentUser.getUserId().equals(aCase.getCaseOpenerId())) {
+            ((TextView) contentView.findViewById(R.id.upsertCaseOpenerId)).setText(aCase.getCaseOpenerId());
+            ((TextView) contentView.findViewById(R.id.upsertCaseOpenerPhone)).setText(aCase.getCaseOpenerPhone());
+        } else {
+>>>>>>> origin/master
             contentView.findViewById(R.id.upsertCaseOpenerId).setVisibility(View.INVISIBLE);
             contentView.findViewById(R.id.upsertCaseOpenerPhone).setVisibility(View.INVISIBLE);
         }
@@ -246,8 +270,7 @@ public class CaseUpsertFragment extends Fragment {
 
     private void checkCameraPermission() {
         boolean hasPermission2 = (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.CAMERA) ==
-                PackageManager.PERMISSION_GRANTED);
+                Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
         if (!hasPermission2) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{
                     Manifest.permission.CAMERA}, 1);
