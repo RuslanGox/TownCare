@@ -11,10 +11,6 @@ public class User {
     private String userPhone;
     private String userRole;
 
-<<<<<<< HEAD
-    // for FireBase
-=======
->>>>>>> origin/master
     public User() {
     }
 

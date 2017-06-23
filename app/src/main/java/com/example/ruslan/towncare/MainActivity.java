@@ -14,18 +14,12 @@ import com.example.ruslan.towncare.Fragments.CaseDetailsFragment;
 import com.example.ruslan.towncare.Fragments.CaseListFragment;
 import com.example.ruslan.towncare.Fragments.CaseUpsertFragment;
 import com.example.ruslan.towncare.Models.Case.Case;
-import com.example.ruslan.towncare.Models.Case.CaseSql;
 import com.example.ruslan.towncare.Models.Enums.AlertDialogButtons;
 import com.example.ruslan.towncare.Models.MasterInterface;
 import com.example.ruslan.towncare.Models.Model.Model;
 import com.example.ruslan.towncare.PickersAndDialogs.AlertCaseDialog;
 import com.google.firebase.auth.FirebaseAuth;
-<<<<<<< HEAD
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-=======
->>>>>>> origin/master
+
 
 import static com.example.ruslan.towncare.Models.Enums.AlertDialogButtons.OK_BUTTON;
 import static com.example.ruslan.towncare.Models.Enums.AlertDialogButtons.OK_CANCEL_BUTTONS;
