@@ -64,6 +64,17 @@ public class CaseDetailsFragment extends Fragment {
         ((TextView) contentView.findViewById(R.id.detailsCaseStatus)).setText(aCase.getCaseStatus());
         ((TextView) contentView.findViewById(R.id.detailsCaseType)).setText((getResources().getStringArray(R.array.caseTypes))[Integer.parseInt(aCase.getCaseType())]);
         ((TextView) contentView.findViewById(R.id.detailsCaseDesc)).setText(aCase.getCaseDesc());
+<<<<<<< HEAD
+        if(Model.instance.CurrentUser.getUserRole().equals("Admin") || Model.instance.CurrentUser.getUserId().equals(aCase.getCaseOpenerId())){
+            ((TextView) contentView.findViewById(R.id.detailsCaseOpenerId)).setText(aCase.getCaseOpenerId());
+            ((TextView) contentView.findViewById(R.id.detailsCaseOpenerPhone)).setText(aCase.getCaseOpenerPhone());
+        }
+        else{
+            contentView.findViewById(R.id.detailsCaseOpenerId).setVisibility(View.INVISIBLE);
+            contentView.findViewById(R.id.detailsCaseOpenerPhone).setVisibility(View.INVISIBLE);
+        }
+
+=======
         if (Model.instance.CurrentUser.getUserRole().equals("Admin") || Model.instance.CurrentUser.getUserId().equals(aCase.getCaseOpenerId())) {
             ((TextView) contentView.findViewById(R.id.detailsCaseOpenerId)).setText(aCase.getCaseOpenerId());
             ((TextView) contentView.findViewById(R.id.detailsCaseOpenerPhone)).setText(aCase.getCaseOpenerPhone());
@@ -71,6 +82,7 @@ public class CaseDetailsFragment extends Fragment {
             contentView.findViewById(R.id.detailsCaseOpenerId).setVisibility(View.INVISIBLE);
             contentView.findViewById(R.id.detailsCaseOpenerPhone).setVisibility(View.INVISIBLE);
         }
+>>>>>>> origin/master
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
