@@ -32,7 +32,7 @@ public class CaseListFragment extends Fragment {
 
 
     private MasterInterface.CaseListInteractionListener mListener;
-    private List<Case> caseData = new LinkedList<>();
+    private List<Case> caseListData = new LinkedList<>();
 
     public CaseListFragment() {
 
@@ -46,23 +46,29 @@ public class CaseListFragment extends Fragment {
         ListView list = (ListView) contentView.findViewById(R.id.caseListFreg);
         final CaseListAdapter adapter = new CaseListAdapter();
         list.setAdapter(adapter);
+        Model.getInstance(new MasterInterface.GotCurrentUserLogged() {
+            @Override
+            public void Create() {
+                Model.instance.getData(new MasterInterface.GetAllCasesCallback() {
+                    @Override
+                    public void onComplete(List<Case> list) {
+                        caseListData = list;
+                        adapter.notifyDataSetChanged();
+                        setHasOptionsMenu(true);
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+                });
+            }
+        });
+
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mListener.onItemListClick("" + id);
-            }
-        });
-        Model.instance.getData(new MasterInterface.GetAllCasesCallback() {
-            @Override
-            public void onComplete(List<Case> list) {
-                caseData = list;
-                adapter.notifyDataSetChanged();
-                setHasOptionsMenu(true);
-            }
-
-            @Override
-            public void onCancel() {
-
             }
         });
         return contentView;
@@ -91,7 +97,7 @@ public class CaseListFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return caseData.size();
+            return caseListData.size();
         }
 
         @Override
@@ -101,7 +107,7 @@ public class CaseListFragment extends Fragment {
 
         @Override
         public long getItemId(int position) {
-            return Long.parseLong(caseData.get(position).getCaseId());
+            return Long.parseLong(caseListData.get(position).getCaseId());
         }
 
         @Override
@@ -110,7 +116,7 @@ public class CaseListFragment extends Fragment {
                 convertView = inflater.inflate(R.layout.case_list_row, null);
             }
 
-            final Case c = caseData.get(position);
+            final Case c = caseListData.get(position);
             ((TextView) convertView.findViewById(R.id.case_title)).setText(c.getCaseTitle());
             ((TextView) convertView.findViewById(R.id.case_date)).setText(c.getCaseDate());
             ((TextView) convertView.findViewById(R.id.case_status)).setText(c.getCaseStatus());
@@ -121,7 +127,6 @@ public class CaseListFragment extends Fragment {
             imageView.setTag(c.getCaseImageUrl());
             final ProgressBar progressBar = ((ProgressBar) convertView.findViewById(R.id.case_progress_bar));
             progressBar.setVisibility(View.GONE);
-            // add also when fail ("error upload foto")
             if (c.getCaseImageUrl() != null && !c.getCaseImageUrl().equalsIgnoreCase("url")) {
                 progressBar.setVisibility(View.VISIBLE);
                 Model.instance.getImage(c.getCaseImageUrl(), new MasterInterface.LoadImageListener() {

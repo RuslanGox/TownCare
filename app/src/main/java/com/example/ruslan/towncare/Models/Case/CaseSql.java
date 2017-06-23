@@ -42,7 +42,7 @@ public class CaseSql {
                 CASE_STATUS + " TEXT, " +
                 CASE_OPENER_PHONE + " TEXT, " +
                 CASE_OPENER_ID + " NUMBER, " +
-                CASE_TOWN + " NUMBER, " +
+                CASE_TOWN + " TEXT, " +
                 CASE_ADDRESS + " TEXT, " +
                 CASE_DESCRIPTION + " TEXT, " +
                 CASE_IMAGE_URL + " TEXT);");

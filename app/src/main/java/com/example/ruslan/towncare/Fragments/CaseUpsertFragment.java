@@ -35,6 +35,11 @@ import static android.app.Activity.RESULT_OK;
 public class CaseUpsertFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "caseID";
+    private static final int LIKE_DEFAULT_PARAMETER = 1;
+    private static final String CASE_DEFAULT_PARAMETER = "Open";
+    private static final String URL_DEFAULT_PARAMETER = "url";
+    private static final String ADMIN_PARAMETER = "Admin";
+
     private MasterInterface.UpsertInteractionListener mListener;
     private View contentView;
     private String caseId = null;
@@ -87,7 +92,7 @@ public class CaseUpsertFragment extends Fragment {
                 if (!caseId.isEmpty()) { // Edit old Case
                     final Case c = upsertCase();
                     if (bitmap != null) {
-                        Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis() + ".jpeg"), new MasterInterface.SaveImageListener() {
+                        Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis()%1000000 + ".jpeg"), new MasterInterface.SaveImageListener() {
                             @Override
                             public void complete(String url) {
                                 c.setCaseImageUrl(url);
@@ -110,7 +115,7 @@ public class CaseUpsertFragment extends Fragment {
                 } else { // Save new Case
                     final Case c = upsertCase();
                     if (bitmap != null) {
-                        Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis() + ".jpeg"), new MasterInterface.SaveImageListener() {
+                        Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis()%1000000 + ".jpeg"), new MasterInterface.SaveImageListener() {
                             @Override
                             public void complete(String url) {
                                 c.setCaseImageUrl(url);
@@ -180,10 +185,10 @@ public class CaseUpsertFragment extends Fragment {
         String caseId;
         int caseLikeCount;
         String caseStatus;
-        if (this.caseId == null) { // Insert Mode
-            caseId = Model.instance.CurrentUser.getUserId() + System.currentTimeMillis();
-            caseLikeCount = 1;
-            caseStatus = "Open";
+        if (this.caseId.isEmpty()) { // Insert Mode
+            caseId = Model.instance.CurrentUser.getUserId() + (System.currentTimeMillis()%1000000); // put inside model
+            caseLikeCount = LIKE_DEFAULT_PARAMETER;
+            caseStatus = CASE_DEFAULT_PARAMETER;
         } else {
             caseId = this.caseId;
             caseLikeCount = Integer.parseInt(((TextView) contentView.findViewById(R.id.case_like_count)).getText().toString());
@@ -194,7 +199,7 @@ public class CaseUpsertFragment extends Fragment {
         String caseType = Long.toString(((Spinner) contentView.findViewById(R.id.upsertCaseType)).getSelectedItemId());
         String caseAddress = ((EditText) contentView.findViewById(R.id.upsertCaseAddress)).getText().toString();
         String caseDesc = ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).getText().toString();
-        return new Case(caseId, caseTitle, caseDate, caseLikeCount, caseType, caseStatus, caseAddress, caseDesc, "url");
+        return new Case(caseId, caseTitle, caseDate, caseLikeCount, caseType, caseStatus, caseAddress, caseDesc, URL_DEFAULT_PARAMETER);
     }
 
 
@@ -211,7 +216,7 @@ public class CaseUpsertFragment extends Fragment {
         ((TextView) contentView.findViewById(R.id.upsertCaseStatus)).setText(aCase.getCaseStatus());
         ((Spinner) contentView.findViewById(R.id.upsertCaseType)).setSelection(Integer.parseInt(aCase.getCaseType()));
         ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).setText(aCase.getCaseDesc());
-        if (Model.instance.CurrentUser.getUserRole().equals("Admin") || Model.instance.CurrentUser.getUserId().equals(aCase.getCaseOpenerId())) {
+        if (Model.instance.CurrentUser.getUserRole().equals(ADMIN_PARAMETER) || Model.instance.CurrentUser.getUserId().equals(aCase.getCaseOpenerId())) {
             ((TextView) contentView.findViewById(R.id.upsertCaseOpenerId)).setText(aCase.getCaseOpenerId());
             ((TextView) contentView.findViewById(R.id.upsertCaseOpenerPhone)).setText(aCase.getCaseOpenerPhone());
         } else {
@@ -220,7 +225,7 @@ public class CaseUpsertFragment extends Fragment {
         }
     }
 
-    public static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

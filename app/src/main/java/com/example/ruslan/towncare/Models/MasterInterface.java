@@ -58,5 +58,9 @@ public interface MasterInterface {
         void onUpsertButtonClick(View view, boolean dataChanged);
     }
 
+    interface GotCurrentUserLogged{
+        void Create();
+    }
+
 }
 

@@ -18,21 +18,22 @@ import java.util.List;
  */
 
 public class Model {
-    public final static Model instance = new Model();
+    public static Model instance;
 
-//    private List<Case> caseList;
+    //    private List<Case> caseList;
     private ModelFireBase modelFireBase;
     private ModelSql modelSql;
 
     public User CurrentUser;
 
-    private Model() {
+    private Model(final MasterInterface.GotCurrentUserLogged callback) {
         modelSql = new ModelSql(MyApplication.getMyContext());
         modelFireBase = new ModelFireBase();
         UserFireBase.getUser(UserFireBase.getCurrentLoggedUserId(), new MasterInterface.GetUserCallback() {
             @Override
             public void onComplete(User user) {
                 CurrentUser = user;
+                callback.Create();
             }
 
             @Override
@@ -42,18 +43,23 @@ public class Model {
         });
     }
 
-    public List<Case> getDataSql() {
-        return CaseSql.getData(modelSql.getReadableDatabase());
+    public static Model getInstance(MasterInterface.GotCurrentUserLogged callback) {
+        if (instance == null) {
+            instance = new Model(callback);
+        }
+        return instance;
     }
+
+//    public List<Case> getDataSql() {
+//        return CaseSql.getData(modelSql.getReadableDatabase());
+//    }
 
     public void getData(final MasterInterface.GetAllCasesCallback callback) {
         modelFireBase.getData(new MasterInterface.GetAllCasesCallback() {
             @Override
             public void onComplete(List<Case> list) {
                 for (Case aCase : list) {
-                    if(aCase.getCaseTown().equals(CurrentUser.getUserTown())){
-                        CaseSql.addCase(modelSql.getWritableDatabase(), aCase);
-                    }
+                    CaseSql.addCase(modelSql.getWritableDatabase(), aCase);
                 }
                 callback.onComplete(CaseSql.getData(modelSql.getReadableDatabase()));
             }
@@ -123,7 +129,6 @@ public class Model {
 
         final String fileName = URLUtil.guessFileName(url, null, null);
         Log.d("Tag", "the urls is " + url);
-//        final Bitmap[] realBitmap = new Bitmap[1];
         ModelFiles.loadImageFromFileAsync(fileName, new MasterInterface.loadImageFromFileAsyncListener() {
             @Override
             public void onComplete(final Bitmap bitmap) {
