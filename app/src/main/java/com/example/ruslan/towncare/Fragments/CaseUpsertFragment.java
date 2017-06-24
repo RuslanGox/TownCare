@@ -34,7 +34,10 @@ import static android.app.Activity.RESULT_OK;
 
 public class CaseUpsertFragment extends Fragment {
 
+    private static final String ADMIN_PARAMETER = "Admin";
     private static final String ARG_PARAM1 = "caseID";
+    private static final String URL_DEFAULT_PARAMETER = "url";
+
     private MasterInterface.UpsertInteractionListener mListener;
     private View contentView;
     private String caseId = null;
@@ -61,7 +64,6 @@ public class CaseUpsertFragment extends Fragment {
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
@@ -82,54 +84,56 @@ public class CaseUpsertFragment extends Fragment {
         Button saveButton = (Button) contentView.findViewById(R.id.upsertCaseSaveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v) {
+            public void onClick(final View view) {
                 (contentView.findViewById(R.id.upsertProgressBar)).setVisibility(View.VISIBLE);
                 if (!caseId.isEmpty()) { // Edit old Case
-                    final Case c = upsertCase();
-                    if (bitmap != null) {
-                        Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis() + ".jpeg"), new MasterInterface.SaveImageListener() {
-                            @Override
-                            public void complete(String url) {
-                                c.setCaseImageUrl(url);
-                                Model.instance.updateCase(c);
-                                mListener.onUpsertButtonClick(v, true);
-                                (contentView.findViewById(R.id.upsertProgressBar)).setVisibility(View.GONE);
-                            }
-
-                            @Override
-                            public void fail() {
-                                c.setCaseImageUrl("url");
-                                Model.instance.updateCase(c);
-                                mListener.onUpsertButtonClick(v, true);
-                            }
-                        });
-                    } else {
-                        Model.instance.updateCase(c);
-                        mListener.onUpsertButtonClick(v, true);
-                    }
+                    upsertImage(view,true);
+//                    final Case c = upsertCase();
+//                    if (bitmap != null) {
+//                        Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis() + ".jpeg"), new MasterInterface.SaveImageListener() {
+//                            @Override
+//                            public void complete(String url) {
+//                                c.setCaseImageUrl(url);
+//                                Model.instance.updateCase(c);
+//                                mListener.onUpsertButtonClick(v, true);
+//                                (contentView.findViewById(R.id.upsertProgressBar)).setVisibility(View.GONE);
+//                            }
+//
+//                            @Override
+//                            public void fail() {
+//                                c.setCaseImageUrl(URL_DEFAULT_PARAMETER);
+//                                Model.instance.updateCase(c);
+//                                mListener.onUpsertButtonClick(v, true);
+//                            }
+//                        });
+//                    } else {
+//                        Model.instance.updateCase(c);
+//                        mListener.onUpsertButtonClick(v, true);
+//                    }
                 } else { // Save new Case
-                    final Case c = upsertCase();
-                    if (bitmap != null) {
-                        Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis() + ".jpeg"), new MasterInterface.SaveImageListener() {
-                            @Override
-                            public void complete(String url) {
-                                c.setCaseImageUrl(url);
-                                Model.instance.addCase(c);
-                                mListener.onUpsertButtonClick(v, false);
-                                (contentView.findViewById(R.id.upsertProgressBar)).setVisibility(View.GONE);
-                            }
-
-                            @Override
-                            public void fail() {
-                                c.setCaseImageUrl("url");
-                                Model.instance.addCase(c);
-                                mListener.onUpsertButtonClick(v, false);
-                            }
-                        });
-                    } else {
-                        Model.instance.addCase(c);
-                        mListener.onUpsertButtonClick(v, false);
-                    }
+                    upsertImage(view,false);
+//                    final Case c = upsertCase();
+//                    if (bitmap != null) {
+//                        Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis() + ".jpeg"), new MasterInterface.SaveImageListener() {
+//                            @Override
+//                            public void complete(String url) {
+//                                c.setCaseImageUrl(url);
+//                                Model.instance.addCase(c);
+//                                mListener.onUpsertButtonClick(v, false);
+//                                (contentView.findViewById(R.id.upsertProgressBar)).setVisibility(View.GONE);
+//                            }
+//
+//                            @Override
+//                            public void fail() {
+//                                c.setCaseImageUrl(URL_DEFAULT_PARAMETER);
+//                                Model.instance.addCase(c);
+//                                mListener.onUpsertButtonClick(v, false);
+//                            }
+//                        });
+//                    } else {
+//                        Model.instance.addCase(c);
+//                        mListener.onUpsertButtonClick(v, false);
+//                    }
                 }
 
             }
@@ -180,13 +184,15 @@ public class CaseUpsertFragment extends Fragment {
         String caseId;
         int caseLikeCount;
         String caseStatus;
-        if (this.caseId == null) { // Insert Mode
+        if (this.caseId.isEmpty()) { // Insert Mode
+            Log.d("TAG", "INSERT MODE");
             caseId = Model.instance.CurrentUser.getUserId() + System.currentTimeMillis();
+            Log.d("TAG", "new caseId is " + caseId);
             caseLikeCount = 1;
             caseStatus = "Open";
         } else {
             caseId = this.caseId;
-            caseLikeCount = Integer.parseInt(((TextView) contentView.findViewById(R.id.case_like_count)).getText().toString());
+            caseLikeCount =  1; //Integer.parseInt(((TextView) contentView.findViewById(R.id.case_like_count)).getText().toString());
             caseStatus = ((TextView) contentView.findViewById(R.id.upsertCaseStatus)).getText().toString();
         }
         String caseTitle = ((EditText) contentView.findViewById(R.id.upsertCaseTitle)).getText().toString();
@@ -194,13 +200,53 @@ public class CaseUpsertFragment extends Fragment {
         String caseType = Long.toString(((Spinner) contentView.findViewById(R.id.upsertCaseType)).getSelectedItemId());
         String caseAddress = ((EditText) contentView.findViewById(R.id.upsertCaseAddress)).getText().toString();
         String caseDesc = ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).getText().toString();
-        return new Case(caseId, caseTitle, caseDate, caseLikeCount, caseType, caseStatus, caseAddress, caseDesc, "url");
+        return new Case(caseId, caseTitle, caseDate, caseLikeCount, caseType, caseStatus, caseAddress, caseDesc, URL_DEFAULT_PARAMETER);
+    }
+
+    private void upsertImage(final View view, final boolean updateMode){
+        final Case c = upsertCase();
+        if (bitmap != null) {
+            Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis() + ".jpeg"), new MasterInterface.SaveImageListener() {
+                @Override
+                public void complete(String url) {
+                    c.setCaseImageUrl(url);
+                    if(updateMode){
+                        Model.instance.updateCase(c);
+                    }
+                    else{
+                        Model.instance.addCase(c);
+                    }
+                    mListener.onUpsertButtonClick(view, updateMode);
+                    (contentView.findViewById(R.id.upsertProgressBar)).setVisibility(View.GONE);
+                }
+
+                @Override
+                public void fail() {
+                    c.setCaseImageUrl(URL_DEFAULT_PARAMETER);
+                    if(updateMode){
+                        Model.instance.updateCase(c);
+                    }
+                    else{
+                        Model.instance.addCase(c);
+                    }
+                    mListener.onUpsertButtonClick(view, updateMode);
+                }
+            });
+        } else {
+            if(updateMode){
+                Model.instance.updateCase(c);
+            }
+            else{
+                Model.instance.addCase(c);
+            }
+            mListener.onUpsertButtonClick(view, updateMode);
+        }
     }
 
 
     private void showCaseData(View contentView, Case aCase) {
         ((EditText) contentView.findViewById(R.id.upsertCaseTitle)).setText(aCase.getCaseTitle());
-        if (aCase.getCaseImageUrl() != null && !aCase.getCaseImageUrl().equalsIgnoreCase("url")) {
+        if (aCase.getCaseImageUrl() != null && !aCase.getCaseImageUrl().equalsIgnoreCase(URL_DEFAULT_PARAMETER)) {
             ((ImageView) contentView.findViewById(R.id.upsertCasePic)).setImageBitmap(ModelFiles.loadImageFromFile(URLUtil.guessFileName(aCase.getCaseImageUrl(), null, null)));
         } else {
             ((ImageView) contentView.findViewById(R.id.upsertCasePic)).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.sym_def_app_icon));
@@ -211,7 +257,7 @@ public class CaseUpsertFragment extends Fragment {
         ((TextView) contentView.findViewById(R.id.upsertCaseStatus)).setText(aCase.getCaseStatus());
         ((Spinner) contentView.findViewById(R.id.upsertCaseType)).setSelection(Integer.parseInt(aCase.getCaseType()));
         ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).setText(aCase.getCaseDesc());
-        if (Model.instance.CurrentUser.getUserRole().equals("Admin") || Model.instance.CurrentUser.getUserId().equals(aCase.getCaseOpenerId())) {
+        if (Model.instance.CurrentUser.getUserRole().equals(ADMIN_PARAMETER) || Model.instance.CurrentUser.getUserId().equals(aCase.getCaseOpenerId())) {
             ((TextView) contentView.findViewById(R.id.upsertCaseOpenerId)).setText(aCase.getCaseOpenerId());
             ((TextView) contentView.findViewById(R.id.upsertCaseOpenerPhone)).setText(aCase.getCaseOpenerPhone());
         } else {

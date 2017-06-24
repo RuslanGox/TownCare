@@ -30,6 +30,7 @@ import java.util.List;
 
 public class CaseListFragment extends Fragment {
 
+    private static final String URL_DEFAULT_PARAMETER = "url";
 
     private MasterInterface.CaseListInteractionListener mListener;
     private List<Case> caseListData = new LinkedList<>();
@@ -41,7 +42,7 @@ public class CaseListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        checkSDPermission();
+        checkSDPermission();
         View contentView = inflater.inflate(R.layout.fragment_case_list, container, false);
         ListView list = (ListView) contentView.findViewById(R.id.caseListFreg);
         final CaseListAdapter adapter = new CaseListAdapter();
@@ -127,7 +128,7 @@ public class CaseListFragment extends Fragment {
             imageView.setTag(c.getCaseImageUrl());
             final ProgressBar progressBar = ((ProgressBar) convertView.findViewById(R.id.case_progress_bar));
             progressBar.setVisibility(View.GONE);
-            if (c.getCaseImageUrl() != null && !c.getCaseImageUrl().equalsIgnoreCase("url")) {
+            if (c.getCaseImageUrl() != null && !c.getCaseImageUrl().equalsIgnoreCase(URL_DEFAULT_PARAMETER)) {
                 progressBar.setVisibility(View.VISIBLE);
                 Model.instance.getImage(c.getCaseImageUrl(), new MasterInterface.LoadImageListener() {
 

@@ -19,7 +19,9 @@ import com.example.ruslan.towncare.R;
 
 
 public class CaseDetailsFragment extends Fragment {
-    public static final String ARG_PARAM1 = "CASE_ID_OF_LINKED_LIST";
+    private static final String ARG_PARAM1 = "CASE_ID_OF_LINKED_LIST";
+    private static final String ADMIN_PARAMETER = "Admin";
+    private static final String URL_DEFAULT_PARAMETER = "url";
     private String id;
 
     public CaseDetailsFragment() {
@@ -53,7 +55,7 @@ public class CaseDetailsFragment extends Fragment {
 
     private void showCaseData(View contentView, Case aCase) {
         ((TextView) contentView.findViewById(R.id.detailsCaseTitle)).setText(aCase.getCaseTitle());
-        if (aCase.getCaseImageUrl() != null && !aCase.getCaseImageUrl().equalsIgnoreCase("url")) {
+        if (aCase.getCaseImageUrl() != null && !aCase.getCaseImageUrl().equalsIgnoreCase(URL_DEFAULT_PARAMETER)) {
             ((ImageView) contentView.findViewById(R.id.detailsCasePic)).setImageBitmap(ModelFiles.loadImageFromFile(URLUtil.guessFileName(aCase.getCaseImageUrl(), null, null)));
         } else {
             ((ImageView) contentView.findViewById(R.id.detailsCasePic)).setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.sym_def_app_icon));
@@ -64,7 +66,7 @@ public class CaseDetailsFragment extends Fragment {
         ((TextView) contentView.findViewById(R.id.detailsCaseStatus)).setText(aCase.getCaseStatus());
         ((TextView) contentView.findViewById(R.id.detailsCaseType)).setText((getResources().getStringArray(R.array.caseTypes))[Integer.parseInt(aCase.getCaseType())]);
         ((TextView) contentView.findViewById(R.id.detailsCaseDesc)).setText(aCase.getCaseDesc());
-        if(Model.instance.CurrentUser.getUserRole().equals("Admin") || Model.instance.CurrentUser.getUserId().equals(aCase.getCaseOpenerId())){
+        if(Model.instance.CurrentUser.getUserRole().equals(ADMIN_PARAMETER) || Model.instance.CurrentUser.getUserId().equals(aCase.getCaseOpenerId())){
             ((TextView) contentView.findViewById(R.id.detailsCaseOpenerId)).setText(aCase.getCaseOpenerId());
             ((TextView) contentView.findViewById(R.id.detailsCaseOpenerPhone)).setText(aCase.getCaseOpenerPhone());
         }
@@ -79,7 +81,7 @@ public class CaseDetailsFragment extends Fragment {
         menu.findItem(R.id.actionBarEditButton).setVisible(true);
         menu.findItem(R.id.actionBarRemoveButton).setVisible(false);
         if (getActivity().getActionBar() != null) {
-            getActivity().getActionBar().setTitle("Case Details");
+            getActivity().getActionBar().setTitle(R.string.CaseDetails);
         }
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
     }

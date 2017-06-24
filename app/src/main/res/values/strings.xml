@@ -27,4 +27,5 @@
     <string name="town">Town</string>
     <string name="phone">Phone</string>
     <string name="edit_case">Edit Case</string>
+    <string name="CaseDetails">Case Details</string>
 </resources>
