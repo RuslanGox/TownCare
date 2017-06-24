@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.ruslan.towncare.Models.MasterInterface;
 import com.example.ruslan.towncare.Models.Model.Model;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -122,4 +123,39 @@ public class CaseFireBase {
     public static void updateCase(Case aCase) {
         addCase(aCase);
     }
+
+    public static void syncAndRegisterCaseData(long lastUpdate , final MasterInterface.RegisterCasesEvents callback) {
+        myRef.orderByChild("CaseLastUpdate").startAt(lastUpdate).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Case aCase = dataSnapshot.getValue(Case.class);
+                callback.onCaseUpdate(aCase);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Case aCase = dataSnapshot.getValue(Case.class);
+                callback.onCaseUpdate(aCase);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Case aCase = dataSnapshot.getValue(Case.class);
+                callback.onCaseUpdate(aCase);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                Case aCase = dataSnapshot.getValue(Case.class);
+                callback.onCaseUpdate(aCase);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
 }

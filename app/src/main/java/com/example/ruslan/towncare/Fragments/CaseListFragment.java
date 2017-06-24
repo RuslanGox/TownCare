@@ -19,11 +19,17 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ruslan.towncare.Models.Case.Case;
 import com.example.ruslan.towncare.Models.MasterInterface;
 import com.example.ruslan.towncare.Models.Model.Model;
+import com.example.ruslan.towncare.MyApplication;
 import com.example.ruslan.towncare.R;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -41,11 +47,24 @@ public class CaseListFragment extends Fragment {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(Model.CaseUpdateEvent event) {
+//        Toast.makeText(MyApplication.getMyContext(), "" + event.aCase.getCaseId(), Toast.LENGTH_SHORT).show();
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroyView() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroyView();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d("TAG", "STARTED ON_CREATE_VIEW");
         checkSDPermission();
+        EventBus.getDefault().register(this);
         View contentView = inflater.inflate(R.layout.fragment_case_list, container, false);
         ListView list = (ListView) contentView.findViewById(R.id.caseListFreg);
         adapter = new CaseListAdapter();

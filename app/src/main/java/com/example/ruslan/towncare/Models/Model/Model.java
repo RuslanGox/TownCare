@@ -6,11 +6,14 @@ import android.util.Log;
 import android.webkit.URLUtil;
 
 import com.example.ruslan.towncare.Models.Case.Case;
+import com.example.ruslan.towncare.Models.Case.CaseFireBase;
 import com.example.ruslan.towncare.Models.Case.CaseSql;
 import com.example.ruslan.towncare.Models.MasterInterface;
 import com.example.ruslan.towncare.Models.User.User;
 import com.example.ruslan.towncare.Models.User.UserFireBase;
 import com.example.ruslan.towncare.MyApplication;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -32,6 +35,7 @@ public class Model {
     private Model(final MasterInterface.GotCurrentUserLogged callback) {
         modelSql = new ModelSql(MyApplication.getMyContext());
         modelFireBase = new ModelFireBase();
+        syncAndRegisterCaseData();
         UserFireBase.getUser(UserFireBase.getCurrentLoggedUserId(), new MasterInterface.GetUserCallback() {
             @Override
             public void onComplete(User user) {
@@ -46,6 +50,21 @@ public class Model {
         });
     }
 
+    private void syncAndRegisterCaseData() {
+        SharedPreferences ref = MyApplication.getMyContext().getSharedPreferences("TAG", MODE_PRIVATE);
+        final long lastUpdate = ref.getLong("CaseLastUpdate", 0);
+        CaseFireBase.syncAndRegisterCaseData(lastUpdate, new MasterInterface.RegisterCasesEvents() {
+            @Override
+            public void onCaseUpdate(Case aCase) {
+                CaseSql.addCase(modelSql.getWritableDatabase(), aCase);
+                SharedPreferences.Editor prefEditor = MyApplication.getMyContext().getSharedPreferences("TAG", MODE_PRIVATE).edit();
+                prefEditor.putLong("CaseLastUpdate", aCase.getCaseLastUpdateDate()).apply();
+                EventBus.getDefault().post(new CaseUpdateEvent(aCase));
+            }
+        });
+    }
+
+
     public static boolean getInstance(MasterInterface.GotCurrentUserLogged callback) {
         if (instance == null) {
             instance = new Model(callback);
@@ -56,11 +75,19 @@ public class Model {
         }
     }
 
+    public class CaseUpdateEvent {
+        public final Case aCase;
+        public CaseUpdateEvent(Case aCase) {
+            this.aCase = aCase;
+        }
+    }
+
 //    public List<Case> getDataSql() {
 //        return CaseSql.getData(modelSql.getReadableDatabase());
 //    }
 
     public void getData(final MasterInterface.GetAllCasesCallback callback) {
+        callback.onComplete(CaseSql.getData(modelSql.getReadableDatabase()));
 //        modelFireBase.getData(new MasterInterface.GetAllCasesCallback() {
 //            @Override
 //            public void onComplete(List<Case> list) {
@@ -77,32 +104,30 @@ public class Model {
 //        });
 //        CaseSql.getData(modelSql.getReadableDatabase());
 
-        SharedPreferences ref = MyApplication.getMyContext().getSharedPreferences("TAG",MODE_PRIVATE);
-        final long lastUpdate = ref.getLong("CaseLastUpdate",0);
+//        SharedPreferences ref = MyApplication.getMyContext().getSharedPreferences("TAG",MODE_PRIVATE);
+//        final long lastUpdate = ref.getLong("CaseLastUpdate",0);
+//
+//        modelFireBase.getData(lastUpdate, new MasterInterface.GetAllCasesCallback() {
+//            @Override
+//            public void onComplete(List<Case> list) {
 
-        modelFireBase.getData(lastUpdate, new MasterInterface.GetAllCasesCallback() {
-            @Override
-            public void onComplete(List<Case> list) {
-                long newCaseLastUpdate = lastUpdate;
-                for (Case aCase: list) {
-                    CaseSql.addCase(modelSql.getWritableDatabase(),aCase);
-                    if (aCase.getCaseLastUpdateDate() > newCaseLastUpdate){
-                        newCaseLastUpdate = aCase.getCaseLastUpdateDate();
-                    }
-                }
-                SharedPreferences.Editor prefEditor = MyApplication.getMyContext().getSharedPreferences("TAG",MODE_PRIVATE).edit();
-                prefEditor.putLong("CaseLastUpdate",newCaseLastUpdate).apply();
-                callback.onComplete(CaseSql.getData(modelSql.getReadableDatabase()));
-            }
+//                long newCaseLastUpdate = lastUpdate;
+//                for (Case aCase: list) {
+//                    CaseSql.addCase(modelSql.getWritableDatabase(),aCase);
+//                    if (aCase.getCaseLastUpdateDate() > newCaseLastUpdate){
+//                        newCaseLastUpdate = aCase.getCaseLastUpdateDate();
+//                    }
+//                }
+//                SharedPreferences.Editor prefEditor = MyApplication.getMyContext().getSharedPreferences("TAG",MODE_PRIVATE).edit();
+//                prefEditor.putLong("CaseLastUpdate",newCaseLastUpdate).apply();
+//                callback.onComplete(CaseSql.getData(modelSql.getReadableDatabase()));
+//            }
 
-            @Override
-            public void onCancel() {
-
-            }
-        });
-
-
-
+//            @Override
+//            public void onCancel() {
+//
+//            }
+//        });
     }
 
     public void addCase(Case c) {

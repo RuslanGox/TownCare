@@ -20,6 +20,10 @@ public interface MasterInterface {
         void onCancel();
     }
 
+    interface RegisterCasesEvents{
+        void onCaseUpdate(Case aCase);
+    }
+
     interface GetCaseCallback {
         void onComplete(Case aCase);
         void onComplete();
