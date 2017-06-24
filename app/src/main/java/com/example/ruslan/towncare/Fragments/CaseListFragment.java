@@ -50,7 +50,8 @@ public class CaseListFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(Model.CaseUpdateEvent event) {
 //        Toast.makeText(MyApplication.getMyContext(), "" + event.aCase.getCaseId(), Toast.LENGTH_SHORT).show();
-        adapter.notifyDataSetChanged();
+//        adapter.notifyDataSetChanged();
+        GetData();
     }
 
     @Override
@@ -143,6 +144,7 @@ public class CaseListFragment extends Fragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            Log.d ("TAG" , "CaseListFragment - getView - maybe notify?");
             if (convertView == null) {
                 convertView = inflater.inflate(R.layout.case_list_row, null);
             }

@@ -3,6 +3,7 @@ package com.example.ruslan.towncare.Models.Case;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -83,6 +84,7 @@ public class CaseSql {
     }
 
     public static boolean updateCase(SQLiteDatabase db, Case aCase) {
+        Log.d("TAG" , "STARTING UPDATE CaseSQL " + aCase.getCaseTitle());
         Cursor cursor = db.query(CASE_TABLE, null, WHERE_CASE_ID, new String[]{aCase.getCaseId()}, null, null, null);
         if (cursor.moveToFirst()) {
             db.update(CASE_TABLE, getCaseValues(aCase), WHERE_CASE_ID, new String[]{aCase.getCaseId()});
@@ -90,6 +92,7 @@ public class CaseSql {
             return true;
         }
         cursor.close();
+        Log.d("TAG" , "DONE WITH THE update in CaseSQL " + aCase.getCaseTitle());
         return false;
     }
 
