@@ -27,7 +27,7 @@ public class Model {
     private ModelFireBase modelFireBase;
     private ModelSql modelSql;
 
-    public User CurrentUser;
+    public static User CurrentUser;
 
     private Model(final MasterInterface.GotCurrentUserLogged callback) {
         modelSql = new ModelSql(MyApplication.getMyContext());
@@ -46,11 +46,14 @@ public class Model {
         });
     }
 
-    public static Model getInstance(MasterInterface.GotCurrentUserLogged callback) {
+    public static boolean getInstance(MasterInterface.GotCurrentUserLogged callback) {
         if (instance == null) {
             instance = new Model(callback);
+            return true;
         }
-        return instance;
+        else{
+            return false;
+        }
     }
 
 //    public List<Case> getDataSql() {

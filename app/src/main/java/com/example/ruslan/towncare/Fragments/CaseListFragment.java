@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,6 +35,7 @@ public class CaseListFragment extends Fragment {
 
     private MasterInterface.CaseListInteractionListener mListener;
     private List<Case> caseListData = new LinkedList<>();
+    CaseListAdapter adapter;
 
     public CaseListFragment() {
 
@@ -42,29 +44,21 @@ public class CaseListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("TAG", "STARTED ON_CREATE_VIEW");
         checkSDPermission();
         View contentView = inflater.inflate(R.layout.fragment_case_list, container, false);
         ListView list = (ListView) contentView.findViewById(R.id.caseListFreg);
-        final CaseListAdapter adapter = new CaseListAdapter();
+        adapter = new CaseListAdapter();
         list.setAdapter(adapter);
-        Model.getInstance(new MasterInterface.GotCurrentUserLogged() {
+        boolean FirstLoad = Model.getInstance(new MasterInterface.GotCurrentUserLogged() {
             @Override
             public void Create() {
-                Model.instance.getData(new MasterInterface.GetAllCasesCallback() {
-                    @Override
-                    public void onComplete(List<Case> list) {
-                        caseListData = list;
-                        adapter.notifyDataSetChanged();
-                        setHasOptionsMenu(true);
-                    }
-
-                    @Override
-                    public void onCancel() {
-
-                    }
-                });
+                GetData();
             }
         });
+        if (!FirstLoad) {
+            GetData();
+        }
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -73,6 +67,23 @@ public class CaseListFragment extends Fragment {
             }
         });
         return contentView;
+    }
+
+    private void GetData() {
+        Model.instance.getData(new MasterInterface.GetAllCasesCallback() {
+            @Override
+            public void onComplete(List<Case> list) {
+                Log.d("TAG", "size of list from sql is" + list.size());
+                caseListData = list;
+                adapter.notifyDataSetChanged();
+                setHasOptionsMenu(true);
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
     }
 
     @Override

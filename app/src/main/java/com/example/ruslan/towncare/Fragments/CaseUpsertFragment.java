@@ -87,7 +87,7 @@ public class CaseUpsertFragment extends Fragment {
             public void onClick(final View view) {
                 (contentView.findViewById(R.id.upsertProgressBar)).setVisibility(View.VISIBLE);
                 if (!caseId.isEmpty()) { // Edit old Case
-                    upsertImage(view,true);
+                    upsertImage(view, true);
 //                    final Case c = upsertCase();
 //                    if (bitmap != null) {
 //                        Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis() + ".jpeg"), new MasterInterface.SaveImageListener() {
@@ -111,7 +111,7 @@ public class CaseUpsertFragment extends Fragment {
 //                        mListener.onUpsertButtonClick(v, true);
 //                    }
                 } else { // Save new Case
-                    upsertImage(view,false);
+                    upsertImage(view, false);
 //                    final Case c = upsertCase();
 //                    if (bitmap != null) {
 //                        Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis() + ".jpeg"), new MasterInterface.SaveImageListener() {
@@ -186,13 +186,13 @@ public class CaseUpsertFragment extends Fragment {
         String caseStatus;
         if (this.caseId.isEmpty()) { // Insert Mode
             Log.d("TAG", "INSERT MODE");
-            caseId = Model.instance.CurrentUser.getUserId() + System.currentTimeMillis();
+            caseId = Model.CurrentUser.getUserId() + (System.currentTimeMillis() % 100000);
             Log.d("TAG", "new caseId is " + caseId);
             caseLikeCount = 1;
             caseStatus = "Open";
         } else {
             caseId = this.caseId;
-            caseLikeCount =  1; //Integer.parseInt(((TextView) contentView.findViewById(R.id.case_like_count)).getText().toString());
+            caseLikeCount = 1; //Integer.parseInt(((TextView) contentView.findViewById(R.id.case_like_count)).getText().toString());
             caseStatus = ((TextView) contentView.findViewById(R.id.upsertCaseStatus)).getText().toString();
         }
         String caseTitle = ((EditText) contentView.findViewById(R.id.upsertCaseTitle)).getText().toString();
@@ -203,17 +203,16 @@ public class CaseUpsertFragment extends Fragment {
         return new Case(caseId, caseTitle, caseDate, caseLikeCount, caseType, caseStatus, caseAddress, caseDesc, URL_DEFAULT_PARAMETER);
     }
 
-    private void upsertImage(final View view, final boolean updateMode){
+    private void upsertImage(final View view, final boolean updateMode) {
         final Case c = upsertCase();
         if (bitmap != null) {
             Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis() + ".jpeg"), new MasterInterface.SaveImageListener() {
                 @Override
                 public void complete(String url) {
                     c.setCaseImageUrl(url);
-                    if(updateMode){
+                    if (updateMode) {
                         Model.instance.updateCase(c);
-                    }
-                    else{
+                    } else {
                         Model.instance.addCase(c);
                     }
                     mListener.onUpsertButtonClick(view, updateMode);
@@ -223,20 +222,18 @@ public class CaseUpsertFragment extends Fragment {
                 @Override
                 public void fail() {
                     c.setCaseImageUrl(URL_DEFAULT_PARAMETER);
-                    if(updateMode){
+                    if (updateMode) {
                         Model.instance.updateCase(c);
-                    }
-                    else{
+                    } else {
                         Model.instance.addCase(c);
                     }
                     mListener.onUpsertButtonClick(view, updateMode);
                 }
             });
         } else {
-            if(updateMode){
+            if (updateMode) {
                 Model.instance.updateCase(c);
-            }
-            else{
+            } else {
                 Model.instance.addCase(c);
             }
             mListener.onUpsertButtonClick(view, updateMode);
@@ -257,7 +254,7 @@ public class CaseUpsertFragment extends Fragment {
         ((TextView) contentView.findViewById(R.id.upsertCaseStatus)).setText(aCase.getCaseStatus());
         ((Spinner) contentView.findViewById(R.id.upsertCaseType)).setSelection(Integer.parseInt(aCase.getCaseType()));
         ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).setText(aCase.getCaseDesc());
-        if (Model.instance.CurrentUser.getUserRole().equals(ADMIN_PARAMETER) || Model.instance.CurrentUser.getUserId().equals(aCase.getCaseOpenerId())) {
+        if (Model.CurrentUser.getUserRole().equals(ADMIN_PARAMETER) || Model.CurrentUser.getUserId().equals(aCase.getCaseOpenerId())) {
             ((TextView) contentView.findViewById(R.id.upsertCaseOpenerId)).setText(aCase.getCaseOpenerId());
             ((TextView) contentView.findViewById(R.id.upsertCaseOpenerPhone)).setText(aCase.getCaseOpenerPhone());
         } else {

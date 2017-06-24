@@ -34,9 +34,9 @@ public class Case {
         this.caseLikeCount = caseLikeCount;
         this.caseType = caseType;
         this.caseStatus = caseStatus;
-        this.caseOpenerPhone = Model.instance.CurrentUser.getUserPhone();
-        this.caseOpenerId = Model.instance.CurrentUser.getUserId();
-        this.caseTown = Model.instance.CurrentUser.getUserTown();
+        this.caseOpenerPhone = Model.CurrentUser.getUserPhone();
+        this.caseOpenerId = Model.CurrentUser.getUserId();
+        this.caseTown = Model.CurrentUser.getUserTown();
         this.caseAddress = caseAddress;
         this.caseDesc = caseDesc;
         this.caseImageUrl = caseImageUrl;

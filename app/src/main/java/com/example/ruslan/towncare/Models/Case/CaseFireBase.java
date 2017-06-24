@@ -8,7 +8,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
@@ -26,17 +25,18 @@ public class CaseFireBase {
     private static DatabaseReference myRef = database.getReference(CaseSql.CASE_TABLE);
 
     public static void getData(long CaseLastUpdate, final MasterInterface.GetAllCasesCallback callback) {
-//        Query queryRef =
-//        myRef.orderByChild("caseTown").orderByChild("CaseLastUpdate").startAt(CaseLastUpdate).equalTo(Model.instance.CurrentUser.getUserTown());
         myRef.orderByChild("CaseLastUpdate").startAt(CaseLastUpdate);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-        @Override
+            @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Case> list = new LinkedList<>();
                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
                     Case aCase = snap.getValue(Case.class);
-                    list.add(aCase);
+                    if (Model.CurrentUser.getUserTown().equalsIgnoreCase(aCase.getCaseTown())) {
+                        list.add(aCase);
+                    }
                 }
+                Log.d("TAG", "list size is " + list.size());
                 callback.onComplete(list);
             }
 
@@ -72,18 +72,18 @@ public class CaseFireBase {
         String key = myRef.push().getKey(); // this will create a new unique key
         Map<String, Object> value = new HashMap<>();
         value.put("timeStamp", ServerValue.TIMESTAMP);
-        value.put("caseId",c.getCaseId());
-        value.put("caseTitle",c.getCaseTitle());
-        value.put("caseDate",c.getCaseDate());
-        value.put("caseLikeCount",c.getCaseLikeCount());
-        value.put("caseType",c.getCaseType());
-        value.put("caaseStatus",c.getCaseStatus());
-        value.put("caseOpenerPhone",c.getCaseOpenerPhone());
-        value.put("caseOpenerId",c.getCaseOpenerId());
-        value.put("caseTown",c.getCaseTown());
-        value.put("caseAddress",c.getCaseAddress());
-        value.put("caseDesc",c.getCaseDesc());
-        value.put("caseImageUrl",c.getCaseImageUrl());
+        value.put("caseId", c.getCaseId());
+        value.put("caseTitle", c.getCaseTitle());
+        value.put("caseDate", c.getCaseDate());
+        value.put("caseLikeCount", c.getCaseLikeCount());
+        value.put("caseType", c.getCaseType());
+        value.put("caseStatus", c.getCaseStatus());
+        value.put("caseOpenerPhone", c.getCaseOpenerPhone());
+        value.put("caseOpenerId", c.getCaseOpenerId());
+        value.put("caseTown", c.getCaseTown());
+        value.put("caseAddress", c.getCaseAddress());
+        value.put("caseDesc", c.getCaseDesc());
+        value.put("caseImageUrl", c.getCaseImageUrl());
 
 //        c.setCaseLastUpdateDate(ServerValue.TIMESTAMP);
         myRef.child("" + c.getCaseId()).setValue(value);
