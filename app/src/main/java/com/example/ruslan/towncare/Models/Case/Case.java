@@ -22,6 +22,7 @@ public class Case {
     private String caseAddress;
     private String caseDesc;
     private String caseImageUrl;
+    private long caseLastUpdateDate = 0;
 
     public Case() {
     }
@@ -42,7 +43,7 @@ public class Case {
     }
 
     // for SQL only
-    public Case(String caseId, String caseTitle, String caseDate, int caseLikeCount, String caseType, String caseStatus, String caseOpenerPhone, String caseOpenerId, String caseTown, String caseAddress, String caseDesc, String caseImageUrl) {
+    public Case(String caseId, String caseTitle, String caseDate, int caseLikeCount, String caseType, String caseStatus, String caseOpenerPhone, String caseOpenerId, String caseTown, String caseAddress, String caseDesc, String caseImageUrl , long caseLastUpdateDate) {
         this.caseId = caseId;
         this.caseTitle = caseTitle;
         this.caseDate = caseDate;
@@ -55,6 +56,7 @@ public class Case {
         this.caseAddress = caseAddress;
         this.caseDesc = caseDesc;
         this.caseImageUrl = caseImageUrl;
+        this.caseLastUpdateDate = caseLastUpdateDate;
     }
 
     public String getCaseId() {
@@ -110,8 +112,6 @@ public class Case {
     }
 
 //    public void setCaseOpenerPhone(String caseOpenerPhone) {
-//        this.caseOpenerPhone = caseOpenerPhone;
-//    }
 
     public String getCaseImageUrl() {
         return caseImageUrl;
@@ -126,16 +126,12 @@ public class Case {
     }
 
 //    public void setCaseOpenerId(String caseOpenerId) {
-//        this.caseOpenerId = caseOpenerId;
-//    }
 
     public String getCaseTown() {
         return caseTown;
     }
 
 //    public void setCaseTown(String caseTown) {
-//        this.caseTown = caseTown;
-//    }
 
     public String getCaseAddress() {
         return caseAddress;
@@ -151,5 +147,19 @@ public class Case {
 
     public void setCaseDesc(String caseDesc) {
         this.caseDesc = caseDesc;
+    }
+
+    //    }
+//        this.caseTown = caseTown;
+//    }
+//        this.caseOpenerId = caseOpenerId;
+//    }
+//        this.caseOpenerPhone = caseOpenerPhone;
+    public long getCaseLastUpdateDate() {
+        return caseLastUpdateDate;
+    }
+
+    public void setCaseLastUpdateDate(long caseLastUpdateDate) {
+        this.caseLastUpdateDate = caseLastUpdateDate;
     }
 }

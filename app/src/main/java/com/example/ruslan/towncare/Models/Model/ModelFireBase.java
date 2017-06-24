@@ -23,8 +23,8 @@ import java.io.ByteArrayOutputStream;
 
 class ModelFireBase {
 
-    void getData(final MasterInterface.GetAllCasesCallback callback) {
-        CaseFireBase.getData(callback);
+    void getData(long CaseLastUpdate , final MasterInterface.GetAllCasesCallback callback) {
+        CaseFireBase.getData(CaseLastUpdate , callback);
     }
 
 

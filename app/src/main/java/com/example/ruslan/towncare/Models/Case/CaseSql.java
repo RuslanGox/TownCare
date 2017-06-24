@@ -28,6 +28,7 @@ public class CaseSql {
     private static final String CASE_ADDRESS = "caseaddress";
     private static final String CASE_DESCRIPTION = "casedescription";
     private static final String CASE_IMAGE_URL = "caseimageurl";
+    private static final String CASE_LAST_UPDATE_DATE = "caselastupdatedate";
 
     // Queries
     private static final String WHERE_CASE_ID = "caseid=?";
@@ -45,7 +46,8 @@ public class CaseSql {
                 CASE_TOWN + " TEXT, " +
                 CASE_ADDRESS + " TEXT, " +
                 CASE_DESCRIPTION + " TEXT, " +
-                CASE_IMAGE_URL + " TEXT);");
+                CASE_IMAGE_URL + " TEXT, "+
+                CASE_LAST_UPDATE_DATE + " NUMBER);");
     }
 
     public static void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -123,6 +125,7 @@ public class CaseSql {
         values.put(CASE_ADDRESS, aCase.getCaseAddress());
         values.put(CASE_DESCRIPTION, aCase.getCaseDesc());
         values.put(CASE_IMAGE_URL, aCase.getCaseImageUrl());
+        values.put(CASE_LAST_UPDATE_DATE, aCase.getCaseLastUpdateDate());
         return values;
     }
 
@@ -139,6 +142,8 @@ public class CaseSql {
         int caseAddressIndex = cursor.getColumnIndex(CASE_ADDRESS);
         int caseDescriptionIndex = cursor.getColumnIndex(CASE_DESCRIPTION);
         int caseImageUrlIndex = cursor.getColumnIndex(CASE_IMAGE_URL);
+        int caseLastUpdateDate = cursor.getColumnIndex(CASE_LAST_UPDATE_DATE);
+
 
         return new Case(cursor.getString(idIndex),
                 cursor.getString(caseTitleIndex),
@@ -151,6 +156,7 @@ public class CaseSql {
                 cursor.getString(caseTownIndex),
                 cursor.getString(caseAddressIndex),
                 cursor.getString(caseDescriptionIndex),
-                cursor.getString(caseImageUrlIndex));
+                cursor.getString(caseImageUrlIndex),
+                cursor.getLong(caseLastUpdateDate));
     }
 }

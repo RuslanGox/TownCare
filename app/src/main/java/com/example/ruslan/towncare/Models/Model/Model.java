@@ -1,5 +1,6 @@
 package com.example.ruslan.towncare.Models.Model;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.webkit.URLUtil;
@@ -12,6 +13,8 @@ import com.example.ruslan.towncare.Models.User.UserFireBase;
 import com.example.ruslan.towncare.MyApplication;
 
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by omrih on 27-May-17.
@@ -55,21 +58,48 @@ public class Model {
 //    }
 
     public void getData(final MasterInterface.GetAllCasesCallback callback) {
-        modelFireBase.getData(new MasterInterface.GetAllCasesCallback() {
+//        modelFireBase.getData(new MasterInterface.GetAllCasesCallback() {
+//            @Override
+//            public void onComplete(List<Case> list) {
+//                for (Case aCase : list) {
+//                    CaseSql.addCase(modelSql.getWritableDatabase(), aCase);
+//                }
+//                callback.onComplete(CaseSql.getData(modelSql.getReadableDatabase()));
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//                callback.onCancel();
+//            }
+//        });
+//        CaseSql.getData(modelSql.getReadableDatabase());
+
+        SharedPreferences ref = MyApplication.getMyContext().getSharedPreferences("TAG",MODE_PRIVATE);
+        final long lastUpdate = ref.getLong("CaseLastUpdate",0);
+
+        modelFireBase.getData(lastUpdate, new MasterInterface.GetAllCasesCallback() {
             @Override
             public void onComplete(List<Case> list) {
-                for (Case aCase : list) {
-                    CaseSql.addCase(modelSql.getWritableDatabase(), aCase);
+                long newCaseLastUpdate = lastUpdate;
+                for (Case aCase: list) {
+                    CaseSql.addCase(modelSql.getWritableDatabase(),aCase);
+                    if (aCase.getCaseLastUpdateDate() > newCaseLastUpdate){
+                        newCaseLastUpdate = aCase.getCaseLastUpdateDate();
+                    }
                 }
+                SharedPreferences.Editor prefEditor = MyApplication.getMyContext().getSharedPreferences("TAG",MODE_PRIVATE).edit();
+                prefEditor.putLong("CaseLastUpdate",newCaseLastUpdate).apply();
                 callback.onComplete(CaseSql.getData(modelSql.getReadableDatabase()));
             }
 
             @Override
             public void onCancel() {
-                callback.onCancel();
+
             }
         });
-        CaseSql.getData(modelSql.getReadableDatabase());
+
+
+
     }
 
     public void addCase(Case c) {
