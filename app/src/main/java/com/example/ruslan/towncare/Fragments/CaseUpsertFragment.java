@@ -74,7 +74,7 @@ public class CaseUpsertFragment extends Fragment {
             showCaseData(contentView, Model.instance.getCase(caseId));
         }
         imageView = (ImageView) contentView.findViewById(R.id.upsertCasePic);
-        ((TextView) contentView.findViewById(R.id.upsertCaseTown)).setText(Model.instance.CurrentUser.getUserTown());
+        ((TextView) contentView.findViewById(R.id.upsertCaseTown)).setText(Model.CurrentUser.getUserTown());
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,7 +206,7 @@ public class CaseUpsertFragment extends Fragment {
     private void upsertImage(final View view, final boolean updateMode) {
         final Case c = upsertCase();
         if (bitmap != null) {
-            Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis() + ".jpeg"), new MasterInterface.SaveImageListener() {
+            Model.instance.saveImage(bitmap, (c.getCaseId() + (System.currentTimeMillis() % 100000) + ".jpeg"), new MasterInterface.SaveImageListener() {
                 @Override
                 public void complete(String url) {
                     c.setCaseImageUrl(url);
