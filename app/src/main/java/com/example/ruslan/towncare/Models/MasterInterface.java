@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.example.ruslan.towncare.Models.Case.Case;
 import com.example.ruslan.towncare.Models.Enums.AlertDialogButtons;
+import com.example.ruslan.towncare.Models.Enums.DataStateChange;
 import com.example.ruslan.towncare.Models.User.User;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public interface MasterInterface {
     }
 
     interface RegisterCasesEvents{
-        void onCaseUpdate(Case aCase);
+        void onCaseUpdate(Case aCase , DataStateChange dsc);
     }
 
     interface GetCaseCallback {

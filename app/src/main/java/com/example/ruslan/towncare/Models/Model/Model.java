@@ -8,6 +8,7 @@ import android.webkit.URLUtil;
 import com.example.ruslan.towncare.Models.Case.Case;
 import com.example.ruslan.towncare.Models.Case.CaseFireBase;
 import com.example.ruslan.towncare.Models.Case.CaseSql;
+import com.example.ruslan.towncare.Models.Enums.DataStateChange;
 import com.example.ruslan.towncare.Models.MasterInterface;
 import com.example.ruslan.towncare.Models.User.User;
 import com.example.ruslan.towncare.Models.User.UserFireBase;
@@ -56,13 +57,25 @@ public class Model {
         final long lastUpdate = ref.getLong("CaseLastUpdate", 0);
         CaseFireBase.syncAndRegisterCaseData(lastUpdate, new MasterInterface.RegisterCasesEvents() {
             @Override
-            public void onCaseUpdate(Case aCase) {
+            public void onCaseUpdate(Case aCase , DataStateChange dsc) {
                 Log.d("TAG","syncAndRegisterCaseData - MODEL - onCaseUpdate " + aCase.getCaseTitle());
-                CaseSql.addCase(modelSql.getWritableDatabase(), aCase);
+                switch (dsc){
+                    case ADDED:
+                        CaseSql.addCase(modelSql.getWritableDatabase(), aCase);
+                        break;
+                    case CHANGED:
+                        CaseSql.updateCase(modelSql.getWritableDatabase(), aCase);
+                        break;
+                    case REMOVED:
+                        CaseSql.removeCase(modelSql.getWritableDatabase() , aCase.getCaseId());
+                        break;
+                }
+
                 SharedPreferences.Editor prefEditor = MyApplication.getMyContext().getSharedPreferences("TAG", MODE_PRIVATE).edit();
                 prefEditor.putLong("CaseLastUpdate", aCase.getCaseLastUpdateDate()).apply();
                 EventBus.getDefault().post(new CaseUpdateEvent(aCase));
             }
+
         });
     }
 

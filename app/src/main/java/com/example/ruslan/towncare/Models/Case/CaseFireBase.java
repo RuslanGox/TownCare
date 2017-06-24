@@ -2,6 +2,7 @@ package com.example.ruslan.towncare.Models.Case;
 
 import android.util.Log;
 
+import com.example.ruslan.towncare.Models.Enums.DataStateChange;
 import com.example.ruslan.towncare.Models.MasterInterface;
 import com.example.ruslan.towncare.Models.Model.Model;
 import com.google.firebase.database.ChildEventListener;
@@ -131,28 +132,28 @@ public class CaseFireBase {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Case aCase = dataSnapshot.getValue(Case.class);
                 Log.d("TAG","syncAndRegisterCaseData - CaseFireBase - onChildAdded " + aCase.getCaseTitle());
-                callback.onCaseUpdate(aCase);
+                callback.onCaseUpdate(aCase , DataStateChange.ADDED);
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Case aCase = dataSnapshot.getValue(Case.class);
                 Log.d("TAG","syncAndRegisterCaseData - CaseFireBase - onChildChanged " + aCase.getCaseTitle());
-                callback.onCaseUpdate(aCase);
+                callback.onCaseUpdate(aCase , DataStateChange.CHANGED);
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Case aCase = dataSnapshot.getValue(Case.class);
                 Log.d("TAG","syncAndRegisterCaseData - CaseFireBase - onChildRemoved " + aCase.getCaseTitle());
-                callback.onCaseUpdate(aCase);
+                callback.onCaseUpdate(aCase , DataStateChange.REMOVED);
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
                 Case aCase = dataSnapshot.getValue(Case.class);
                 Log.d("TAG","syncAndRegisterCaseData - CaseFireBase - onChildMoved " + aCase.getCaseTitle());
-                callback.onCaseUpdate(aCase);
+                callback.onCaseUpdate(aCase, DataStateChange.CHANGED);
             }
 
             @Override
