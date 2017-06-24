@@ -72,7 +72,7 @@ public class CaseFireBase {
 //        c.setCaseLastUpdateDate(x);
         String key = myRef.push().getKey(); // this will create a new unique key
         Map<String, Object> value = new HashMap<>();
-        value.put("timeStamp", ServerValue.TIMESTAMP);
+        value.put("CaseLastUpdate", ServerValue.TIMESTAMP);
         value.put("caseId", c.getCaseId());
         value.put("caseTitle", c.getCaseTitle());
         value.put("caseDate", c.getCaseDate());
@@ -125,28 +125,33 @@ public class CaseFireBase {
     }
 
     public static void syncAndRegisterCaseData(long lastUpdate , final MasterInterface.RegisterCasesEvents callback) {
+        Log.d("TAG", "syncAndRegisterCaseData - CaseFireBase - pulling data from firebase");
         myRef.orderByChild("CaseLastUpdate").startAt(lastUpdate).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Case aCase = dataSnapshot.getValue(Case.class);
+                Log.d("TAG","syncAndRegisterCaseData - CaseFireBase - onChildAdded " + aCase.getCaseTitle());
                 callback.onCaseUpdate(aCase);
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Case aCase = dataSnapshot.getValue(Case.class);
+                Log.d("TAG","syncAndRegisterCaseData - CaseFireBase - onChildChanged " + aCase.getCaseTitle());
                 callback.onCaseUpdate(aCase);
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Case aCase = dataSnapshot.getValue(Case.class);
+                Log.d("TAG","syncAndRegisterCaseData - CaseFireBase - onChildRemoved " + aCase.getCaseTitle());
                 callback.onCaseUpdate(aCase);
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
                 Case aCase = dataSnapshot.getValue(Case.class);
+                Log.d("TAG","syncAndRegisterCaseData - CaseFireBase - onChildMoved " + aCase.getCaseTitle());
                 callback.onCaseUpdate(aCase);
             }
 

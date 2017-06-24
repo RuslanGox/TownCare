@@ -51,11 +51,13 @@ public class Model {
     }
 
     private void syncAndRegisterCaseData() {
+        Log.d("TAG" , "syncAndRegisterCaseData entered");
         SharedPreferences ref = MyApplication.getMyContext().getSharedPreferences("TAG", MODE_PRIVATE);
         final long lastUpdate = ref.getLong("CaseLastUpdate", 0);
         CaseFireBase.syncAndRegisterCaseData(lastUpdate, new MasterInterface.RegisterCasesEvents() {
             @Override
             public void onCaseUpdate(Case aCase) {
+                Log.d("TAG","syncAndRegisterCaseData - MODEL - onCaseUpdate " + aCase.getCaseTitle());
                 CaseSql.addCase(modelSql.getWritableDatabase(), aCase);
                 SharedPreferences.Editor prefEditor = MyApplication.getMyContext().getSharedPreferences("TAG", MODE_PRIVATE).edit();
                 prefEditor.putLong("CaseLastUpdate", aCase.getCaseLastUpdateDate()).apply();
