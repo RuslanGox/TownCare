@@ -7,5 +7,5 @@ package com.example.ruslan.towncare.Models.Enums;
 public enum DataStateChange {
     ADDED,
     CHANGED,
-    REMOVED;
+    REMOVED
 }

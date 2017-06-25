@@ -6,6 +6,5 @@ package com.example.ruslan.towncare.Models.Enums;
 
 public enum AlertDialogButtons {
     OK_BUTTON,
-    CANCEL_BUTTON,
     OK_CANCEL_BUTTONS
 }

@@ -16,8 +16,6 @@ import com.example.ruslan.towncare.MyApplication;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.List;
-
 import static android.content.Context.MODE_PRIVATE;
 
 /**
@@ -103,46 +101,6 @@ public class Model {
 
     public void getData(final MasterInterface.GetAllCasesCallback callback) {
         callback.onComplete(CaseSql.getData(modelSql.getReadableDatabase()));
-//        modelFireBase.getData(new MasterInterface.GetAllCasesCallback() {
-//            @Override
-//            public void onComplete(List<Case> list) {
-//                for (Case aCase : list) {
-//                    CaseSql.addCase(modelSql.getWritableDatabase(), aCase);
-//                }
-//                callback.onComplete(CaseSql.getData(modelSql.getReadableDatabase()));
-//            }
-//
-//            @Override
-//            public void onCancel() {
-//                callback.onCancel();
-//            }
-//        });
-//        CaseSql.getData(modelSql.getReadableDatabase());
-
-//        SharedPreferences ref = MyApplication.getMyContext().getSharedPreferences("TAG",MODE_PRIVATE);
-//        final long lastUpdate = ref.getLong("CaseLastUpdate",0);
-//
-//        modelFireBase.getData(lastUpdate, new MasterInterface.GetAllCasesCallback() {
-//            @Override
-//            public void onComplete(List<Case> list) {
-
-//                long newCaseLastUpdate = lastUpdate;
-//                for (Case aCase: list) {
-//                    CaseSql.addCase(modelSql.getWritableDatabase(),aCase);
-//                    if (aCase.getCaseLastUpdateDate() > newCaseLastUpdate){
-//                        newCaseLastUpdate = aCase.getCaseLastUpdateDate();
-//                    }
-//                }
-//                SharedPreferences.Editor prefEditor = MyApplication.getMyContext().getSharedPreferences("TAG",MODE_PRIVATE).edit();
-//                prefEditor.putLong("CaseLastUpdate",newCaseLastUpdate).apply();
-//                callback.onComplete(CaseSql.getData(modelSql.getReadableDatabase()));
-//            }
-
-//            @Override
-//            public void onCancel() {
-//
-//            }
-//        });
     }
 
     public void addCase(Case c) {
@@ -152,11 +110,6 @@ public class Model {
 
     public void removeCase(String id, final MasterInterface.GetCaseCallback callback) {
         modelFireBase.removeCase(id, new MasterInterface.GetCaseCallback() {
-            @Override
-            public void onComplete(Case aCase) {
-
-            }
-
             @Override
             public void onComplete() {
                 callback.onComplete();
@@ -227,5 +180,9 @@ public class Model {
                 }
             }
         });
+    }
+
+    public long getIdRandomizer() {
+        return System.currentTimeMillis() % 100000;
     }
 }

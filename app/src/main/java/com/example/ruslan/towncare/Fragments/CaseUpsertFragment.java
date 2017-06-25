@@ -2,7 +2,6 @@ package com.example.ruslan.towncare.Fragments;
 
 import android.Manifest;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -24,12 +23,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.ruslan.towncare.Models.Case.Case;
+import com.example.ruslan.towncare.Models.Enums.MessageResult;
+import com.example.ruslan.towncare.Models.Enums.UpsertMode;
 import com.example.ruslan.towncare.Models.MasterInterface;
 import com.example.ruslan.towncare.Models.Model.Model;
 import com.example.ruslan.towncare.Models.Model.ModelFiles;
 import com.example.ruslan.towncare.R;
 
-import static android.app.Activity.RESULT_OK;
+import org.greenrobot.eventbus.EventBus;
 
 
 public class CaseUpsertFragment extends Fragment {
@@ -37,12 +38,20 @@ public class CaseUpsertFragment extends Fragment {
     private static final String ADMIN_PARAMETER = "Admin";
     private static final String ARG_PARAM1 = "caseID";
     private static final String URL_DEFAULT_PARAMETER = "url";
+    public static final String JPEG = ".jpeg";
 
-    private MasterInterface.UpsertInteractionListener mListener;
     private View contentView;
     private String caseId = null;
     private ImageView imageView;
     private Bitmap bitmap;
+
+    public static class MessageEvent {
+        public final MessageResult messageResultn;
+
+        public MessageEvent(MessageResult messageResultn) {
+            this.messageResultn = messageResultn;
+        }
+    }
 
     public CaseUpsertFragment() {
     }
@@ -87,82 +96,20 @@ public class CaseUpsertFragment extends Fragment {
             public void onClick(final View view) {
                 (contentView.findViewById(R.id.upsertProgressBar)).setVisibility(View.VISIBLE);
                 if (!caseId.isEmpty()) { // Edit old Case
-                    upsertImage(view, true);
-//                    final Case c = upsertCase();
-//                    if (bitmap != null) {
-//                        Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis() + ".jpeg"), new MasterInterface.SaveImageListener() {
-//                            @Override
-//                            public void complete(String url) {
-//                                c.setCaseImageUrl(url);
-//                                Model.instance.updateCase(c);
-//                                mListener.onUpsertButtonClick(v, true);
-//                                (contentView.findViewById(R.id.upsertProgressBar)).setVisibility(View.GONE);
-//                            }
-//
-//                            @Override
-//                            public void fail() {
-//                                c.setCaseImageUrl(URL_DEFAULT_PARAMETER);
-//                                Model.instance.updateCase(c);
-//                                mListener.onUpsertButtonClick(v, true);
-//                            }
-//                        });
-//                    } else {
-//                        Model.instance.updateCase(c);
-//                        mListener.onUpsertButtonClick(v, true);
-//                    }
+                    upsertImageAndCase(UpsertMode.INSERT_MODE);
                 } else { // Save new Case
-                    upsertImage(view, false);
-//                    final Case c = upsertCase();
-//                    if (bitmap != null) {
-//                        Model.instance.saveImage(bitmap, (c.getCaseId() + System.currentTimeMillis() + ".jpeg"), new MasterInterface.SaveImageListener() {
-//                            @Override
-//                            public void complete(String url) {
-//                                c.setCaseImageUrl(url);
-//                                Model.instance.addCase(c);
-//                                mListener.onUpsertButtonClick(v, false);
-//                                (contentView.findViewById(R.id.upsertProgressBar)).setVisibility(View.GONE);
-//                            }
-//
-//                            @Override
-//                            public void fail() {
-//                                c.setCaseImageUrl(URL_DEFAULT_PARAMETER);
-//                                Model.instance.addCase(c);
-//                                mListener.onUpsertButtonClick(v, false);
-//                            }
-//                        });
-//                    } else {
-//                        Model.instance.addCase(c);
-//                        mListener.onUpsertButtonClick(v, false);
-//                    }
+                    upsertImageAndCase(UpsertMode.EDIT_MODE);
                 }
-
             }
         });
         Button cancelButton = (Button) contentView.findViewById(R.id.upsertCaseCancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onUpsertButtonClick(v, false);
+                EventBus.getDefault().post(new MessageEvent(MessageResult.CANCEL_BUTTON_PRESSED));
             }
         });
         return contentView;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof MasterInterface.UpsertInteractionListener) {
-            mListener = (MasterInterface.UpsertInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement CaseListInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -180,63 +127,66 @@ public class CaseUpsertFragment extends Fragment {
         }
     }
 
-    private Case upsertCase() {
+    private Case createCase() {
         String caseId;
         int caseLikeCount;
         String caseStatus;
+        String caseImageUrl;
         if (this.caseId.isEmpty()) { // Insert Mode
             Log.d("TAG", "INSERT MODE");
-            caseId = Model.CurrentUser.getUserId() + (System.currentTimeMillis() % 100000);
+            caseId = Model.CurrentUser.getUserId() + Model.instance.getIdRandomizer();
             Log.d("TAG", "new caseId is " + caseId);
             caseLikeCount = 1;
             caseStatus = "Open";
+            caseImageUrl = URL_DEFAULT_PARAMETER;
         } else {
             caseId = this.caseId;
             caseLikeCount = 1; //Integer.parseInt(((TextView) contentView.findViewById(R.id.case_like_count)).getText().toString());
             caseStatus = ((TextView) contentView.findViewById(R.id.upsertCaseStatus)).getText().toString();
+            caseImageUrl = Model.instance.getCase(caseId).getCaseImageUrl();
         }
         String caseTitle = ((EditText) contentView.findViewById(R.id.upsertCaseTitle)).getText().toString();
         String caseDate = ((EditText) contentView.findViewById(R.id.upsertCaseDate)).getText().toString();
         String caseType = Long.toString(((Spinner) contentView.findViewById(R.id.upsertCaseType)).getSelectedItemId());
         String caseAddress = ((EditText) contentView.findViewById(R.id.upsertCaseAddress)).getText().toString();
         String caseDesc = ((EditText) contentView.findViewById(R.id.upsertCaseDesc)).getText().toString();
-        return new Case(caseId, caseTitle, caseDate, caseLikeCount, caseType, caseStatus, caseAddress, caseDesc, URL_DEFAULT_PARAMETER);
+        return new Case(caseId, caseTitle, caseDate, caseLikeCount, caseType, caseStatus, caseAddress, caseDesc, caseImageUrl);
     }
 
-    private void upsertImage(final View view, final boolean updateMode) {
-        final Case c = upsertCase();
+    private void upsertImageAndCase(final UpsertMode mode) {
+        final Case c = createCase();
         if (bitmap != null) {
-            Model.instance.saveImage(bitmap, (c.getCaseId() + (System.currentTimeMillis() % 100000) + ".jpeg"), new MasterInterface.SaveImageListener() {
+            Model.instance.saveImage(bitmap, (c.getCaseId() + Model.instance.getIdRandomizer() + JPEG), new MasterInterface.SaveImageListener() {
                 @Override
                 public void complete(String url) {
                     c.setCaseImageUrl(url);
-                    if (updateMode) {
-                        Model.instance.updateCase(c);
-                    } else {
-                        Model.instance.addCase(c);
-                    }
-                    mListener.onUpsertButtonClick(view, updateMode);
+                    UpsertCase(c, mode);
                     (contentView.findViewById(R.id.upsertProgressBar)).setVisibility(View.GONE);
                 }
 
                 @Override
                 public void fail() {
                     c.setCaseImageUrl(URL_DEFAULT_PARAMETER);
-                    if (updateMode) {
-                        Model.instance.updateCase(c);
-                    } else {
-                        Model.instance.addCase(c);
-                    }
-                    mListener.onUpsertButtonClick(view, updateMode);
+                    UpsertCase(c, mode);
                 }
             });
         } else {
-            if (updateMode) {
-                Model.instance.updateCase(c);
-            } else {
+            UpsertCase(c, mode);
+        }
+    }
+
+
+
+    private void UpsertCase(Case c, final UpsertMode mode) {
+        switch (mode) {
+            case INSERT_MODE:
                 Model.instance.addCase(c);
-            }
-            mListener.onUpsertButtonClick(view, updateMode);
+                EventBus.getDefault().post(new MessageEvent(MessageResult.SAVE_BUTTON_PRESSED));
+                break;
+            case EDIT_MODE:
+                Model.instance.updateCase(c);
+                EventBus.getDefault().post(new MessageEvent(MessageResult.UPDATE_BUTTON_PRESSED));
+                break;
         }
     }
 
@@ -274,7 +224,7 @@ public class CaseUpsertFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == android.app.Activity.RESULT_OK) {
             Bundle extras = data.getExtras();
             bitmap = (Bitmap) extras.get("data");
             imageView.setImageBitmap(bitmap);

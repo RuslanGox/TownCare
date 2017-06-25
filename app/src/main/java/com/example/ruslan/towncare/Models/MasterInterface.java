@@ -26,7 +26,7 @@ public interface MasterInterface {
     }
 
     interface GetCaseCallback {
-        void onComplete(Case aCase);
+//        void onComplete(Case aCase);
         void onComplete();
         void onCancel();
     }
