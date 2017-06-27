@@ -48,18 +48,6 @@ public class CaseListFragment extends Fragment {
     public CaseListFragment() {
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(Model.CaseUpdateEvent event) {
-        if (Model.instance != null) {
-            if (toast != null) {
-                toast.cancel();
-            }
-            toast = Toast.makeText(MyApplication.getMyContext(), "Case List was updated", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        GetData();
-    }
-
     @Override
     public void onDestroyView() {
         EventBus.getDefault().unregister(this);
@@ -108,11 +96,6 @@ public class CaseListFragment extends Fragment {
                 caseListData = list;
                 adapter.notifyDataSetChanged();
             }
-
-            @Override
-            public void onCancel() {
-
-            }
         });
     }
 
@@ -135,8 +118,9 @@ public class CaseListFragment extends Fragment {
 
     @Override
     public void onPause() {
-        if (toast != null)
-            toast.cancel();
+        if (toast != null) {
+            toast.cancel(); // will cancel any ongoing Toast messages
+        }
         super.onPause();
     }
 
@@ -191,7 +175,6 @@ public class CaseListFragment extends Fragment {
 
                     @Override
                     public void onFail() {
-
                     }
                 });
             }
@@ -199,18 +182,19 @@ public class CaseListFragment extends Fragment {
         }
     }
 
-
+    // create action bar menu
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         while (Model.CurrentUser == null) {
             menu.findItem(R.id.actionBarPlusButton).setVisible(false);
         }
-        if (Model.CurrentUser.getUserRole().equals(ADMIN_PARAMETER)) {
+        if (Model.CurrentUser.getUserRole().equals(ADMIN_PARAMETER)) { // admin not allowed to create cases
             menu.findItem(R.id.actionBarPlusButton).setVisible(false);
         } else {
             menu.findItem(R.id.actionBarPlusButton).setVisible(true);
         }
     }
 
+    // ask for permission to access to sd card
     private void checkSDPermission() {
         boolean hasPermission = (ContextCompat.checkSelfPermission(getActivity(),
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
@@ -219,5 +203,17 @@ public class CaseListFragment extends Fragment {
             ActivityCompat.requestPermissions(getActivity(), new String[]{
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(Model.CaseUpdateEvent event) {
+        if (Model.instance != null) {
+            if (toast != null) {
+                toast.cancel(); // will cancel any ongoing Toast messages
+            }
+            toast = Toast.makeText(MyApplication.getMyContext(), "Case List was updated", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        GetData();
     }
 }

@@ -39,7 +39,8 @@ public class CaseUpsertFragment extends Fragment {
     private static final String URL_DEFAULT_PARAMETER = "url";
     private static final String ARG_PARAM1 = "caseID";
     private static final String ARG_PARAM2 = "upsertMode";
-    public static final String JPEG = ".jpeg";
+    private static final String JPEG = ".jpeg";
+    private static final String ERROR = "ERROR";
 
     private View contentView;
     private String caseId = null;
@@ -129,7 +130,6 @@ public class CaseUpsertFragment extends Fragment {
                     menu.findItem(R.id.actionBarRemoveButton).setVisible(true);
                 }
                 break;
-
         }
     }
 
@@ -147,15 +147,15 @@ public class CaseUpsertFragment extends Fragment {
                 break;
             case EDIT_MODE:
                 caseId = this.caseId;
-                caseLikeCount = 1; //Integer.parseInt(((TextView) contentView.findViewById(R.id.case_like_count)).getText().toString());
+                caseLikeCount = Integer.parseInt(((TextView) contentView.findViewById(R.id.caseListLikeCount)).getText().toString());
                 caseStatus = Long.toString(((Spinner) contentView.findViewById(R.id.caseUpsertType)).getSelectedItemId());
                 caseImageUrl = Model.instance.getCase(caseId).getCaseImageUrl();
                 break;
             default:
-                caseId = "ERROR";
+                caseId = ERROR;
                 caseLikeCount = -999;
-                caseStatus = "ERROR";
-                caseImageUrl = "ERROR";
+                caseStatus = ERROR;
+                caseImageUrl = ERROR;
         }
         String caseTitle = ((EditText) contentView.findViewById(R.id.caseUpsertTitle)).getText().toString();
         String caseDate = ((EditText) contentView.findViewById(R.id.caseUpsertDate)).getText().toString();
@@ -200,7 +200,6 @@ public class CaseUpsertFragment extends Fragment {
         }
     }
 
-
     private void showCaseData(View contentView, Case aCase) {
         ((EditText) contentView.findViewById(R.id.caseUpsertTitle)).setText(aCase.getCaseTitle());
         if (aCase.getCaseImageUrl() != null && !aCase.getCaseImageUrl().equalsIgnoreCase(URL_DEFAULT_PARAMETER)) {
@@ -214,21 +213,15 @@ public class CaseUpsertFragment extends Fragment {
         ((Spinner) contentView.findViewById(R.id.caseUpsertType)).setSelection(Integer.parseInt(aCase.getCaseType()));
         ((EditText) contentView.findViewById(R.id.caseUpsertDesc)).setText(aCase.getCaseDesc());
 
+        // only admin allowt to change status of the case
         if (Model.CurrentUser.getUserRole().equals(ADMIN_PARAMETER)) {
-
             ((Spinner) contentView.findViewById(R.id.caseUpsertStatus)).setClickable(true);
-//            if(Model.CurrentUser.getUserId().equals(aCase.getCaseOpenerId())) {)
             ((Spinner) contentView.findViewById(R.id.caseUpsertStatus)).setSelection(Integer.parseInt(aCase.getCaseStatus()));
-
             ((TextView) contentView.findViewById(R.id.caseUpsertOpenerId)).setText(aCase.getCaseOpenerId());
             ((TextView) contentView.findViewById(R.id.caseUpsertOpenerPhone)).setText(aCase.getCaseOpenerPhone());
             contentView.findViewById(R.id.caseUpsertOpenerId).setVisibility(View.VISIBLE);
             contentView.findViewById(R.id.caseUpsertOpenerPhone).setVisibility(View.VISIBLE);
         }
-//        } else {
-//            contentView.findViewById(R.id.caseUpsertOpenerId).setVisibility(View.INVISIBLE);
-//            contentView.findViewById(R.id.caseUpsertOpenerPhone).setVisibility(View.INVISIBLE);
-//        }
     }
 
     public static final int REQUEST_IMAGE_CAPTURE = 1;

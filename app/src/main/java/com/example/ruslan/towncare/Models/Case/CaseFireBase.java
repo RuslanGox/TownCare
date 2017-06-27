@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.example.ruslan.towncare.Models.Enums.DataStateChange;
 import com.example.ruslan.towncare.Models.MasterInterface;
-import com.example.ruslan.towncare.Models.Model.Model;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -14,8 +13,6 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,38 +21,13 @@ import java.util.Map;
 
 public class CaseFireBase {
     public static final String SORT_CASE_LAST_UPDATE = "caseLastUpdateDate";
-    public static final String CASE_LAST_UPDATE_PARAMETER = "caseLastUpdateDate";
 
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static DatabaseReference myRef = database.getReference(CaseSql.CASE_TABLE);
 
     /* --- Public Methods --- */
 
-//    public static void getData(long CaseLastUpdate, final MasterInterface.GetAllCasesCallback callback) {
-//        myRef.orderByChild(SORT_CASE_LAST_UPDATE).startAt(CaseLastUpdate);
-//        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                List<Case> list = new LinkedList<>();
-//                for (DataSnapshot snap : dataSnapshot.getChildren()) {
-//                    Case aCase = snap.getValue(Case.class);
-//                    if (Model.CurrentUser.getUserTown().equalsIgnoreCase(aCase.getCaseTown())) { // show only case for user town
-//                        list.add(aCase);
-//                    }
-//                }
-//                callback.onComplete(list);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                callback.onCancel();
-//            }
-//        });
-//    }
-
     public static void addCase(Case c) {
-
-//        String key = myRef.push().getKey(); // this will create a new unique key
         Map<String, Object> value = new HashMap<>();
         value.put("caseLastUpdateDate", ServerValue.TIMESTAMP);
         value.put("caseId", c.getCaseId());
@@ -89,13 +61,14 @@ public class CaseFireBase {
         });
     }
 
+    // using the same method as add sense it can handle insert or edit
     public static void updateCase(Case aCase) {
         addCase(aCase);
     }
 
     public static void syncAndRegisterCaseData(long lastUpdate, final MasterInterface.RegisterCasesEvents callback) {
         Log.d("TAG", "syncAndRegisterCaseData - CaseFireBase - pulling data from firebase");
-        myRef.orderByChild(CASE_LAST_UPDATE_PARAMETER).startAt(lastUpdate).addChildEventListener(new ChildEventListener() {
+        myRef.orderByChild(SORT_CASE_LAST_UPDATE).startAt(lastUpdate).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Case aCase = dataSnapshot.getValue(Case.class);

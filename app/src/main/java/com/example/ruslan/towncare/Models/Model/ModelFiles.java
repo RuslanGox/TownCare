@@ -54,7 +54,6 @@ public class ModelFiles {
     }
 
     public static void addPicureToGallery(File imageFile) {
-        //add the picture to the gallery so we dont need to manage the cache size
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         Uri contentUri = Uri.fromFile(imageFile);
         mediaScanIntent.setData(contentUri);
@@ -77,7 +76,6 @@ public class ModelFiles {
             }
         };
         task.execute(imageFileName);
-
     }
 
     public static Bitmap loadImageFromFile(String imageFileName) {

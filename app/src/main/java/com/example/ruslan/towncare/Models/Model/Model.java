@@ -5,14 +5,15 @@ import android.graphics.Bitmap;
 import android.util.Log;
 import android.webkit.URLUtil;
 
+import com.example.ruslan.towncare.LoginActivity;
 import com.example.ruslan.towncare.Models.Case.Case;
 import com.example.ruslan.towncare.Models.Case.CaseFireBase;
 import com.example.ruslan.towncare.Models.Case.CaseSql;
 import com.example.ruslan.towncare.Models.Enums.DataStateChange;
 import com.example.ruslan.towncare.Models.MasterInterface;
 import com.example.ruslan.towncare.Models.User.User;
-import com.example.ruslan.towncare.Models.User.UserFireBase;
 import com.example.ruslan.towncare.MyApplication;
+import com.example.ruslan.towncare.RegisterActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -23,7 +24,8 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class Model {
-    public static final String CASE_LAST_UPDATE_PARAMETER = "caseLastUpdateDate";
+    private static final String CASE_LAST_UPDATE_PARAMETER = "caseLastUpdateDate";
+
     public static Model instance;
     private ModelFireBase modelFireBase;
     private ModelSql modelSql;
@@ -32,7 +34,7 @@ public class Model {
     private Model(final MasterInterface.GotCurrentUserLogged callback) {
         modelSql = new ModelSql(MyApplication.getMyContext());
         modelFireBase = new ModelFireBase();
-        UserFireBase.getUser(UserFireBase.getCurrentLoggedUserId(), new MasterInterface.GetUserCallback() {
+        getUser(getCurrentLoggedUserId(), new MasterInterface.GetUserCallback() {
             @Override
             public void onComplete(User user) {
                 CurrentUser = user;
@@ -48,16 +50,24 @@ public class Model {
         });
     }
 
+    public static void getInstance(MasterInterface.GotCurrentUserLogged callback) {
+        if (instance == null) {
+            Log.d("TAG", "instance was null");
+            instance = new Model(callback);
+        }
+    }
+
+    // make the connection to the FireBase DB like (Socket.IO)
     private void syncAndRegisterCaseData() {
-        Log.d("TAG" , "syncAndRegisterCaseData entered");
+        Log.d("TAG", "syncAndRegisterCaseData entered");
         SharedPreferences ref = MyApplication.getMyContext().getSharedPreferences("TAG", MODE_PRIVATE);
         final long lastUpdate = ref.getLong(CASE_LAST_UPDATE_PARAMETER, 0);
         Log.d("TAG", "lastUpdate time is " + lastUpdate);
         CaseFireBase.syncAndRegisterCaseData(lastUpdate, new MasterInterface.RegisterCasesEvents() {
             @Override
-            public void onCaseUpdate(Case aCase , DataStateChange dsc) {
-                Log.d("TAG","syncAndRegisterCaseData - MODEL - onCaseUpdate " + aCase.getCaseTitle() + "dsc " + dsc);
-                switch (dsc){
+            public void onCaseUpdate(Case aCase, DataStateChange dsc) {
+                Log.d("TAG", "syncAndRegisterCaseData - MODEL - onCaseUpdate " + aCase.getCaseTitle() + "dsc " + dsc);
+                switch (dsc) {
                     case ADDED:
                         if (Model.CurrentUser.getUserTown().equalsIgnoreCase(aCase.getCaseTown())) { // show only case for user town
                             CaseSql.addCase(modelSql.getWritableDatabase(), aCase);
@@ -67,30 +77,14 @@ public class Model {
                         CaseSql.updateCase(modelSql.getWritableDatabase(), aCase);
                         break;
                     case REMOVED:
-                        CaseSql.removeCase(modelSql.getWritableDatabase() , aCase.getCaseId());
+                        CaseSql.removeCase(modelSql.getWritableDatabase(), aCase.getCaseId());
                         break;
                 }
-
                 SharedPreferences.Editor prefEditor = MyApplication.getMyContext().getSharedPreferences("TAG", MODE_PRIVATE).edit();
                 prefEditor.putLong(CASE_LAST_UPDATE_PARAMETER, aCase.getCaseLastUpdateDate()).apply();
                 EventBus.getDefault().post(new CaseUpdateEvent(aCase));
             }
         });
-    }
-
-
-    public static void getInstance(MasterInterface.GotCurrentUserLogged callback) {
-        if (instance == null) {
-            Log.d("TAG","instance was null");
-            instance = new Model(callback);
-        }
-    }
-
-    public class CaseUpdateEvent {
-        public final Case aCase;
-        public CaseUpdateEvent(Case aCase) {
-            this.aCase = aCase;
-        }
     }
 
     public void getData(final MasterInterface.GetAllCasesCallback callback) {
@@ -145,7 +139,6 @@ public class Model {
     }
 
     public void getImage(final String url, final MasterInterface.LoadImageListener listener) {
-
         final String fileName = URLUtil.guessFileName(url, null, null);
         Log.d("Tag", "the urls is " + url);
         ModelFiles.loadImageFromFileAsync(fileName, new MasterInterface.loadImageFromFileAsyncListener() {
@@ -179,13 +172,40 @@ public class Model {
         return System.currentTimeMillis() % 100000;
     }
 
-    public void changeLikeCount(Case aCase, boolean increase){
-        if(increase){
+    public void changeLikeCount(Case aCase, boolean increase) {
+        if (increase) {
             aCase.increaseLikeCount();
-        }
-        else{
+        } else {
             aCase.decreaseLikeCount();
         }
         updateCase(aCase);
+    }
+
+    public class CaseUpdateEvent {
+        public final Case aCase;
+
+        public CaseUpdateEvent(Case aCase) {
+            this.aCase = aCase;
+        }
+    }
+
+    public void addUser(User user) {
+        modelFireBase.addUser(user);
+    }
+
+    public String getCurrentLoggedUserId() {
+        return modelFireBase.getCurrentLoggedUserId();
+    }
+
+    public void getUser(String accountId, final MasterInterface.GetUserCallback callback) {
+        modelFireBase.getUser(accountId, callback);
+    }
+
+    public void registerAccount(RegisterActivity registerActivity, final String email, final String password, final String id, final MasterInterface.RegisterAccountCallBack callBack) {
+        modelFireBase.registerAccount(registerActivity, email, password, id, callBack);
+    }
+
+    public void loginAccount(final LoginActivity loginActivity, final String email, final String password, final MasterInterface.LoginAccountCallBack callBack) {
+        modelFireBase.loginAccount(loginActivity, email, password, callBack);
     }
 }

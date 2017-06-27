@@ -78,5 +78,4 @@ public class CaseDatePicker extends EditText implements OnDateSetListener {
     public void onDateSet(int year, int month, int day) {
         setText("" + day + "\\" + month + "\\" + year);
     }
-
 }

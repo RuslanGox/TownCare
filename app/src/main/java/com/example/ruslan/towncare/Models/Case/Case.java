@@ -150,10 +150,11 @@ public class Case {
         this.caseLastUpdateDate = caseLastUpdateDate;
     }
 
-    public void increaseLikeCount(){
+    public void increaseLikeCount() {
         this.caseLikeCount++;
     }
-    public void decreaseLikeCount(){
+
+    public void decreaseLikeCount() {
         this.caseLikeCount--;
     }
 }

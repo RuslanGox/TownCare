@@ -22,6 +22,8 @@ public class User {
         this.userRole = "user";
     }
 
+    /* --- Getters & Setters --- */
+
     public String getUserEmail() {
         return userEmail;
     }

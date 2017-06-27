@@ -53,7 +53,7 @@ public class CaseDetailsFragment extends Fragment {
         final View contentView = inflater.inflate(R.layout.fragment_case_details, container, false);
         showCaseData(contentView, Model.instance.getCase(id));
 
-        if (!Model.CurrentUser.getUserRole().equals(ADMIN_PARAMETER)){
+        if (!Model.CurrentUser.getUserRole().equals(ADMIN_PARAMETER)) {
             ImageButton likeButton = ((ImageButton) contentView.findViewById(R.id.caseDetailsLikeButton));
             likeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -92,7 +92,7 @@ public class CaseDetailsFragment extends Fragment {
         ((TextView) contentView.findViewById(R.id.caseDetailsType)).setText((getResources().getStringArray(R.array.caseTypes))[Integer.parseInt(aCase.getCaseType())]);
         ((TextView) contentView.findViewById(R.id.caseDetailsDesc)).setText(aCase.getCaseDesc());
 
-        // private info available only to admin or opener user
+        // private info available only to admin or case opener user
         if (Model.CurrentUser.getUserRole().equals(ADMIN_PARAMETER) || Model.CurrentUser.getUserId().equals(aCase.getCaseOpenerId())) {
             ((TextView) contentView.findViewById(R.id.caseDetailsOpenerId)).setText(aCase.getCaseOpenerId());
             ((TextView) contentView.findViewById(R.id.caseDetailsOpenerPhone)).setText(aCase.getCaseOpenerPhone());
@@ -104,6 +104,7 @@ public class CaseDetailsFragment extends Fragment {
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.findItem(R.id.actionBarPlusButton).setVisible(false);
+        // only admin & case opener user allow to edit post
         if (Model.CurrentUser.getUserRole().equals(ADMIN_PARAMETER) || Model.CurrentUser.getUserId().equals(Model.instance.getCase(this.id).getCaseOpenerId())) {
             menu.findItem(R.id.actionBarEditButton).setVisible(true);
         }

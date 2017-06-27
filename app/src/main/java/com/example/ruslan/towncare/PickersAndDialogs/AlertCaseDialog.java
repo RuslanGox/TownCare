@@ -12,11 +12,9 @@ import com.example.ruslan.towncare.Models.Enums.MessageResult;
 
 import org.greenrobot.eventbus.EventBus;
 
-
 /**
  * Created by omrih on 14-Jun-17.
  */
-
 
 public class AlertCaseDialog extends DialogFragment {
 
@@ -72,7 +70,6 @@ public class AlertCaseDialog extends DialogFragment {
                     }
                 });
                 break;
-
         }
         return builder.create();
     }

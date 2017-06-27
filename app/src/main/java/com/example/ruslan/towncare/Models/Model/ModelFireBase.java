@@ -6,9 +6,13 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.ruslan.towncare.LoginActivity;
 import com.example.ruslan.towncare.Models.Case.Case;
 import com.example.ruslan.towncare.Models.Case.CaseFireBase;
 import com.example.ruslan.towncare.Models.MasterInterface;
+import com.example.ruslan.towncare.Models.User.User;
+import com.example.ruslan.towncare.Models.User.UserFireBase;
+import com.example.ruslan.towncare.RegisterActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -22,10 +26,6 @@ import java.io.ByteArrayOutputStream;
  */
 
 class ModelFireBase {
-
-//    void getData(long CaseLastUpdate , final MasterInterface.GetAllCasesCallback callback) {
-//        CaseFireBase.getData(CaseLastUpdate , callback);
-//    }
 
     boolean addCase(Case aCase) {
         CaseFireBase.addCase(aCase);
@@ -59,7 +59,7 @@ class ModelFireBase {
                 @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 if (downloadUrl != null) {
                     listener.complete(downloadUrl.toString());
-                }else {
+                } else {
                     listener.fail();
                 }
             }
@@ -84,4 +84,25 @@ class ModelFireBase {
             }
         });
     }
+
+    public void addUser(User user) {
+        UserFireBase.addUser(user);
+    }
+
+    public String getCurrentLoggedUserId() {
+        return UserFireBase.getCurrentLoggedUserId();
+    }
+
+    public void getUser(String accountId, final MasterInterface.GetUserCallback callback) {
+        UserFireBase.getUser(accountId, callback);
+    }
+
+    public void registerAccount(RegisterActivity registerActivity, final String email, final String password, final String id, final MasterInterface.RegisterAccountCallBack callBack) {
+        UserFireBase.registerAccount(registerActivity, email, password, id, callBack);
+    }
+
+    public void loginAccount(final LoginActivity loginActivity, final String email, final String password, final MasterInterface.LoginAccountCallBack callBack) {
+        UserFireBase.loginAccount(loginActivity, email, password, callBack);
+    }
+
 }
