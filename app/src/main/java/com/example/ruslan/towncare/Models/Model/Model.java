@@ -78,13 +78,11 @@ public class Model {
     }
 
 
-    public static boolean getInstance(MasterInterface.GotCurrentUserLogged callback) {
+    public static void getInstance(MasterInterface.GotCurrentUserLogged callback) {
         if (instance == null) {
             instance = new Model(callback);
-            return false; // first time application is loaded
         }
         else{
-            return false;
         }
     }
 

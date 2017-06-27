@@ -2,6 +2,7 @@ package com.example.ruslan.towncare.Fragments;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -34,6 +35,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.LinkedList;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class CaseListFragment extends Fragment {
 
@@ -43,7 +46,7 @@ public class CaseListFragment extends Fragment {
     private MasterInterface.CaseListInteractionListener mListener;
     private List<Case> caseListData = new LinkedList<>();
     CaseListAdapter adapter;
-    private boolean FirstLoad = true;
+    private boolean FirstLoad;
 
     public CaseListFragment() {
 
@@ -68,6 +71,7 @@ public class CaseListFragment extends Fragment {
         checkSDPermission();
         EventBus.getDefault().register(this);
         final View contentView = inflater.inflate(R.layout.fragment_case_list, container, false);
+        FirstLoad = (getActivity().getSharedPreferences("TAG",MODE_PRIVATE)).getBoolean("FirstLoad",true);
 
         ListView list = (ListView) contentView.findViewById(R.id.caseListFragment);
         adapter = new CaseListAdapter();
@@ -77,15 +81,18 @@ public class CaseListFragment extends Fragment {
             (contentView.findViewById(R.id.caseListProgressBar)).setVisibility(View.VISIBLE);
         }
         // initialization of the Model SingleTone
-        FirstLoad = Model.getInstance(new MasterInterface.GotCurrentUserLogged() {
+        Model.getInstance(new MasterInterface.GotCurrentUserLogged() {
             @Override
             public void Create() {
                 Log.d("TAG", "Loaded data for the first time");
                 (contentView.findViewById(R.id.caseListProgressBar)).setVisibility(View.GONE);
                 GetData();
                 setHasOptionsMenu(true);
+                SharedPreferences.Editor prefEditor = MyApplication.getMyContext().getSharedPreferences("TAG", MODE_PRIVATE).edit();
+                prefEditor.putBoolean("FirstLoad",FirstLoad).apply();
             }
         });
+
         if (!FirstLoad) {
             Log.d("TAG", "Loaded data");
             GetData();
