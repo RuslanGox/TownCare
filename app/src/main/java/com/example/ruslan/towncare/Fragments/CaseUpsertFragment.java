@@ -97,7 +97,7 @@ public class CaseUpsertFragment extends Fragment {
                 saveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View view) {
-                        (contentView.findViewById(R.id.caseUpsertProgressBar)).setVisibility(View.VISIBLE);
+                        (contentView.findViewById(R.id.caseListProgressBar)).setVisibility(View.VISIBLE);
                         upsertImageAndCase();
                     }
                 });
@@ -173,7 +173,7 @@ public class CaseUpsertFragment extends Fragment {
                 public void complete(String url) {
                     c.setCaseImageUrl(url);
                     UpsertCase(c, upsertMode);
-                    (contentView.findViewById(R.id.caseUpsertProgressBar)).setVisibility(View.GONE);
+                    (contentView.findViewById(R.id.caseListProgressBar)).setVisibility(View.GONE);
                 }
 
                 @Override

@@ -13,7 +13,7 @@
     tools:context="com.example.ruslan.towncare.Fragments.CaseDetailsFragment">
 
     <ProgressBar
-        android:id="@+id/caseUpsertProgressBar"
+        android:id="@+id/caseListProgressBar"
         style="@android:style/Widget.DeviceDefault.ProgressBar.Large"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

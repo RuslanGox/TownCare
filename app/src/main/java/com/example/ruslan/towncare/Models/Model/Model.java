@@ -23,6 +23,7 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class Model {
+    public static final String CASE_LAST_UPDATE_PARAMETER = "CaseLastUpdate";
     public static Model instance;
     private ModelFireBase modelFireBase;
     private ModelSql modelSql;
@@ -31,12 +32,12 @@ public class Model {
     private Model(final MasterInterface.GotCurrentUserLogged callback) {
         modelSql = new ModelSql(MyApplication.getMyContext());
         modelFireBase = new ModelFireBase();
-        syncAndRegisterCaseData();
         UserFireBase.getUser(UserFireBase.getCurrentLoggedUserId(), new MasterInterface.GetUserCallback() {
             @Override
             public void onComplete(User user) {
                 CurrentUser = user;
                 Log.d("TAG", "USER READY");
+                syncAndRegisterCaseData();
                 callback.Create();
             }
 
@@ -50,14 +51,16 @@ public class Model {
     private void syncAndRegisterCaseData() {
         Log.d("TAG" , "syncAndRegisterCaseData entered");
         SharedPreferences ref = MyApplication.getMyContext().getSharedPreferences("TAG", MODE_PRIVATE);
-        final long lastUpdate = ref.getLong("CaseLastUpdate", 0);
+        final long lastUpdate = ref.getLong(CASE_LAST_UPDATE_PARAMETER, 0);
         CaseFireBase.syncAndRegisterCaseData(lastUpdate, new MasterInterface.RegisterCasesEvents() {
             @Override
             public void onCaseUpdate(Case aCase , DataStateChange dsc) {
                 Log.d("TAG","syncAndRegisterCaseData - MODEL - onCaseUpdate " + aCase.getCaseTitle());
                 switch (dsc){
                     case ADDED:
-                        CaseSql.addCase(modelSql.getWritableDatabase(), aCase);
+                        if (Model.CurrentUser.getUserTown().equalsIgnoreCase(aCase.getCaseTown())) { // show only case for user town
+                            CaseSql.addCase(modelSql.getWritableDatabase(), aCase);
+                        }
                         break;
                     case CHANGED:
                         CaseSql.updateCase(modelSql.getWritableDatabase(), aCase);

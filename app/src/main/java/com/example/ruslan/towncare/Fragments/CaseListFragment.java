@@ -67,7 +67,8 @@ public class CaseListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         checkSDPermission();
         EventBus.getDefault().register(this);
-        View contentView = inflater.inflate(R.layout.fragment_case_list, container, false);
+        final View contentView = inflater.inflate(R.layout.fragment_case_list, container, false);
+
         ListView list = (ListView) contentView.findViewById(R.id.caseListFragment);
         adapter = new CaseListAdapter();
         list.setAdapter(adapter);
@@ -79,8 +80,12 @@ public class CaseListFragment extends Fragment {
                 Log.d("TAG", "Loaded data for the first time");
                 GetData();
                 setHasOptionsMenu(true);
+                (contentView.findViewById(R.id.caseListProgressBar)).setVisibility(View.GONE);
             }
         });
+        if(FirstLoad){
+            (contentView.findViewById(R.id.caseListProgressBar)).setVisibility(View.VISIBLE);
+        }
         if (!FirstLoad) {
             Log.d("TAG", "Loaded data");
             GetData();

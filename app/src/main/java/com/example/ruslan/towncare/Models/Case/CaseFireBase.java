@@ -24,6 +24,7 @@ import java.util.Map;
 
 public class CaseFireBase {
     public static final String SORT_CASE_LAST_UPDATE = "CaseLastUpdate";
+    public static final String CASE_LAST_UPDATE_PARAMETER = "CaseLastUpdate";
 
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static DatabaseReference myRef = database.getReference(CaseSql.CASE_TABLE);
@@ -94,7 +95,7 @@ public class CaseFireBase {
 
     public static void syncAndRegisterCaseData(long lastUpdate, final MasterInterface.RegisterCasesEvents callback) {
         Log.d("TAG", "syncAndRegisterCaseData - CaseFireBase - pulling data from firebase");
-        myRef.orderByChild("CaseLastUpdate").startAt(lastUpdate).addChildEventListener(new ChildEventListener() {
+        myRef.orderByChild(CASE_LAST_UPDATE_PARAMETER).startAt(lastUpdate).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Case aCase = dataSnapshot.getValue(Case.class);

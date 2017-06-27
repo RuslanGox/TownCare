@@ -4,6 +4,12 @@
     android:layout_height="match_parent"
     tools:context="com.example.ruslan.towncare.Fragments.CaseListFragment">
 
+    <ProgressBar
+        android:id="@+id/caseListProgressBar"
+        style="@android:style/Widget.DeviceDefault.ProgressBar.Large"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
     <ListView
         android:id="@+id/caseListFragment"
         android:layout_width="match_parent"
