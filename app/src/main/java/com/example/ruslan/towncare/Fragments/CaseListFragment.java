@@ -198,10 +198,12 @@ public class CaseListFragment extends Fragment {
         while (Model.CurrentUser == null) {
             menu.findItem(R.id.actionBarPlusButton).setVisible(false);
         }
-        if (!Model.CurrentUser.getUserRole().equals(ADMIN_PARAMETER)) {
+        if (Model.CurrentUser.getUserRole().equals(ADMIN_PARAMETER)) {
             menu.findItem(R.id.actionBarPlusButton).setVisible(false);
         }
-        menu.findItem(R.id.actionBarPlusButton).setVisible(true);
+        else{
+            menu.findItem(R.id.actionBarPlusButton).setVisible(true);
+        }
     }
 
     private void checkSDPermission() {
