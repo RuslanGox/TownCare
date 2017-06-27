@@ -2,7 +2,6 @@ package com.example.ruslan.towncare.Fragments;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -35,8 +34,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.LinkedList;
 import java.util.List;
 
-import static android.content.Context.MODE_PRIVATE;
-
 
 public class CaseListFragment extends Fragment {
 
@@ -46,16 +43,19 @@ public class CaseListFragment extends Fragment {
     private MasterInterface.CaseListInteractionListener mListener;
     private List<Case> caseListData = new LinkedList<>();
     CaseListAdapter adapter;
-    private boolean firstLoad;
+    Toast toast;
 
     public CaseListFragment() {
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(Model.CaseUpdateEvent event) {
-        if (!firstLoad) {
-            Toast.makeText(MyApplication.getMyContext(), "Case List was updated", Toast.LENGTH_SHORT).show();
+        if (Model.instance != null) {
+            if (toast != null) {
+                toast.cancel();
+            }
+            toast = Toast.makeText(MyApplication.getMyContext(), "Case List was updated", Toast.LENGTH_SHORT);
+            toast.show();
         }
         GetData();
     }
@@ -71,31 +71,22 @@ public class CaseListFragment extends Fragment {
         checkSDPermission();
         EventBus.getDefault().register(this);
         final View contentView = inflater.inflate(R.layout.fragment_case_list, container, false);
-        Log.d("TAG", "LOAD:FirstLoad is "+getActivity().getSharedPreferences("TAG",MODE_PRIVATE).getBoolean("firstLoad",true));
-        firstLoad = getActivity().getSharedPreferences("TAG",MODE_PRIVATE).getBoolean("firstLoad",true);
 
         ListView list = (ListView) contentView.findViewById(R.id.caseListFragment);
         adapter = new CaseListAdapter();
         list.setAdapter(adapter);
 
-        if(firstLoad) {
+        if (Model.instance == null) {
             (contentView.findViewById(R.id.caseListProgressBar)).setVisibility(View.VISIBLE);
-        }
-        // initialization of the Model SingleTone
-        Model.getInstance(new MasterInterface.GotCurrentUserLogged() {
-            @Override
-            public void Create() {
-                Log.d("TAG", "Loaded data for the first time");
-                (contentView.findViewById(R.id.caseListProgressBar)).setVisibility(View.GONE);
-                GetData();
-                setHasOptionsMenu(true);
-                MyApplication.getMyContext().getSharedPreferences("TAG", MODE_PRIVATE).edit().putBoolean("firstLoad", false).apply();
-                Log.d("TAG", "SAVE:FirstLoad is "+firstLoad);
-            }
-        });
-
-        if (!firstLoad) {
-            Log.d("TAG", "Loaded data");
+            Model.getInstance(new MasterInterface.GotCurrentUserLogged() {
+                @Override
+                public void Create() {
+                    (contentView.findViewById(R.id.caseListProgressBar)).setVisibility(View.GONE);
+                    GetData();
+                    setHasOptionsMenu(true);
+                }
+            });
+        } else {
             GetData();
         }
 
@@ -110,7 +101,6 @@ public class CaseListFragment extends Fragment {
     }
 
     private void GetData() {
-        Log.d("TAG","GetData() was called");
         Model.instance.getData(new MasterInterface.GetAllCasesCallback() {
             @Override
             public void onComplete(List<Case> list) {
@@ -141,6 +131,13 @@ public class CaseListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onPause() {
+        if (toast != null)
+            toast.cancel();
+        super.onPause();
     }
 
     private class CaseListAdapter extends BaseAdapter {
@@ -209,8 +206,7 @@ public class CaseListFragment extends Fragment {
         }
         if (Model.CurrentUser.getUserRole().equals(ADMIN_PARAMETER)) {
             menu.findItem(R.id.actionBarPlusButton).setVisible(false);
-        }
-        else{
+        } else {
             menu.findItem(R.id.actionBarPlusButton).setVisible(true);
         }
     }
