@@ -23,10 +23,9 @@ import java.io.ByteArrayOutputStream;
 
 class ModelFireBase {
 
-    void getData(long CaseLastUpdate , final MasterInterface.GetAllCasesCallback callback) {
-        CaseFireBase.getData(CaseLastUpdate , callback);
-    }
-
+//    void getData(long CaseLastUpdate , final MasterInterface.GetAllCasesCallback callback) {
+//        CaseFireBase.getData(CaseLastUpdate , callback);
+//    }
 
     boolean addCase(Case aCase) {
         CaseFireBase.addCase(aCase);
@@ -68,7 +67,6 @@ class ModelFireBase {
     }
 
     void getImage(String url, final MasterInterface.LoadImageListener listener) {
-
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference httpsReference = storage.getReferenceFromUrl(url);
         final long ONE_MEGABYTE = 1024 * 1024;
@@ -81,7 +79,7 @@ class ModelFireBase {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Log.d("TAG", exception.getMessage());
+                Log.d("TAG", "getImage exception \n" + exception.getMessage());
                 listener.onFail();
             }
         });

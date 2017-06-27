@@ -23,22 +23,25 @@ import java.util.Map;
  */
 
 public class CaseFireBase {
+    public static final String SORT_CASE_LAST_UPDATE = "CaseLastUpdate";
+
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static DatabaseReference myRef = database.getReference(CaseSql.CASE_TABLE);
 
+    /* --- Public Methods --- */
+
     public static void getData(long CaseLastUpdate, final MasterInterface.GetAllCasesCallback callback) {
-        myRef.orderByChild("CaseLastUpdate").startAt(CaseLastUpdate);
+        myRef.orderByChild(SORT_CASE_LAST_UPDATE).startAt(CaseLastUpdate);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Case> list = new LinkedList<>();
                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
                     Case aCase = snap.getValue(Case.class);
-                    if (Model.CurrentUser.getUserTown().equalsIgnoreCase(aCase.getCaseTown())) {
+                    if (Model.CurrentUser.getUserTown().equalsIgnoreCase(aCase.getCaseTown())) { // show only case for user town
                         list.add(aCase);
                     }
                 }
-                Log.d("TAG", "list size is " + list.size());
                 callback.onComplete(list);
             }
 
@@ -47,31 +50,11 @@ public class CaseFireBase {
                 callback.onCancel();
             }
         });
-//        queryRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                List<Case> list = new LinkedList<>();
-//                for (DataSnapshot snap : dataSnapshot.getChildren()) {
-//                    Case aCase = snap.getValue(Case.class);
-//                    list.add(aCase);
-//                }
-//                callback.onComplete(list);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                callback.onCancel();
-//            }
-//        });
     }
 
     public static void addCase(Case c) {
-//        Map<String, Object> value = new HashMap<>();
-//        value.put("timestamp", ServerValue.TIMESTAMP);
-//
-//        Log.d("TAG"," time stamp " + value.get("timestamp"));
-//        c.setCaseLastUpdateDate(x);
-        String key = myRef.push().getKey(); // this will create a new unique key
+
+//        String key = myRef.push().getKey(); // this will create a new unique key
         Map<String, Object> value = new HashMap<>();
         value.put("CaseLastUpdate", ServerValue.TIMESTAMP);
         value.put("caseId", c.getCaseId());
@@ -87,7 +70,6 @@ public class CaseFireBase {
         value.put("caseDesc", c.getCaseDesc());
         value.put("caseImageUrl", c.getCaseImageUrl());
 
-//        c.setCaseLastUpdateDate(ServerValue.TIMESTAMP);
         myRef.child("" + c.getCaseId()).setValue(value);
     }
 
@@ -106,53 +88,38 @@ public class CaseFireBase {
         });
     }
 
-//    public static void getCase(String id, final MasterInterface.GetCaseCallback callback) {
-//        myRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                Case aCase = dataSnapshot.getValue(Case.class);
-//                callback.onComplete(aCase);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                callback.onCancel();
-//            }
-//        });
-//    }
-
     public static void updateCase(Case aCase) {
         addCase(aCase);
     }
 
-    public static void syncAndRegisterCaseData(long lastUpdate , final MasterInterface.RegisterCasesEvents callback) {
+    public static void syncAndRegisterCaseData(long lastUpdate, final MasterInterface.RegisterCasesEvents callback) {
         Log.d("TAG", "syncAndRegisterCaseData - CaseFireBase - pulling data from firebase");
         myRef.orderByChild("CaseLastUpdate").startAt(lastUpdate).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Case aCase = dataSnapshot.getValue(Case.class);
-                Log.d("TAG","syncAndRegisterCaseData - CaseFireBase - onChildAdded " + aCase.getCaseTitle());
-                callback.onCaseUpdate(aCase , DataStateChange.ADDED);
+                Log.d("TAG", "syncAndRegisterCaseData - CaseFireBase - onChildAdded " + aCase.getCaseTitle());
+                callback.onCaseUpdate(aCase, DataStateChange.ADDED);
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Case aCase = dataSnapshot.getValue(Case.class);
-                Log.d("TAG","syncAndRegisterCaseData - CaseFireBase - onChildChanged " + aCase.getCaseTitle());
-                callback.onCaseUpdate(aCase , DataStateChange.CHANGED);
+                Log.d("TAG", "syncAndRegisterCaseData - CaseFireBase - onChildChanged " + aCase.getCaseTitle());
+                callback.onCaseUpdate(aCase, DataStateChange.CHANGED);
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Case aCase = dataSnapshot.getValue(Case.class);
-                Log.d("TAG","syncAndRegisterCaseData - CaseFireBase - onChildRemoved " + aCase.getCaseTitle());
-                callback.onCaseUpdate(aCase , DataStateChange.REMOVED);
+                Log.d("TAG", "syncAndRegisterCaseData - CaseFireBase - onChildRemoved " + aCase.getCaseTitle());
+                callback.onCaseUpdate(aCase, DataStateChange.REMOVED);
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
                 Case aCase = dataSnapshot.getValue(Case.class);
-                Log.d("TAG","syncAndRegisterCaseData - CaseFireBase - onChildMoved " + aCase.getCaseTitle());
+                Log.d("TAG", "syncAndRegisterCaseData - CaseFireBase - onChildMoved " + aCase.getCaseTitle());
                 callback.onCaseUpdate(aCase, DataStateChange.CHANGED);
             }
 
@@ -162,6 +129,4 @@ public class CaseFireBase {
             }
         });
     }
-
-
 }

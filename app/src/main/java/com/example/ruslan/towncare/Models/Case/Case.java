@@ -1,9 +1,6 @@
 package com.example.ruslan.towncare.Models.Case;
 
-import android.widget.TextView;
-
 import com.example.ruslan.towncare.Models.Model.Model;
-import com.example.ruslan.towncare.R;
 
 /**
  * Created by omrih on 27-May-17.
@@ -43,7 +40,7 @@ public class Case {
     }
 
     // for SQL only
-    public Case(String caseId, String caseTitle, String caseDate, int caseLikeCount, String caseType, String caseStatus, String caseOpenerPhone, String caseOpenerId, String caseTown, String caseAddress, String caseDesc, String caseImageUrl , long caseLastUpdateDate) {
+    public Case(String caseId, String caseTitle, String caseDate, int caseLikeCount, String caseType, String caseStatus, String caseOpenerPhone, String caseOpenerId, String caseTown, String caseAddress, String caseDesc, String caseImageUrl, long caseLastUpdateDate) {
         this.caseId = caseId;
         this.caseTitle = caseTitle;
         this.caseDate = caseDate;
@@ -58,6 +55,8 @@ public class Case {
         this.caseImageUrl = caseImageUrl;
         this.caseLastUpdateDate = caseLastUpdateDate;
     }
+
+    /* --- Getters & Setters --- */
 
     public String getCaseId() {
         return caseId;
@@ -111,8 +110,6 @@ public class Case {
         return caseOpenerPhone;
     }
 
-//    public void setCaseOpenerPhone(String caseOpenerPhone) {
-
     public String getCaseImageUrl() {
         return caseImageUrl;
     }
@@ -125,13 +122,9 @@ public class Case {
         return caseOpenerId;
     }
 
-//    public void setCaseOpenerId(String caseOpenerId) {
-
     public String getCaseTown() {
         return caseTown;
     }
-
-//    public void setCaseTown(String caseTown) {
 
     public String getCaseAddress() {
         return caseAddress;
@@ -149,17 +142,18 @@ public class Case {
         this.caseDesc = caseDesc;
     }
 
-    //    }
-//        this.caseTown = caseTown;
-//    }
-//        this.caseOpenerId = caseOpenerId;
-//    }
-//        this.caseOpenerPhone = caseOpenerPhone;
     public long getCaseLastUpdateDate() {
         return caseLastUpdateDate;
     }
 
     public void setCaseLastUpdateDate(long caseLastUpdateDate) {
         this.caseLastUpdateDate = caseLastUpdateDate;
+    }
+
+    public void increaseLikeCount(){
+        this.caseLikeCount++;
+    }
+    public void decreaseLikeCount(){
+        this.caseLikeCount--;
     }
 }

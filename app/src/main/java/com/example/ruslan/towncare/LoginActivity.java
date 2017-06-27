@@ -22,13 +22,14 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Button btn_signIn = (Button) findViewById(R.id.btn_signIn);
+        Button btn_signIn = (Button) findViewById(R.id.loginButtonSignIn);
         btn_signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                String email = ((EditText) findViewById(R.id.userName)).getText().toString();
-                String pwd = ((EditText) findViewById(R.id.password)).getText().toString();
+                final String email = ((EditText) findViewById(R.id.loginUserName)).getText().toString();
+                final String pwd = ((EditText) findViewById(R.id.loginPassword)).getText().toString();
+
                 if (!email.isEmpty() && !pwd.isEmpty()) {
                     mAuth.signInWithEmailAndPassword(email, pwd)
                             .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
@@ -36,16 +37,13 @@ public class LoginActivity extends Activity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
-                                        Log.d("TAG", "signInWithEmail:success");
+                                        Log.d("TAG", "signInWithEmail:success -> " + email);
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(intent);
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.w("TAG", "signInWithEmail:failure", task.getException());
-                                        Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                                Toast.LENGTH_SHORT).show();
                                     }
-
                                 }
                             });
                 } else {
@@ -54,7 +52,7 @@ public class LoginActivity extends Activity {
             }
         });
 
-        Button btn_signUp = (Button) findViewById(R.id.btn_signUp);
+        Button btn_signUp = (Button) findViewById(R.id.loginButtonSignUp);
         btn_signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -38,10 +38,12 @@ import java.util.List;
 public class CaseListFragment extends Fragment {
 
     private static final String URL_DEFAULT_PARAMETER = "url";
+    private static final String ADMIN_PARAMETER = "Admin";
 
     private MasterInterface.CaseListInteractionListener mListener;
     private List<Case> caseListData = new LinkedList<>();
     CaseListAdapter adapter;
+    private boolean FirstLoad = true;
 
     public CaseListFragment() {
 
@@ -49,7 +51,9 @@ public class CaseListFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(Model.CaseUpdateEvent event) {
-        Toast.makeText(MyApplication.getMyContext(), "A new Case was added", Toast.LENGTH_SHORT).show();
+        if (!FirstLoad) {
+            Toast.makeText(MyApplication.getMyContext(), "Case List was updated", Toast.LENGTH_SHORT).show();
+        }
         GetData();
     }
 
@@ -60,27 +64,32 @@ public class CaseListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         checkSDPermission();
         EventBus.getDefault().register(this);
         View contentView = inflater.inflate(R.layout.fragment_case_list, container, false);
-        ListView list = (ListView) contentView.findViewById(R.id.caseListFreg);
+        ListView list = (ListView) contentView.findViewById(R.id.caseListFragment);
         adapter = new CaseListAdapter();
         list.setAdapter(adapter);
-        boolean FirstLoad = Model.getInstance(new MasterInterface.GotCurrentUserLogged() {
+
+        // initialization of the Model SingleTone
+        FirstLoad = Model.getInstance(new MasterInterface.GotCurrentUserLogged() {
             @Override
             public void Create() {
+                Log.d("TAG", "Loaded data for the first time");
                 GetData();
+                setHasOptionsMenu(true);
             }
         });
         if (!FirstLoad) {
+            Log.d("TAG", "Loaded data");
             GetData();
         }
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("TAG", "Case was clicked -> " + id);
                 mListener.onItemListClick("" + id);
             }
         });
@@ -91,10 +100,9 @@ public class CaseListFragment extends Fragment {
         Model.instance.getData(new MasterInterface.GetAllCasesCallback() {
             @Override
             public void onComplete(List<Case> list) {
-                Log.d("TAG", "size of list from sql is" + list.size());
+                Log.d("TAG", "data loaded from Sql DB -> " + list.size());
                 caseListData = list;
                 adapter.notifyDataSetChanged();
-                setHasOptionsMenu(true);
             }
 
             @Override
@@ -147,15 +155,15 @@ public class CaseListFragment extends Fragment {
             }
 
             final Case c = caseListData.get(position);
-            ((TextView) convertView.findViewById(R.id.case_title)).setText(c.getCaseTitle());
-            ((TextView) convertView.findViewById(R.id.case_date)).setText(c.getCaseDate());
-            ((TextView) convertView.findViewById(R.id.case_status)).setText(c.getCaseStatus());
-            ((TextView) convertView.findViewById(R.id.case_like_count)).setText(String.valueOf(c.getCaseLikeCount()));
-            ((TextView) convertView.findViewById(R.id.case_type)).setText(c.getCaseType());
-            final ImageView imageView = ((ImageView) convertView.findViewById(R.id.case_image));
+            ((TextView) convertView.findViewById(R.id.caseListTitle)).setText(c.getCaseTitle());
+            ((TextView) convertView.findViewById(R.id.caseListDate)).setText(c.getCaseDate());
+            ((TextView) convertView.findViewById(R.id.caseListStatus)).setText(c.getCaseStatus());
+            ((TextView) convertView.findViewById(R.id.caseListLikeCount)).setText(String.valueOf(c.getCaseLikeCount()));
+            ((TextView) convertView.findViewById(R.id.caseListType)).setText(c.getCaseType());
+            final ImageView imageView = ((ImageView) convertView.findViewById(R.id.caseListImage));
             imageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.sym_def_app_icon));
             imageView.setTag(c.getCaseImageUrl());
-            final ProgressBar progressBar = ((ProgressBar) convertView.findViewById(R.id.case_progress_bar));
+            final ProgressBar progressBar = ((ProgressBar) convertView.findViewById(R.id.caseProgressBar));
             progressBar.setVisibility(View.GONE);
             if (c.getCaseImageUrl() != null && !c.getCaseImageUrl().equalsIgnoreCase(URL_DEFAULT_PARAMETER)) {
                 progressBar.setVisibility(View.VISIBLE);
@@ -180,7 +188,14 @@ public class CaseListFragment extends Fragment {
         }
     }
 
+
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        while (Model.CurrentUser == null) {
+            menu.findItem(R.id.actionBarPlusButton).setVisible(false);
+        }
+        if (!Model.CurrentUser.getUserRole().equals(ADMIN_PARAMETER)) {
+            menu.findItem(R.id.actionBarPlusButton).setVisible(false);
+        }
         menu.findItem(R.id.actionBarPlusButton).setVisible(true);
     }
 

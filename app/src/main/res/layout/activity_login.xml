@@ -45,12 +45,12 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="center"
-            android:labelFor="@+id/userName"
+            android:labelFor="@+id/loginUserName"
             android:text="@string/login_user_email"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/userName"
+            android:id="@+id/loginUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -68,12 +68,12 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="center"
-            android:labelFor="@+id/password"
-            android:text="@string/login_passowrd"
+            android:labelFor="@+id/loginPassword"
+            android:text="@string/login_password"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/loginPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -94,7 +94,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_signUp"
+                android:id="@+id/loginButtonSignUp"
                 android:layout_width="1dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -103,7 +103,7 @@
                 android:text="@string/login_signup_button" />
 
             <Button
-                android:id="@+id/btn_signIn"
+                android:id="@+id/loginButtonSignIn"
                 android:layout_width="1dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"

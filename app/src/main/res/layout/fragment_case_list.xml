@@ -5,7 +5,7 @@
     tools:context="com.example.ruslan.towncare.Fragments.CaseListFragment">
 
     <ListView
-        android:id="@+id/caseListFreg"
+        android:id="@+id/caseListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

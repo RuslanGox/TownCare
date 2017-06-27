@@ -30,24 +30,32 @@ public class ModelFiles {
         try {
             File dir = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES);
+            boolean mkdirSuccess = true;
+            boolean newFileSuccess = true;
             if (!dir.exists()) {
-                dir.mkdir();
+                mkdirSuccess = dir.mkdir();
             }
-            File imageFile = new File(dir, imageFileName);
-            imageFile.createNewFile();
-            OutputStream out = new FileOutputStream(imageFile);
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.close();
-            addPicureToGallery(imageFile);
+            if (mkdirSuccess) {
+                File imageFile = new File(dir, imageFileName);
+                newFileSuccess = imageFile.createNewFile();
+                if (newFileSuccess) {
+                    OutputStream out = new FileOutputStream(imageFile);
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    out.close();
+                    addPicureToGallery(imageFile);
+                    return;
+                }
+            }
+            throw new IOException("mkdirSuccess:" + mkdirSuccess + "newFileSuccess:" + newFileSuccess);
         } catch (IOException e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
 
     public static void addPicureToGallery(File imageFile) {
         //add the picture to the gallery so we dont need to manage the cache size
-        Intent mediaScanIntent = new
-                Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         Uri contentUri = Uri.fromFile(imageFile);
         mediaScanIntent.setData(contentUri);
         MyApplication.getMyContext().sendBroadcast(mediaScanIntent);
@@ -55,11 +63,9 @@ public class ModelFiles {
 
 
     public static void loadImageFromFileAsync(final String imageFileName, final MasterInterface.loadImageFromFileAsyncListener listener) {
-
         AsyncTask<String, String, Bitmap> task = new AsyncTask<String, String, Bitmap>() {
             @Override
             protected Bitmap doInBackground(String... params) {
-                Log.d("TAG", "Thred");
                 return loadImageFromFile(imageFileName);
             }
 

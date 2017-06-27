@@ -26,7 +26,6 @@ public interface MasterInterface {
     }
 
     interface GetCaseCallback {
-//        void onComplete(Case aCase);
         void onComplete();
         void onCancel();
     }
@@ -51,17 +50,17 @@ public interface MasterInterface {
 
     }
 
-    interface AlertCaseDialogListener {
-        void onAlertButtonClick(AlertDialogButtons which, boolean dataChanged);
-    }
+//    interface AlertCaseDialogListener {
+//        void onAlertButtonClick(AlertDialogButtons which, boolean dataChanged);
+//    }
 
     interface CaseListInteractionListener {
         void onItemListClick(String id);
     }
 
-    interface UpsertInteractionListener {
-        void onUpsertButtonClick(View view, boolean dataChanged);
-    }
+//    interface UpsertInteractionListener {
+//        void onUpsertButtonClick(View view, boolean dataChanged);
+//    }
 
     interface GotCurrentUserLogged{
         void Create();

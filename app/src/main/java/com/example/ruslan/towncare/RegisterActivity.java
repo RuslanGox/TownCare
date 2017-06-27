@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.ruslan.towncare.Models.User.User;
 import com.example.ruslan.towncare.Models.User.UserFireBase;
@@ -17,8 +16,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-
-import static android.content.ContentValues.TAG;
 
 public class RegisterActivity extends Activity {
     private FirebaseAuth mAuth;
@@ -34,14 +31,15 @@ public class RegisterActivity extends Activity {
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = ((EditText) findViewById(R.id.createAccountUserEmail)).getText().toString();
-                String password = ((EditText) findViewById(R.id.createAccountPassword)).getText().toString();
+                final String email = ((EditText) findViewById(R.id.createAccountUserEmail)).getText().toString();
+                final String password = ((EditText) findViewById(R.id.createAccountPassword)).getText().toString();
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                    Log.d("TAG", "createUserWithEmail:success -> " + email);
+                                    final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                             .setDisplayName(((EditText) findViewById(R.id.createAccountId)).getText().toString())
                                             .build();
@@ -51,22 +49,16 @@ public class RegisterActivity extends Activity {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
-                                                            Log.d(TAG, "User profile updated.");
-                                                            Log.d(TAG, "createUserWithEmail:success");
+                                                            Log.d("TAG", "User profile updated -> " + user.getDisplayName());
                                                             UserFireBase.addUser(newUser());
                                                             finish();
                                                         }
                                                     }
                                                 });
                                     }
-                                    // Sign in success, update UI with the signed-in user's information
-
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-
+                                    Log.w("TAG", "createUserWithEmail:failure", task.getException());
                                 }
                             }
                         });

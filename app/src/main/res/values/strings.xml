@@ -2,22 +2,24 @@
     <string name="app_name">TownCare</string>
     <string name="because_we_care">Because WE care</string>
     <string name="login_user_email">Account Email</string>
-    <string name="login_passowrd">Password</string>
+    <string name="login_password">Password</string>
     <string name="login_signup_button">SignUp</string>
     <string name="login_signin_button">SignIn</string>
     <string name="title_activity_main">MainActivity</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <string name="casePrompt">Choose a type</string>
     <string name="create_case">Create Case</string>
-    <string name="button_save">SAVE</string>
-    <string name="button_cancel">CANCEL</string>
+    <string name="button_save">Save</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="caseTypePrompt">Choose a type</string>
     <string-array name="caseTypes">
-        <item>בטיחות</item>
-        <item>סכנה</item>
-        <item>ליכלוך</item>
+        <item>Complaint</item>
+        <item>Danger Hazard</item>
+        <item>Suggestion</item>
+    </string-array>
+    <string name="caseStatusPrompt">Choose a status</string>
+    <string-array name="caseStatus">
+        <item>Open</item>
+        <item>Issued</item>
+        <item>Close</item>
     </string-array>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="cancel">Cancel</string>
@@ -28,4 +30,6 @@
     <string name="phone">Phone</string>
     <string name="edit_case">Edit Case</string>
     <string name="CaseDetails">Case Details</string>
+    <string name="log_out">Log Out</string>
+    <string name="delete_case">Delete Case</string>
 </resources>

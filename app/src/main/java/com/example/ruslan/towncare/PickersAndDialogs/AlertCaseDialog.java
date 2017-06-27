@@ -3,7 +3,6 @@ package com.example.ruslan.towncare.PickersAndDialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -21,7 +20,6 @@ import org.greenrobot.eventbus.EventBus;
 
 public class AlertCaseDialog extends DialogFragment {
 
-    //    private MasterInterface.AlertCaseDialogListener mListener;
     public static final String ARG_PARAM1 = "CASE_ID";
     public static final String ARG_PARAM2 = "ALERT_BUTTONS";
 
@@ -58,18 +56,9 @@ public class AlertCaseDialog extends DialogFragment {
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        mListener.onAlertButtonClick(OK_BUTTON, false);
                     }
                 });
                 break;
-//            case CANCEL_BUTTON:
-//                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-////                        mListener.onAlertButtonClick(CANCEL_BUTTON, false);
-//                    }
-//                });
-//                break;
             case OK_CANCEL_BUTTONS:
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
@@ -80,29 +69,11 @@ public class AlertCaseDialog extends DialogFragment {
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        mListener.onAlertButtonClick(CANCEL_BUTTON, false);
                     }
                 });
                 break;
 
         }
         return builder.create();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-//        if (context instanceof MasterInterface.AlertCaseDialogListener) {
-//            mListener = (MasterInterface.AlertCaseDialogListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement AlertCaseDialogListener");
-//        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-//        mListener = null;
     }
 }

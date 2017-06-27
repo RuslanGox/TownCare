@@ -60,7 +60,7 @@
             android:layout_margin="10dp"
             android:gravity="center"
             android:labelFor="@+id/createAccountPassword"
-            android:text="@string/login_passowrd"
+            android:text="@string/login_password"
             android:textSize="18sp" />
 
         <EditText

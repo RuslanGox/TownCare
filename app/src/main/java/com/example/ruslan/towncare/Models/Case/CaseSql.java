@@ -33,6 +33,9 @@ public class CaseSql {
 
     // Queries
     private static final String WHERE_CASE_ID = "caseid=?";
+    private static final String ORDER_BY_LIKE_COUNT_DESC = CASE_LIKE_COUNT + " DESC";
+
+    /* --- Public Methods --- */
 
     public static void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + CASE_TABLE + "(" +
@@ -47,7 +50,7 @@ public class CaseSql {
                 CASE_TOWN + " TEXT, " +
                 CASE_ADDRESS + " TEXT, " +
                 CASE_DESCRIPTION + " TEXT, " +
-                CASE_IMAGE_URL + " TEXT, "+
+                CASE_IMAGE_URL + " TEXT, " +
                 CASE_LAST_UPDATE_DATE + " NUMBER);");
     }
 
@@ -58,7 +61,7 @@ public class CaseSql {
 
 
     public static List<Case> getData(SQLiteDatabase db) {
-        Cursor cursor = db.query(CASE_TABLE, null, null, null, null, null, null);
+        Cursor cursor = db.query(CASE_TABLE, null, null, null, null, null, ORDER_BY_LIKE_COUNT_DESC);
         List<Case> caseList = new LinkedList<>();
         if (cursor.moveToFirst()) {
             do {
@@ -84,7 +87,7 @@ public class CaseSql {
     }
 
     public static boolean updateCase(SQLiteDatabase db, Case aCase) {
-        Log.d("TAG" , "STARTING UPDATE CaseSQL " + aCase.getCaseTitle());
+        Log.d("TAG", "STARTING UPDATE CaseSQL " + aCase.getCaseTitle());
         Cursor cursor = db.query(CASE_TABLE, null, WHERE_CASE_ID, new String[]{aCase.getCaseId()}, null, null, null);
         if (cursor.moveToFirst()) {
             db.update(CASE_TABLE, getCaseValues(aCase), WHERE_CASE_ID, new String[]{aCase.getCaseId()});
@@ -92,7 +95,7 @@ public class CaseSql {
             return true;
         }
         cursor.close();
-        Log.d("TAG" , "DONE WITH THE update in CaseSQL " + aCase.getCaseTitle());
+        Log.d("TAG", "DONE WITH THE update in CaseSQL " + aCase.getCaseTitle());
         return false;
     }
 
@@ -146,7 +149,6 @@ public class CaseSql {
         int caseDescriptionIndex = cursor.getColumnIndex(CASE_DESCRIPTION);
         int caseImageUrlIndex = cursor.getColumnIndex(CASE_IMAGE_URL);
         int caseLastUpdateDate = cursor.getColumnIndex(CASE_LAST_UPDATE_DATE);
-
 
         return new Case(cursor.getString(idIndex),
                 cursor.getString(caseTitleIndex),

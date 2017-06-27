@@ -24,11 +24,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Model {
     public static Model instance;
-
-    //    private List<Case> caseList;
     private ModelFireBase modelFireBase;
     private ModelSql modelSql;
-
     public static User CurrentUser;
 
     private Model(final MasterInterface.GotCurrentUserLogged callback) {
@@ -39,6 +36,7 @@ public class Model {
             @Override
             public void onComplete(User user) {
                 CurrentUser = user;
+                Log.d("TAG", "USER READY");
                 callback.Create();
             }
 
@@ -73,7 +71,6 @@ public class Model {
                 prefEditor.putLong("CaseLastUpdate", aCase.getCaseLastUpdateDate()).apply();
                 EventBus.getDefault().post(new CaseUpdateEvent(aCase));
             }
-
         });
     }
 
@@ -81,7 +78,7 @@ public class Model {
     public static boolean getInstance(MasterInterface.GotCurrentUserLogged callback) {
         if (instance == null) {
             instance = new Model(callback);
-            return true;
+            return true; // first time application is loaded
         }
         else{
             return false;
@@ -94,10 +91,6 @@ public class Model {
             this.aCase = aCase;
         }
     }
-
-//    public List<Case> getDataSql() {
-//        return CaseSql.getData(modelSql.getReadableDatabase());
-//    }
 
     public void getData(final MasterInterface.GetAllCasesCallback callback) {
         callback.onComplete(CaseSql.getData(modelSql.getReadableDatabase()));
@@ -126,7 +119,6 @@ public class Model {
     public Case getCase(String id) {
         return CaseSql.getCase(modelSql.getReadableDatabase(), id);
     }
-
 
     public void updateCase(Case c) {
         CaseSql.updateCase(modelSql.getWritableDatabase(), c);
@@ -184,5 +176,15 @@ public class Model {
 
     public long getIdRandomizer() {
         return System.currentTimeMillis() % 100000;
+    }
+
+    public void changeLikeCount(Case aCase, boolean increase){
+        if(increase){
+            aCase.increaseLikeCount();
+        }
+        else{
+            aCase.decreaseLikeCount();
+        }
+        updateCase(aCase);
     }
 }
