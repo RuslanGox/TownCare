@@ -93,24 +93,24 @@ public class CaseUpsertFragment extends Fragment {
         switch (upsertMode) {
             case EDIT_MODE:
                 showCaseData(contentView, Model.instance.getCase(caseId));
-                Button saveButton = (Button) contentView.findViewById(R.id.caseUpsertSaveButton);
-                saveButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View view) {
-                        (contentView.findViewById(R.id.caseListProgressBar)).setVisibility(View.VISIBLE);
-                        upsertImageAndCase();
-                    }
-                });
-                Button cancelButton = (Button) contentView.findViewById(R.id.caseUpsertCancelButton);
-                cancelButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        EventBus.getDefault().post(new MessageEvent(MessageResult.CANCEL_BUTTON_PRESSED));
-                    }
-                });
             case INSERT_MODE:
                 // for future use
         }
+        Button saveButton = (Button) contentView.findViewById(R.id.caseUpsertSaveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                (contentView.findViewById(R.id.caseListProgressBar)).setVisibility(View.VISIBLE);
+                upsertImageAndCase();
+            }
+        });
+        Button cancelButton = (Button) contentView.findViewById(R.id.caseUpsertCancelButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new MessageEvent(MessageResult.CANCEL_BUTTON_PRESSED));
+            }
+        });
         return contentView;
     }
 
