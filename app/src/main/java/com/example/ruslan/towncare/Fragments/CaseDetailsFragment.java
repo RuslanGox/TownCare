@@ -53,22 +53,24 @@ public class CaseDetailsFragment extends Fragment {
         final View contentView = inflater.inflate(R.layout.fragment_case_details, container, false);
         showCaseData(contentView, Model.instance.getCase(id));
 
-        ImageButton likeButton = ((ImageButton) contentView.findViewById(R.id.caseDetailsLikeButton));
-        likeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Model.instance.changeLikeCount(Model.instance.getCase(id), true);
-                EventBus.getDefault().post(new CaseUpsertFragment.MessageEvent(MessageResult.LIKE_BUTTON_PRESSED));
-            }
-        });
-        ImageButton unLikeButton = ((ImageButton) contentView.findViewById(R.id.caseDetailsUnLikeButton));
-        unLikeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Model.instance.changeLikeCount(Model.instance.getCase(id), false);
-                EventBus.getDefault().post(new CaseUpsertFragment.MessageEvent(MessageResult.UNLIKE_BUTTON_PRESSED));
-            }
-        });
+        if (!Model.CurrentUser.getUserRole().equals(ADMIN_PARAMETER)){
+            ImageButton likeButton = ((ImageButton) contentView.findViewById(R.id.caseDetailsLikeButton));
+            likeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Model.instance.changeLikeCount(Model.instance.getCase(id), true);
+                    EventBus.getDefault().post(new CaseUpsertFragment.MessageEvent(MessageResult.LIKE_BUTTON_PRESSED));
+                }
+            });
+            ImageButton unLikeButton = ((ImageButton) contentView.findViewById(R.id.caseDetailsUnLikeButton));
+            unLikeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Model.instance.changeLikeCount(Model.instance.getCase(id), false);
+                    EventBus.getDefault().post(new CaseUpsertFragment.MessageEvent(MessageResult.UNLIKE_BUTTON_PRESSED));
+                }
+            });
+        }
 
         return contentView;
     }
