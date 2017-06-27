@@ -46,7 +46,7 @@ public class CaseListFragment extends Fragment {
     private MasterInterface.CaseListInteractionListener mListener;
     private List<Case> caseListData = new LinkedList<>();
     CaseListAdapter adapter;
-    private boolean FirstLoad;
+    private boolean firstLoad;
 
     public CaseListFragment() {
 
@@ -54,7 +54,7 @@ public class CaseListFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(Model.CaseUpdateEvent event) {
-        if (!FirstLoad) {
+        if (!firstLoad) {
             Toast.makeText(MyApplication.getMyContext(), "Case List was updated", Toast.LENGTH_SHORT).show();
         }
         GetData();
@@ -71,13 +71,14 @@ public class CaseListFragment extends Fragment {
         checkSDPermission();
         EventBus.getDefault().register(this);
         final View contentView = inflater.inflate(R.layout.fragment_case_list, container, false);
-        FirstLoad = (getActivity().getSharedPreferences("TAG",MODE_PRIVATE)).getBoolean("FirstLoad",true);
+        Log.d("TAG", "LOAD:FirstLoad is "+getActivity().getSharedPreferences("TAG",MODE_PRIVATE).getBoolean("firstLoad",true));
+        firstLoad = getActivity().getSharedPreferences("TAG",MODE_PRIVATE).getBoolean("firstLoad",true);
 
         ListView list = (ListView) contentView.findViewById(R.id.caseListFragment);
         adapter = new CaseListAdapter();
         list.setAdapter(adapter);
 
-        if(FirstLoad){
+        if(firstLoad) {
             (contentView.findViewById(R.id.caseListProgressBar)).setVisibility(View.VISIBLE);
         }
         // initialization of the Model SingleTone
@@ -88,12 +89,12 @@ public class CaseListFragment extends Fragment {
                 (contentView.findViewById(R.id.caseListProgressBar)).setVisibility(View.GONE);
                 GetData();
                 setHasOptionsMenu(true);
-                SharedPreferences.Editor prefEditor = MyApplication.getMyContext().getSharedPreferences("TAG", MODE_PRIVATE).edit();
-                prefEditor.putBoolean("FirstLoad",FirstLoad).apply();
+                MyApplication.getMyContext().getSharedPreferences("TAG", MODE_PRIVATE).edit().putBoolean("firstLoad", false).apply();
+                Log.d("TAG", "SAVE:FirstLoad is "+firstLoad);
             }
         });
 
-        if (!FirstLoad) {
+        if (!firstLoad) {
             Log.d("TAG", "Loaded data");
             GetData();
         }
@@ -109,6 +110,7 @@ public class CaseListFragment extends Fragment {
     }
 
     private void GetData() {
+        Log.d("TAG","GetData() was called");
         Model.instance.getData(new MasterInterface.GetAllCasesCallback() {
             @Override
             public void onComplete(List<Case> list) {

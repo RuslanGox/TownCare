@@ -23,41 +23,41 @@ import java.util.Map;
  */
 
 public class CaseFireBase {
-    public static final String SORT_CASE_LAST_UPDATE = "CaseLastUpdate";
-    public static final String CASE_LAST_UPDATE_PARAMETER = "CaseLastUpdate";
+    public static final String SORT_CASE_LAST_UPDATE = "caseLastUpdateDate";
+    public static final String CASE_LAST_UPDATE_PARAMETER = "caseLastUpdateDate";
 
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static DatabaseReference myRef = database.getReference(CaseSql.CASE_TABLE);
 
     /* --- Public Methods --- */
 
-    public static void getData(long CaseLastUpdate, final MasterInterface.GetAllCasesCallback callback) {
-        myRef.orderByChild(SORT_CASE_LAST_UPDATE).startAt(CaseLastUpdate);
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Case> list = new LinkedList<>();
-                for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                    Case aCase = snap.getValue(Case.class);
-                    if (Model.CurrentUser.getUserTown().equalsIgnoreCase(aCase.getCaseTown())) { // show only case for user town
-                        list.add(aCase);
-                    }
-                }
-                callback.onComplete(list);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                callback.onCancel();
-            }
-        });
-    }
+//    public static void getData(long CaseLastUpdate, final MasterInterface.GetAllCasesCallback callback) {
+//        myRef.orderByChild(SORT_CASE_LAST_UPDATE).startAt(CaseLastUpdate);
+//        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                List<Case> list = new LinkedList<>();
+//                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+//                    Case aCase = snap.getValue(Case.class);
+//                    if (Model.CurrentUser.getUserTown().equalsIgnoreCase(aCase.getCaseTown())) { // show only case for user town
+//                        list.add(aCase);
+//                    }
+//                }
+//                callback.onComplete(list);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                callback.onCancel();
+//            }
+//        });
+//    }
 
     public static void addCase(Case c) {
 
 //        String key = myRef.push().getKey(); // this will create a new unique key
         Map<String, Object> value = new HashMap<>();
-        value.put("CaseLastUpdate", ServerValue.TIMESTAMP);
+        value.put("caseLastUpdateDate", ServerValue.TIMESTAMP);
         value.put("caseId", c.getCaseId());
         value.put("caseTitle", c.getCaseTitle());
         value.put("caseDate", c.getCaseDate());

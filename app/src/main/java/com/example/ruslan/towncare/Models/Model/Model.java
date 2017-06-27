@@ -23,7 +23,7 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class Model {
-    public static final String CASE_LAST_UPDATE_PARAMETER = "CaseLastUpdate";
+    public static final String CASE_LAST_UPDATE_PARAMETER = "caseLastUpdateDate";
     public static Model instance;
     private ModelFireBase modelFireBase;
     private ModelSql modelSql;
@@ -52,6 +52,7 @@ public class Model {
         Log.d("TAG" , "syncAndRegisterCaseData entered");
         SharedPreferences ref = MyApplication.getMyContext().getSharedPreferences("TAG", MODE_PRIVATE);
         final long lastUpdate = ref.getLong(CASE_LAST_UPDATE_PARAMETER, 0);
+        Log.d("TAG", "lastUpdate time is " + lastUpdate);
         CaseFireBase.syncAndRegisterCaseData(lastUpdate, new MasterInterface.RegisterCasesEvents() {
             @Override
             public void onCaseUpdate(Case aCase , DataStateChange dsc) {
@@ -71,7 +72,7 @@ public class Model {
                 }
 
                 SharedPreferences.Editor prefEditor = MyApplication.getMyContext().getSharedPreferences("TAG", MODE_PRIVATE).edit();
-                prefEditor.putLong("CaseLastUpdate", aCase.getCaseLastUpdateDate()).apply();
+                prefEditor.putLong(CASE_LAST_UPDATE_PARAMETER, aCase.getCaseLastUpdateDate()).apply();
                 EventBus.getDefault().post(new CaseUpdateEvent(aCase));
             }
         });
@@ -80,9 +81,8 @@ public class Model {
 
     public static void getInstance(MasterInterface.GotCurrentUserLogged callback) {
         if (instance == null) {
+            Log.d("TAG","instance was null");
             instance = new Model(callback);
-        }
-        else{
         }
     }
 
