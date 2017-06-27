@@ -45,7 +45,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/caseListStatus"
+            android:id="@+id/caseListType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="בטיפול"
@@ -60,7 +60,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/caseListType"
+            android:id="@+id/caseListStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

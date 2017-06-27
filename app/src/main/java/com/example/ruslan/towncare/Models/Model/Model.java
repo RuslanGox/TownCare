@@ -55,7 +55,7 @@ public class Model {
         CaseFireBase.syncAndRegisterCaseData(lastUpdate, new MasterInterface.RegisterCasesEvents() {
             @Override
             public void onCaseUpdate(Case aCase , DataStateChange dsc) {
-                Log.d("TAG","syncAndRegisterCaseData - MODEL - onCaseUpdate " + aCase.getCaseTitle());
+                Log.d("TAG","syncAndRegisterCaseData - MODEL - onCaseUpdate " + aCase.getCaseTitle() + "dsc " + dsc);
                 switch (dsc){
                     case ADDED:
                         if (Model.CurrentUser.getUserTown().equalsIgnoreCase(aCase.getCaseTown())) { // show only case for user town
@@ -81,7 +81,7 @@ public class Model {
     public static boolean getInstance(MasterInterface.GotCurrentUserLogged callback) {
         if (instance == null) {
             instance = new Model(callback);
-            return true; // first time application is loaded
+            return false; // first time application is loaded
         }
         else{
             return false;

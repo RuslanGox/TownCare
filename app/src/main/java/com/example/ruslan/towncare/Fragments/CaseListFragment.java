@@ -73,19 +73,19 @@ public class CaseListFragment extends Fragment {
         adapter = new CaseListAdapter();
         list.setAdapter(adapter);
 
+        if(FirstLoad){
+            (contentView.findViewById(R.id.caseListProgressBar)).setVisibility(View.VISIBLE);
+        }
         // initialization of the Model SingleTone
         FirstLoad = Model.getInstance(new MasterInterface.GotCurrentUserLogged() {
             @Override
             public void Create() {
                 Log.d("TAG", "Loaded data for the first time");
+                (contentView.findViewById(R.id.caseListProgressBar)).setVisibility(View.GONE);
                 GetData();
                 setHasOptionsMenu(true);
-                (contentView.findViewById(R.id.caseListProgressBar)).setVisibility(View.GONE);
             }
         });
-        if(FirstLoad){
-            (contentView.findViewById(R.id.caseListProgressBar)).setVisibility(View.VISIBLE);
-        }
         if (!FirstLoad) {
             Log.d("TAG", "Loaded data");
             GetData();
@@ -162,9 +162,9 @@ public class CaseListFragment extends Fragment {
             final Case c = caseListData.get(position);
             ((TextView) convertView.findViewById(R.id.caseListTitle)).setText(c.getCaseTitle());
             ((TextView) convertView.findViewById(R.id.caseListDate)).setText(c.getCaseDate());
-            ((TextView) convertView.findViewById(R.id.caseListStatus)).setText(c.getCaseStatus());
+            ((TextView) convertView.findViewById(R.id.caseListStatus)).setText((getResources().getStringArray(R.array.caseStatus))[Integer.parseInt(c.getCaseStatus())]);
             ((TextView) convertView.findViewById(R.id.caseListLikeCount)).setText(String.valueOf(c.getCaseLikeCount()));
-            ((TextView) convertView.findViewById(R.id.caseListType)).setText(c.getCaseType());
+            ((TextView) convertView.findViewById(R.id.caseListType)).setText((getResources().getStringArray(R.array.caseTypes))[Integer.parseInt(c.getCaseType())]);
             final ImageView imageView = ((ImageView) convertView.findViewById(R.id.caseListImage));
             imageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.sym_def_app_icon));
             imageView.setTag(c.getCaseImageUrl());
