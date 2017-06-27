@@ -143,12 +143,12 @@ public class CaseUpsertFragment extends Fragment {
                 caseId = Model.CurrentUser.getUserId() + Model.instance.getIdRandomizer();
                 caseLikeCount = 1;
                 caseImageUrl = URL_DEFAULT_PARAMETER;
-                caseStatus = Long.toString(((Spinner) contentView.findViewById(R.id.caseUpsertType)).getSelectedItemId());
+                caseStatus = Long.toString(((Spinner) contentView.findViewById(R.id.caseUpsertStatus)).getSelectedItemId());
                 break;
             case EDIT_MODE:
                 caseId = this.caseId;
                 caseLikeCount = Integer.parseInt(((TextView) contentView.findViewById(R.id.caseListLikeCount)).getText().toString());
-                caseStatus = Long.toString(((Spinner) contentView.findViewById(R.id.caseUpsertType)).getSelectedItemId());
+                caseStatus = Long.toString(((Spinner) contentView.findViewById(R.id.caseUpsertStatus)).getSelectedItemId());
                 caseImageUrl = Model.instance.getCase(caseId).getCaseImageUrl();
                 break;
             default:

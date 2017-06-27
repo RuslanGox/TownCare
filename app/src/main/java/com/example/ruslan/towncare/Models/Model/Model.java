@@ -5,15 +5,14 @@ import android.graphics.Bitmap;
 import android.util.Log;
 import android.webkit.URLUtil;
 
-import com.example.ruslan.towncare.LoginActivity;
 import com.example.ruslan.towncare.Models.Case.Case;
 import com.example.ruslan.towncare.Models.Case.CaseFireBase;
 import com.example.ruslan.towncare.Models.Case.CaseSql;
 import com.example.ruslan.towncare.Models.Enums.DataStateChange;
 import com.example.ruslan.towncare.Models.MasterInterface;
 import com.example.ruslan.towncare.Models.User.User;
+import com.example.ruslan.towncare.Models.User.UserFireBase;
 import com.example.ruslan.towncare.MyApplication;
-import com.example.ruslan.towncare.RegisterActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -34,7 +33,7 @@ public class Model {
     private Model(final MasterInterface.GotCurrentUserLogged callback) {
         modelSql = new ModelSql(MyApplication.getMyContext());
         modelFireBase = new ModelFireBase();
-        getUser(getCurrentLoggedUserId(), new MasterInterface.GetUserCallback() {
+        UserFireBase.getUser(UserFireBase.getCurrentLoggedUserId(), new MasterInterface.GetUserCallback() {
             @Override
             public void onComplete(User user) {
                 CurrentUser = user;
@@ -193,19 +192,19 @@ public class Model {
         modelFireBase.addUser(user);
     }
 
-    public String getCurrentLoggedUserId() {
-        return modelFireBase.getCurrentLoggedUserId();
-    }
+//    public String getCurrentLoggedUserId() {
+//        return modelFireBase.getCurrentLoggedUserId();
+//    }
 
-    public void getUser(String accountId, final MasterInterface.GetUserCallback callback) {
-        modelFireBase.getUser(accountId, callback);
-    }
+//    public void getUser(String accountId, final MasterInterface.GetUserCallback callback) {
+//        modelFireBase.getUser(accountId, callback);
+//    }
 
-    public void registerAccount(RegisterActivity registerActivity, final String email, final String password, final String id, final MasterInterface.RegisterAccountCallBack callBack) {
-        modelFireBase.registerAccount(registerActivity, email, password, id, callBack);
-    }
-
-    public void loginAccount(final LoginActivity loginActivity, final String email, final String password, final MasterInterface.LoginAccountCallBack callBack) {
-        modelFireBase.loginAccount(loginActivity, email, password, callBack);
-    }
+//    public void registerAccount(RegisterActivity registerActivity, final String email, final String password, final String id, final MasterInterface.RegisterAccountCallBack callBack) {
+//        modelFireBase.registerAccount(registerActivity, email, password, id, callBack);
+//    }
+//
+//    public void loginAccount(final LoginActivity loginActivity, final String email, final String password, final MasterInterface.LoginAccountCallBack callBack) {
+//        modelFireBase.loginAccount(loginActivity, email, password, callBack);
+//    }
 }

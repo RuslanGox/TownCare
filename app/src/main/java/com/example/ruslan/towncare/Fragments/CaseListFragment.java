@@ -211,8 +211,14 @@ public class CaseListFragment extends Fragment {
             if (toast != null) {
                 toast.cancel(); // will cancel any ongoing Toast messages
             }
-            toast = Toast.makeText(MyApplication.getMyContext(), "Case List was updated", Toast.LENGTH_SHORT);
-            toast.show();
+            if(caseListData.size()==0){
+                toast = Toast.makeText(MyApplication.getMyContext(), "Case list is empty", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            else{
+                toast = Toast.makeText(MyApplication.getMyContext(), "Case List was updated", Toast.LENGTH_SHORT);
+                toast.show();
+            }
         }
         GetData();
     }

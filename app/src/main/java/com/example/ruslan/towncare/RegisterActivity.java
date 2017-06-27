@@ -10,6 +10,7 @@ import android.widget.EditText;
 import com.example.ruslan.towncare.Models.MasterInterface;
 import com.example.ruslan.towncare.Models.Model.Model;
 import com.example.ruslan.towncare.Models.User.User;
+import com.example.ruslan.towncare.Models.User.UserFireBase;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -29,12 +30,12 @@ public class RegisterActivity extends Activity {
                 final String email = ((EditText) findViewById(R.id.createAccountUserEmail)).getText().toString();
                 final String password = ((EditText) findViewById(R.id.createAccountPassword)).getText().toString();
                 final String id = ((EditText) findViewById(R.id.createAccountId)).getText().toString();
-                Model.instance.registerAccount(RegisterActivity.this, email, password, id, new MasterInterface.RegisterAccountCallBack() {
+                UserFireBase.registerAccount(RegisterActivity.this, email, password, id, new MasterInterface.RegisterAccountCallBack() {
                     @Override
                     public void onComplete(FirebaseUser user, Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d("TAG", "User profile updated -> " + user.getDisplayName());
-                            Model.instance.addUser(newUser()); // creates also new user in "users" table
+                            UserFireBase.addUser(newUser()); // creates also new user in "users" table
                             finish();
                         }
                     }

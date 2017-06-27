@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import com.example.ruslan.towncare.Models.MasterInterface;
 import com.example.ruslan.towncare.Models.Model.Model;
+import com.example.ruslan.towncare.Models.User.UserFireBase;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 
@@ -26,7 +27,7 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 final String email = ((EditText) findViewById(R.id.loginUserName)).getText().toString();
                 final String password = ((EditText) findViewById(R.id.loginPassword)).getText().toString();
-                Model.instance.loginAccount(LoginActivity.this, email, password, new MasterInterface.LoginAccountCallBack() {
+                UserFireBase.loginAccount(LoginActivity.this, email, password, new MasterInterface.LoginAccountCallBack() {
                     @Override
                     public void onComplete(Task<AuthResult> task) {
                         if (task.isSuccessful()) {
