@@ -188,23 +188,10 @@ public class Model {
         }
     }
 
-    public void addUser(User user) {
-        modelFireBase.addUser(user);
+    public void signOut(){
+        modelFireBase = null;
+        modelSql = null;
+        instance = null;
     }
 
-//    public String getCurrentLoggedUserId() {
-//        return modelFireBase.getCurrentLoggedUserId();
-//    }
-
-//    public void getUser(String accountId, final MasterInterface.GetUserCallback callback) {
-//        modelFireBase.getUser(accountId, callback);
-//    }
-
-//    public void registerAccount(RegisterActivity registerActivity, final String email, final String password, final String id, final MasterInterface.RegisterAccountCallBack callBack) {
-//        modelFireBase.registerAccount(registerActivity, email, password, id, callBack);
-//    }
-//
-//    public void loginAccount(final LoginActivity loginActivity, final String email, final String password, final MasterInterface.LoginAccountCallBack callBack) {
-//        modelFireBase.loginAccount(loginActivity, email, password, callBack);
-//    }
 }

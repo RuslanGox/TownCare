@@ -15,8 +15,8 @@ import com.example.ruslan.towncare.Models.Enums.AlertDialogButtons;
 import com.example.ruslan.towncare.Models.Enums.UpsertMode;
 import com.example.ruslan.towncare.Models.MasterInterface;
 import com.example.ruslan.towncare.Models.Model.Model;
+import com.example.ruslan.towncare.Models.User.UserFireBase;
 import com.example.ruslan.towncare.PickersAndDialogs.AlertCaseDialog;
-import com.google.firebase.auth.FirebaseAuth;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -103,7 +103,7 @@ public class MainActivity extends Activity implements MasterInterface.CaseListIn
                 AlertCaseDialog.newInstance("Are you sure you want to delete " + id, AlertDialogButtons.OK_CANCEL_BUTTONS).show(getFragmentManager(), "AlertDialog");
                 break;
             case R.id.actionBarLogOutButton: // logout & back to Login Screen
-                FirebaseAuth.getInstance().signOut();
+                UserFireBase.signOut();
                 finish();
             default:
                 backToMainActivity();

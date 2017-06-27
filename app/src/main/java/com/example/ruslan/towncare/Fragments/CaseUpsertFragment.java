@@ -213,7 +213,7 @@ public class CaseUpsertFragment extends Fragment {
         ((Spinner) contentView.findViewById(R.id.caseUpsertType)).setSelection(Integer.parseInt(aCase.getCaseType()));
         ((EditText) contentView.findViewById(R.id.caseUpsertDesc)).setText(aCase.getCaseDesc());
 
-        // only admin allowt to change status of the case
+        // only admin allow to change status of the case
         if (Model.CurrentUser.getUserRole().equals(ADMIN_PARAMETER)) {
             ((Spinner) contentView.findViewById(R.id.caseUpsertStatus)).setClickable(true);
             ((Spinner) contentView.findViewById(R.id.caseUpsertStatus)).setSelection(Integer.parseInt(aCase.getCaseStatus()));

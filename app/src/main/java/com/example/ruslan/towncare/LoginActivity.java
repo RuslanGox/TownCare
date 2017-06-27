@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.ruslan.towncare.Models.MasterInterface;
-import com.example.ruslan.towncare.Models.Model.Model;
 import com.example.ruslan.towncare.Models.User.UserFireBase;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

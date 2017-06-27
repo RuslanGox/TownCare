@@ -76,6 +76,7 @@ public class CaseListFragment extends Fragment {
             });
         } else {
             GetData();
+            setHasOptionsMenu(true);
         }
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -187,6 +188,8 @@ public class CaseListFragment extends Fragment {
         while (Model.CurrentUser == null) {
             menu.findItem(R.id.actionBarPlusButton).setVisible(false);
         }
+        Log.d("TAG", "CurrentUser = " + Model.CurrentUser.getUserId());
+        Log.d("TAG", "CurrentUser = " + Model.CurrentUser.getUserRole());
         if (Model.CurrentUser.getUserRole().equals(ADMIN_PARAMETER)) { // admin not allowed to create cases
             menu.findItem(R.id.actionBarPlusButton).setVisible(false);
         } else {

@@ -5,7 +5,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.ruslan.towncare.LoginActivity;
+import com.example.ruslan.towncare.MainActivity;
+import com.example.ruslan.towncare.Models.Case.CaseFireBase;
 import com.example.ruslan.towncare.Models.MasterInterface;
+import com.example.ruslan.towncare.Models.Model.Model;
+import com.example.ruslan.towncare.MyApplication;
 import com.example.ruslan.towncare.RegisterActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,7 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 public class UserFireBase {
 
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
+//    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static final String USERS_TABLE = "Users";
     private static DatabaseReference myRef = database.getReference(USERS_TABLE);
 
@@ -36,8 +40,7 @@ public class UserFireBase {
 
 
     public static String getCurrentLoggedUserId() {
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             return currentUser.getDisplayName();
         } else {
@@ -62,7 +65,7 @@ public class UserFireBase {
     }
 
     public static void registerAccount(RegisterActivity registerActivity, final String email, final String password, final String id, final MasterInterface.RegisterAccountCallBack callBack) {
-        mAuth.createUserWithEmailAndPassword(email, password)
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(registerActivity, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -91,7 +94,7 @@ public class UserFireBase {
 
     public static void loginAccount(final LoginActivity loginActivity, final String email, final String password, final MasterInterface.LoginAccountCallBack callBack) {
         if (!email.isEmpty() && !password.isEmpty()) {
-            mAuth.signInWithEmailAndPassword(email, password)
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(loginActivity, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -101,5 +104,10 @@ public class UserFireBase {
         } else {
             Toast.makeText(loginActivity, "Please Enter Credentials.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public static void signOut(){
+        Model.instance.signOut();
+        FirebaseAuth.getInstance().signOut();
     }
 }
